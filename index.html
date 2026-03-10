@@ -2001,21 +2001,17 @@ function renderCalendar() {
     const isToday = ds === todayStr;
 
     if (res) {
-      const prevDs = d > 1 ? dateStr(calYear, calMonth, d - 1) : null;
-      const nextDs = d < daysInMonth ? dateStr(calYear, calMonth, d + 1) : null;
-      const isStart = !prevDs || getDayReservation(prevDs) !== res;
-      const isEnd   = !nextDs || getDayReservation(nextDs) !== res;
-      // day of week (0=Sun..6=Sat), adjusted to Mon-start
-      const dow = (new Date(calYear, calMonth, d).getDay() + 6) % 7;
-      const isRowStart = dow === 0;
-      const isRowEnd   = dow === 6;
+      const isStart = ds === res.from || d === 1;
+      const isEnd   = ds === res.to || d === daysInMonth;
+      const trueStart = ds === res.from;
+      const trueEnd   = ds === res.to;
 
       const colorClass = res.color === 'ical' ? 'res-ical' : 'res-manual';
       let shapeClass = '';
-      if ((isStart || isRowStart) && (isEnd || isRowEnd)) shapeClass = 'res-solo';
-      else if (isStart || isRowStart) shapeClass = 'res-left';
-      else if (isEnd || isRowEnd) shapeClass = 'res-right';
-      else shapeClass = 'res-mid';
+      if (trueStart && trueEnd)   shapeClass = 'res-solo';
+      else if (trueStart)         shapeClass = 'res-left';
+      else if (trueEnd)           shapeClass = 'res-right';
+      else                        shapeClass = 'res-mid';
 
       el.className = `cal-day res ${colorClass} ${shapeClass}${isToday ? ' today' : ''}`;
     } else {
