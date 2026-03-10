@@ -929,7 +929,8 @@ letter-spacing: 0.3px;
 .cal-grid {
 display: grid;
 grid-template-columns: repeat(7, 1fr);
-gap: 3px 0;
+row-gap: 3px;
+column-gap: 0;
 margin-bottom: 16px;
 }
 
@@ -969,15 +970,14 @@ border: none;
 border-radius: 0;
 color: #fff;
 font-weight: 600;
-position: relative;
 }
-.cal-day.res-ical  { background: #1a3a6b; }
+.cal-day.res-ical   { background: #1a3a6b; }
 .cal-day.res-manual { background: #1a1a1a; }
 
-.cal-day.res-solo   { border-radius: 50px; }
-.cal-day.res-left   { border-radius: 50px 0 0 50px; margin-right: -1px; }
-.cal-day.res-right  { border-radius: 0 50px 50px 0; margin-left: -1px; }
-.cal-day.res-mid    { margin: 0 -1px; }
+.cal-day.res-solo  { border-radius: 50px; }
+.cal-day.res-left  { border-radius: 50px 0 0 50px; }
+.cal-day.res-right { border-radius: 0 50px 50px 0; }
+.cal-day.res-mid   { border-radius: 0; }
 
 .cal-day.today:not(.res) {
 border-color: #1a1a1a;
@@ -1985,7 +1985,10 @@ function renderCalendar() {
 
   // For each day figure out which reservation it belongs to and position
   function getDayReservation(ds) {
-    return reservations.find(r => ds >= r.from && ds < r.to) || null;
+    return reservations.find(r => {
+      const last = addDays(r.to, -1);
+      return ds >= r.from && ds <= last;
+    }) || null;
   }
 
   for (let i = 0; i < startOffset; i++) {
@@ -2001,10 +2004,10 @@ function renderCalendar() {
     const isToday = ds === todayStr;
 
     if (res) {
-      const isStart = ds === res.from || d === 1;
-      const isEnd   = ds === res.to || d === daysInMonth;
+      // res.to is checkout day (not occupied), so last occupied = day before res.to
+      const lastOccupied = addDays(res.to, -1);
       const trueStart = ds === res.from;
-      const trueEnd   = ds === res.to;
+      const trueEnd   = ds === lastOccupied;
 
       const colorClass = res.color === 'ical' ? 'res-ical' : 'res-manual';
       let shapeClass = '';
