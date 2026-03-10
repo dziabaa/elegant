@@ -1626,6 +1626,8 @@ function switchTab(tab) {
     document.getElementById('panel-'+t).classList.toggle('active', t===tab);
   });
   if (tab === 'cal') {
+    if (!getCalAptId() && apartments.length > 0) setCalAptId(apartments[0].id);
+    renderCalAptPills();
     renderCalendar();
     syncAllIcal();
   }
@@ -1907,11 +1909,15 @@ function isoDate(d8) {
 }
 
 function addDays(d8, n) {
-  const d = new Date(d8.slice(0,4), parseInt(d8.slice(4,6))-1, parseInt(d8.slice(6,8)));
+  // supports both YYYYMMDD and YYYY-MM-DD
+  const clean = d8.replace(/-/g, '');
+  const d = new Date(clean.slice(0,4), parseInt(clean.slice(4,6))-1, parseInt(clean.slice(6,8)));
   d.setDate(d.getDate() + n);
   const y = d.getFullYear();
   const m = String(d.getMonth()+1).padStart(2,'0');
   const day = String(d.getDate()).padStart(2,'0');
+  // return same format as input
+  if (d8.includes('-')) return `${y}-${m}-${day}`;
   return y+m+day;
 }
 
