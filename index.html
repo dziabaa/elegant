@@ -955,6 +955,7 @@ cursor: default;
 color: var(–text);
 border: 0.5px solid #e4e0da;
 background: var(–card);
+position: relative;
 }
 
 .cal-day.empty {
@@ -966,48 +967,61 @@ border-color: #e4e0da;
 position: relative;
 z-index: 2;
 line-height: 1;
+width: 28px; height: 28px;
+display: flex; align-items: center; justify-content: center;
 }
 
-/* Reservation styles */
-.cal-day.res { color: #fff; }
+/* Reservation cells — transparent background, bar via ::before */
+.cal-day.res {
+background: var(–card);
+border-color: #e4e0da;
+color: #fff;
+}
 
-/* Middle days — full width, no border */
-.cal-day.res-mid.res-ical   { background: #1a3a6b; border-color: #1a3a6b; }
-.cal-day.res-mid.res-manual { background: #1a1a1a; border-color: #1a1a1a; }
+.cal-day.res::before {
+content: ‘’;
+position: absolute;
+top: 50%; transform: translateY(-50%);
+height: 55%;
+left: 0; right: 0;
+z-index: 0;
+}
 
-/* Checkin — transparent left half, color right half, rounded circle on number */
-.cal-day.res-left.res-ical   { background: linear-gradient(to right, var(–card) 50%, #1a3a6b 50%); border-color: #e4e0da; }
-.cal-day.res-left.res-manual { background: linear-gradient(to right, var(–card) 50%, #1a1a1a 50%); border-color: #e4e0da; }
+/* Bar colors */
+.cal-day.res-ical::before   { background: #1a3a6b; }
+.cal-day.res-manual::before { background: #1a1a1a; }
 
-/* Checkout — color left half, transparent right half */
-.cal-day.res-right.res-ical   { background: linear-gradient(to right, #1a3a6b 50%, var(–card) 50%); border-color: #e4e0da; }
-.cal-day.res-right.res-manual { background: linear-gradient(to right, #1a1a1a 50%, var(–card) 50%); border-color: #e4e0da; }
+/* Checkin: bar from center to right, rounded left */
+.cal-day.res-left::before { left: 50%; right: 0; border-radius: 50px 0 0 50px; }
+
+/* Checkout: bar from left to center, rounded right */
+.cal-day.res-right::before { left: 0; right: 50%; border-radius: 0 50px 50px 0; }
 
 /* Solo */
-.cal-day.res-solo.res-ical   { background: #1a3a6b; border-radius: 50%; border-color: #1a3a6b; }
-.cal-day.res-solo.res-manual { background: #1a1a1a; border-radius: 50%; border-color: #1a1a1a; }
+.cal-day.res-solo::before { left: 15%; right: 15%; border-radius: 50px; }
 
-/* Number circle */
+/* Middle: full width, no radius */
+.cal-day.res-mid::before { border-radius: 0; }
+
+/* Number circle on top */
 .cal-day.res .day-num {
-width: 30px; height: 30px;
-display: flex; align-items: center; justify-content: center;
-border-radius: 50%;
-color: #fff;
-font-weight: 700;
-font-size: 13px;
-z-index: 2;
-}
-.cal-day.res-left.res-ical .day-num,
-.cal-day.res-right.res-ical .day-num  { background: #1a3a6b; }
-.cal-day.res-left.res-manual .day-num,
-.cal-day.res-right.res-manual .day-num { background: #1a1a1a; }
-
-.cal-day.today:not(.res) .day-num {
+position: relative; z-index: 2;
 width: 28px; height: 28px;
 display: flex; align-items: center; justify-content: center;
 border-radius: 50%;
-background: #1a1a1a;
-color: #fff;
+color: #fff; font-weight: 700; font-size: 13px;
+}
+.cal-day.res-ical .day-num   { background: #1a3a6b; }
+.cal-day.res-manual .day-num { background: #1a1a1a; }
+
+/* Free day number */
+.cal-day:not(.res) .day-num {
+color: var(–text);
+}
+.cal-day.today:not(.res) .day-num {
+background: #1a1a1a; color: #fff; border-radius: 50%;
+width: 28px; height: 28px;
+display: flex; align-items: center; justify-content: center;
 font-weight: 700;
 }
 
