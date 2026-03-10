@@ -973,7 +973,7 @@ display: flex; align-items: center; justify-content: center;
 
 /* Reservation cells — transparent background, bar via ::before */
 .cal-day.res {
-background: var(–card);
+background: transparent;
 border-color: #e4e0da;
 color: #fff;
 }
@@ -981,10 +981,10 @@ color: #fff;
 .cal-day.res::before {
 content: ‘’;
 position: absolute;
-top: 50%; transform: translateY(-50%);
-height: 55%;
+top: 22%; bottom: 22%;
 left: 0; right: 0;
 z-index: 0;
+pointer-events: none;
 }
 
 /* Bar colors */
