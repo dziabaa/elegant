@@ -1570,7 +1570,33 @@ function switchTab(tab) {
     document.getElementById('tab-'+t).classList.toggle('active', t===tab);
     document.getElementById('panel-'+t).classList.toggle('active', t===tab);
   });
-  if (tab === 'cal') renderCalendar();
+  if (tab === 'cal') {
+    renderCalendar();
+    syncAllIcal();
+  }
+}
+
+async function syncAllIcal() {
+  const apts = apartments.filter(a => a.icalUrl);
+  if (apts.length === 0) return;
+  showToast('🔄 Synchronizuję kalendarze...');
+  let updated = 0;
+  await Promise.all(apts.map(async apt => {
+    try {
+      const proxyUrl = 'https://nameless-base-0f4d.dziabaa.workers.dev/?url=' + encodeURIComponent(apt.icalUrl);
+      const res = await fetch(proxyUrl, { signal: AbortSignal.timeout(10000) });
+      if (!res.ok) { showToast('Błąd HTTP ' + res.status + ' dla ' + apt.name); return; }
+      const t = await res.text();
+      if (!t.includes('BEGIN:VCALENDAR')) { showToast('Brak VCALENDAR dla ' + apt.name); return; }
+      apt.icalEvents = parseIcal(t);
+      apt.icalSynced = new Date().toLocaleString('pl-PL', {day:'2-digit',month:'2-digit',year:'numeric',hour:'2-digit',minute:'2-digit'});
+      updated++;
+    } catch(e) { showToast('Wyjątek: ' + e.message + ' (' + apt.name + ')'); }
+  }));
+  localStorage.setItem('apts', JSON.stringify(apartments));
+  renderCalendar();
+  renderIcalSection();
+  if (updated > 0) showToast('✓ Zsynchronizowano ' + updated + ' kalendarzy');
 }
 
 async function pastePhone(inputId) {
