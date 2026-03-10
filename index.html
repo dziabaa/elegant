@@ -972,40 +972,40 @@ z-index: 2;
 line-height: 1;
 }
 
-/* Full-width background bar for middle days */
+/* Full-width background bar */
 .cal-day.res::before {
 content: ‘’;
 position: absolute;
 top: 50%; left: 0; right: 0;
-height: 60%;
+height: 58%;
 transform: translateY(-50%);
 z-index: 0;
+border-radius: 0;
 }
 .cal-day.res-ical::before   { background: #1a3a6b; }
 .cal-day.res-manual::before { background: #1a1a1a; }
 
-/* Left half only — checkin day */
+/* Checkin day — bar starts at center, rounded on left */
 .cal-day.res-left::before {
-left: 50%;
+left: 50%; right: 0;
 border-radius: 50px 0 0 50px;
 }
 
-/* Right half only — checkout day */
+/* Checkout day — bar ends at center, rounded on right */
 .cal-day.res-right::before {
-right: 50%;
+left: 0; right: 50%;
 border-radius: 0 50px 50px 0;
 }
 
-/* Solo — full pill centered */
+/* Solo — full pill */
 .cal-day.res-solo::before {
 left: 10%; right: 10%;
 border-radius: 50px;
 }
 
-/* Middle days — full width bar */
+/* Middle days — full width */
 .cal-day.res-mid::before {
 left: 0; right: 0;
-border-radius: 0;
 }
 
 /* Number circle on top of bar */
