@@ -1,0 +1,1992 @@
+<!DOCTYPE html>
+
+<html lang="pl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="color-scheme" content="light">
+<title>Manager Dostępu</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #f0ede8;
+    --card: #faf8f5;
+    --card2: #f0ede8;
+    --border: #ddd8d0;
+    --gold: #2c2c2c;
+    --gold-light: #1a1a1a;
+    --text: #1a1a1a;
+    --muted: #888880;
+    --green: #25D366;
+    --blue: #1877F2;
+    --purple: #7360F2;
+    --teal: #229ED9;
+    --indigo: #3A5BC7;
+  }
+
+html {
+background: #f0ede8;
+}
+
+- { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+background: var(–bg);
+color: var(–text);
+font-family: ‘DM Sans’, sans-serif;
+min-height: 100vh;
+display: flex;
+justify-content: center;
+align-items: flex-start;
+padding: 20px 16px 60px;
+}
+
+.app {
+width: 100%;
+max-width: 420px;
+}
+
+/* Header */
+.header {
+text-align: center;
+padding: 36px 24px 28px;
+background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 50%, #1a1a1a 100%);
+border-radius: 24px;
+margin-bottom: 0;
+position: relative;
+overflow: hidden;
+}
+
+.header::before {
+content: ‘’;
+position: absolute;
+top: -60px; left: -60px;
+width: 220px; height: 220px;
+background: radial-gradient(circle, rgba(255,255,255,0.04) 0%, transparent 70%);
+pointer-events: none;
+}
+
+.header::after {
+content: ‘’;
+position: absolute;
+bottom: -40px; right: -40px;
+width: 180px; height: 180px;
+background: radial-gradient(circle, rgba(255,255,255,0.03) 0%, transparent 70%);
+pointer-events: none;
+}
+
+.logo {
+width: 64px; height: 64px;
+background: rgba(255,255,255,0.08);
+border-radius: 50%;
+margin: 0 auto 18px;
+display: flex; align-items: center; justify-content: center;
+font-size: 28px;
+border: 1px solid rgba(255,255,255,0.12);
+backdrop-filter: blur(4px);
+position: relative;
+z-index: 1;
+}
+
+.header h1 {
+font-family: ‘Playfair Display’, serif;
+font-size: 30px;
+font-weight: 700;
+color: #ffffff;
+margin-bottom: 8px;
+letter-spacing: -0.5px;
+position: relative;
+z-index: 1;
+}
+
+.header p {
+font-size: 13px;
+color: rgba(255,255,255,0.45);
+font-weight: 400;
+letter-spacing: 0.3px;
+position: relative;
+z-index: 1;
+}
+
+.header-line {
+width: 40px;
+height: 2px;
+background: rgba(255,255,255,0.15);
+margin: 14px auto 0;
+border-radius: 2px;
+position: relative;
+z-index: 1;
+}
+
+/* Tab nav */
+.tabs {
+display: grid;
+grid-template-columns: 1fr 1fr 1fr 1fr;
+background: #242424;
+border: none;
+border-radius: 0 0 20px 20px;
+padding: 6px;
+gap: 4px;
+margin-bottom: 24px;
+}
+
+.tab {
+padding: 11px 8px;
+text-align: center;
+font-size: 12px;
+font-weight: 600;
+color: rgba(255,255,255,0.65);
+cursor: pointer;
+transition: background 0.2s, color 0.2s;
+border: 1px solid rgba(255,255,255,0.1);
+background: rgba(255,255,255,0.06);
+border-radius: 10px;
+display: flex;
+align-items: center;
+justify-content: center;
+gap: 5px;
+letter-spacing: 0.2px;
+line-height: 1;
+min-height: 40px;
+}
+
+.tab.active {
+background: #ffffff;
+color: #1a1a1a;
+border-color: transparent;
+box-shadow: 0 2px 10px rgba(0,0,0,0.25);
+}
+
+.tab:hover:not(.active) {
+background: rgba(255,255,255,0.12);
+color: #ffffff;
+}
+
+/* Section label */
+.label {
+font-size: 10px;
+font-weight: 600;
+letter-spacing: 1.5px;
+color: var(–muted);
+text-transform: uppercase;
+margin-bottom: 10px;
+}
+
+/* Input */
+.field { margin-bottom: 20px; }
+
+.input-wrap {
+display: flex;
+align-items: center;
+background: var(–card2);
+border: 1px solid var(–border);
+border-radius: 14px;
+overflow: hidden;
+}
+
+.input-wrap input {
+flex: 1;
+background: none;
+border: none;
+outline: none;
+padding: 14px 16px;
+color: var(–text);
+font-family: ‘DM Sans’, sans-serif;
+font-size: 15px;
+}
+
+.input-wrap input::placeholder { color: var(–muted); }
+
+.btn-paste {
+padding: 8px 14px;
+margin: 6px;
+background: var(–card);
+border: 1px solid var(–border);
+border-radius: 8px;
+color: #5b9cf6;
+font-size: 12px;
+font-weight: 600;
+cursor: pointer;
+letter-spacing: 0.5px;
+transition: all 0.2s;
+}
+.btn-paste:hover { background: #e8e4dd; }
+
+select {
+width: 100%;
+background: var(–card2);
+border: 1px solid var(–border);
+border-radius: 14px;
+padding: 14px 16px;
+color: var(–text);
+font-family: ‘DM Sans’, sans-serif;
+font-size: 15px;
+outline: none;
+cursor: pointer;
+appearance: none;
+background-image: url(“data:image/svg+xml,%3Csvg xmlns=‘http://www.w3.org/2000/svg’ width=‘12’ height=‘8’ viewBox=‘0 0 12 8’%3E%3Cpath d=‘M1 1l5 5 5-5’ stroke=’%23666’ stroke-width=‘1.5’ fill=‘none’ stroke-linecap=‘round’/%3E%3C/svg%3E”);
+background-repeat: no-repeat;
+background-position: right 16px center;
+}
+
+select option { background: #f0ede8; }
+
+/* PIN display */
+.pin-display {
+background: var(–card2);
+border: 1px solid var(–border);
+border-radius: 14px;
+padding: 6px 18px;
+text-align: center;
+margin-bottom: 20px;
+display: flex;
+align-items: center;
+gap: 10px;
+transition: border-color 0.2s, box-shadow 0.2s;
+}
+.pin-display:focus-within {
+border-color: #1a1a1a;
+box-shadow: 0 0 0 3px rgba(26,26,26,0.1);
+}
+
+.pin-digits {
+flex: 1;
+font-size: 36px;
+font-weight: 300;
+letter-spacing: 14px;
+color: #1a1a1a;
+font-family: ‘DM Sans’, sans-serif;
+background: none;
+border: none;
+outline: none;
+text-align: center;
+width: 100%;
+padding: 12px 0;
+}
+.pin-digits::placeholder { color: #ccc; letter-spacing: 8px; font-size: 28px; }
+
+.pin-save-btn {
+background: var(–gold);
+border: none;
+border-radius: 8px;
+color: #fff;
+font-size: 11px;
+font-weight: 600;
+padding: 8px 12px;
+cursor: pointer;
+white-space: nowrap;
+font-family: ‘DM Sans’, sans-serif;
+transition: opacity 0.2s;
+flex-shrink: 0;
+}
+.pin-save-btn:hover { opacity: 0.85; }
+
+/* Message preview */
+.preview-header {
+display: flex;
+justify-content: space-between;
+align-items: center;
+margin-bottom: 10px;
+}
+
+.btn-copy-small {
+display: flex;
+align-items: center;
+gap: 6px;
+background: var(–card2);
+border: 1px solid var(–border);
+border-radius: 8px;
+padding: 7px 12px;
+color: var(–text);
+font-size: 12px;
+font-weight: 500;
+cursor: pointer;
+transition: all 0.2s;
+}
+.btn-copy-small:hover { background: #e8e4dd; }
+
+.message-box {
+background: #ffffff;
+border: 1.5px solid var(–border);
+border-radius: 14px;
+padding: 16px;
+min-height: 80px;
+font-size: 14px;
+line-height: 1.65;
+color: #1a1a1a !important;
+white-space: pre-wrap;
+outline: none;
+margin-bottom: 20px;
+resize: none;
+font-family: ‘DM Sans’, sans-serif;
+width: 100%;
+overflow: hidden;
+box-sizing: border-box;
+color-scheme: light;
+}
+
+/* Send buttons */
+.send-buttons { display: flex; flex-direction: column; gap: 10px; }
+
+.btn-whatsapp {
+width: 100%;
+padding: 15px;
+border-radius: 14px;
+border: none;
+background: var(–green);
+color: #fff;
+font-size: 15px;
+font-weight: 600;
+cursor: pointer;
+display: flex;
+align-items: center;
+justify-content: center;
+gap: 8px;
+transition: opacity 0.2s;
+font-family: ‘DM Sans’, sans-serif;
+}
+.btn-whatsapp:hover { opacity: 0.9; }
+
+.btn-row {
+display: grid;
+grid-template-columns: 1fr 1fr;
+gap: 10px;
+}
+
+.btn-msg {
+padding: 13px;
+border-radius: 14px;
+border: none;
+color: #fff;
+font-size: 14px;
+font-weight: 600;
+cursor: pointer;
+display: flex;
+align-items: center;
+justify-content: center;
+gap: 7px;
+transition: opacity 0.2s;
+font-family: ‘DM Sans’, sans-serif;
+}
+.btn-msg:hover { opacity: 0.85; }
+.btn-sms { background: var(–blue); }
+.btn-viber { background: #7360F2; }
+.btn-telegram { background: var(–teal); }
+.btn-signal { background: var(–indigo); }
+
+.btn-copy-text {
+width: 100%;
+padding: 13px;
+border-radius: 14px;
+border: 1px solid var(–border);
+background: var(–card2);
+color: #5b9cf6;
+font-size: 14px;
+font-weight: 500;
+cursor: pointer;
+display: flex;
+align-items: center;
+justify-content: center;
+gap: 7px;
+transition: all 0.2s;
+font-family: ‘DM Sans’, sans-serif;
+}
+.btn-copy-text:hover { background: #e8e4dd; }
+
+/* Apartments tab */
+.apt-list { display: flex; flex-direction: column; gap: 10px; margin-bottom: 14px; }
+
+.apt-item {
+display: flex;
+flex-direction: column;
+background: var(–card2);
+border: 1px solid var(–border);
+border-radius: 14px;
+padding: 12px 14px;
+gap: 10px;
+}
+
+.apt-row {
+display: flex;
+align-items: center;
+gap: 10px;
+}
+
+.apt-ical-row {
+display: flex;
+align-items: center;
+gap: 8px;
+}
+
+.apt-ical-wrap {
+flex: 1;
+display: flex;
+align-items: center;
+background: var(–card);
+border: 1px solid var(–border);
+border-radius: 10px;
+padding: 0 10px;
+gap: 6px;
+overflow: hidden;
+}
+
+.apt-ical-icon { font-size: 13px; flex-shrink: 0; }
+
+.apt-ical-input {
+flex: 1;
+background: none;
+border: none;
+outline: none;
+font-size: 11px;
+color: var(–text);
+font-family: ‘DM Sans’, sans-serif;
+padding: 9px 0;
+min-width: 0;
+}
+.apt-ical-input::placeholder { color: var(–muted); }
+
+.apt-ical-ok {
+color: #1a7a45;
+font-size: 13px;
+font-weight: 700;
+flex-shrink: 0;
+}
+
+.btn-ical-fetch {
+width: 36px;
+height: 36px;
+background: #1a1a1a;
+border: none;
+border-radius: 10px;
+color: #fff;
+font-size: 16px;
+cursor: pointer;
+flex-shrink: 0;
+display: flex;
+align-items: center;
+justify-content: center;
+transition: opacity 0.2s;
+}
+.btn-ical-fetch:hover { opacity: 0.8; }
+
+.apt-emoji { font-size: 22px; flex-shrink: 0; }
+
+.apt-name {
+flex: 1;
+font-size: 15px;
+font-weight: 500;
+outline: none;
+background: none;
+border: none;
+color: var(–text);
+font-family: ‘DM Sans’, sans-serif;
+}
+
+.btn-template {
+background: var(–card);
+border: 1px solid var(–border);
+border-radius: 8px;
+padding: 7px 12px;
+color: var(–text);
+font-size: 12px;
+font-weight: 500;
+cursor: pointer;
+display: flex;
+align-items: center;
+gap: 5px;
+white-space: nowrap;
+transition: all 0.2s;
+}
+.btn-template:hover { background: #e8e4dd; }
+
+.btn-remove {
+background: none;
+border: none;
+color: var(–muted);
+font-size: 18px;
+cursor: pointer;
+padding: 4px;
+transition: color 0.2s;
+}
+.btn-remove:hover { color: #e55; }
+
+.btn-add {
+width: 100%;
+padding: 14px;
+border: 1px dashed #3a3a3a;
+border-radius: 14px;
+background: none;
+color: #5b9cf6;
+font-size: 14px;
+font-weight: 500;
+cursor: pointer;
+transition: all 0.2s;
+font-family: ‘DM Sans’, sans-serif;
+}
+.btn-add:hover { background: #e8e4dd; border-color: #bbb; }
+
+/* Template modal */
+.modal-overlay {
+display: none;
+position: fixed; inset: 0;
+background: rgba(0,0,0,0.75);
+z-index: 100;
+align-items: center;
+justify-content: center;
+padding: 16px;
+}
+.modal-overlay.open { display: flex; }
+
+.modal {
+background: #faf8f5;
+border: 1px solid var(–border);
+border-radius: 20px;
+padding: 24px;
+width: 100%;
+max-width: 400px;
+}
+
+.modal h3 {
+font-family: ‘Playfair Display’, serif;
+font-size: 18px;
+margin-bottom: 6px;
+}
+
+.modal p { font-size: 13px; color: var(–muted); margin-bottom: 16px; }
+
+.modal label { font-size: 11px; font-weight: 600; letter-spacing: 1px; color: var(–muted); text-transform: uppercase; display: block; margin-bottom: 6px; }
+
+#modal-welcome, #modal-pin {
+width: 100%;
+background: var(–card2);
+border: 1px solid var(–border);
+border-radius: 12px;
+padding: 13px;
+color: var(–text);
+font-size: 13px;
+line-height: 1.65;
+font-family: ‘DM Sans’, sans-serif;
+resize: none;
+outline: none;
+min-height: 110px;
+margin-bottom: 14px;
+overflow: hidden;
+box-sizing: border-box;
+}
+#modal-welcome:focus, #modal-pin:focus {
+border-color: #1a1a1a;
+box-shadow: 0 0 0 3px rgba(26,26,26,0.08);
+}
+
+.modal-pin-wrap {
+margin-bottom: 14px;
+}
+
+.modal-pin-wrap input {
+width: 100%;
+background: var(–card2);
+border: 1px solid #1a1a1a;
+border-radius: 12px;
+padding: 14px 16px;
+color: #1a1a1a;
+font-size: 28px;
+font-weight: 300;
+letter-spacing: 10px;
+font-family: ‘DM Sans’, sans-serif;
+outline: none;
+text-align: center;
+margin-bottom: 6px;
+transition: border-color 0.2s, box-shadow 0.2s;
+}
+.modal-pin-wrap input:focus {
+border-color: #1a1a1a;
+box-shadow: 0 0 0 3px rgba(26,26,26,0.1);
+}
+.modal-pin-hint {
+display: block;
+font-size: 11px;
+color: var(–muted);
+text-align: center;
+}
+
+```
+width: 100%;
+background: var(--card2);
+border: 1px solid var(--border);
+border-radius: 12px;
+padding: 13px;
+color: var(--text);
+font-size: 13px;
+line-height: 1.65;
+font-family: 'DM Sans', sans-serif;
+resize: vertical;
+outline: none;
+min-height: 100px;
+margin-bottom: 14px;
+```
+
+}
+
+.modal-actions { display: flex; gap: 10px; }
+
+.btn-save {
+flex: 1;
+padding: 13px;
+background: #1a1a1a;
+border: none;
+border-radius: 12px;
+color: #fff;
+font-size: 14px;
+font-weight: 600;
+cursor: pointer;
+font-family: ‘DM Sans’, sans-serif;
+transition: opacity 0.2s;
+}
+.btn-save:hover { opacity: 0.85; }
+
+.btn-cancel {
+padding: 13px 20px;
+background: var(–card2);
+border: 1px solid var(–border);
+border-radius: 12px;
+color: var(–text);
+font-size: 14px;
+cursor: pointer;
+font-family: ‘DM Sans’, sans-serif;
+transition: all 0.2s;
+}
+.btn-cancel:hover { background: #e8e4dd; }
+
+/* Toast */
+.toast {
+position: fixed;
+bottom: 30px;
+left: 50%;
+transform: translateX(-50%) translateY(80px);
+background: #1a1a1a;
+border: 1px solid #333;
+color: #fff;
+padding: 12px 22px;
+border-radius: 50px;
+font-size: 13px;
+font-weight: 500;
+transition: transform 0.3s ease;
+z-index: 200;
+white-space: nowrap;
+}
+.toast.show { transform: translateX(-50%) translateY(0); }
+
+.lang-tabs {
+display: flex;
+gap: 4px;
+margin-bottom: 4px;
+background: #242424;
+border-radius: 14px;
+padding: 6px;
+}
+
+.lang-tab {
+flex: 1;
+padding: 10px;
+background: rgba(255,255,255,0.06);
+border: 1px solid rgba(255,255,255,0.1);
+border-radius: 10px;
+color: rgba(255,255,255,0.65);
+font-size: 13px;
+font-weight: 600;
+cursor: pointer;
+font-family: ‘DM Sans’, sans-serif;
+transition: all 0.2s;
+min-height: 40px;
+display: flex;
+align-items: center;
+justify-content: center;
+}
+.lang-tab.active {
+background: #ffffff;
+border-color: transparent;
+color: #1a1a1a;
+box-shadow: 0 2px 10px rgba(0,0,0,0.25);
+}
+.lang-tab:hover:not(.active) {
+background: rgba(255,255,255,0.12);
+color: #ffffff;
+}
+
+.ical-apt-item {
+background: var(–card2);
+border: 1px solid var(–border);
+border-radius: 14px;
+padding: 12px 14px;
+margin-bottom: 10px;
+}
+.ical-apt-label {
+font-size: 13px;
+font-weight: 600;
+color: var(–text);
+margin-bottom: 8px;
+}
+
+/* iCal sync box */
+.ical-box {
+background: var(–card);
+border: 1px solid var(–border);
+border-radius: 16px;
+padding: 14px 16px;
+margin-bottom: 20px;
+}
+
+.ical-header {
+display: flex;
+align-items: center;
+justify-content: space-between;
+margin-bottom: 12px;
+}
+
+.ical-title {
+font-size: 13px;
+font-weight: 600;
+color: var(–text);
+}
+
+.ical-badge {
+font-size: 10px;
+font-weight: 600;
+padding: 3px 8px;
+border-radius: 20px;
+letter-spacing: 0.3px;
+}
+.ical-badge.synced { background: #d4f5e2; color: #1a7a45; }
+.ical-badge.error  { background: #fde8e8; color: #b91c1c; }
+
+.ical-tabs {
+display: flex;
+gap: 6px;
+margin-bottom: 12px;
+}
+
+.ical-tab {
+flex: 1;
+padding: 8px;
+background: var(–card2);
+border: 1px solid var(–border);
+border-radius: 10px;
+color: var(–muted);
+font-size: 12px;
+font-weight: 600;
+cursor: pointer;
+font-family: ‘DM Sans’, sans-serif;
+transition: all 0.2s;
+}
+.ical-tab.active {
+background: #1a1a1a;
+color: #fff;
+border-color: #1a1a1a;
+}
+
+.ical-upload-label {
+display: flex;
+align-items: center;
+justify-content: center;
+border: 2px dashed var(–border);
+border-radius: 12px;
+padding: 22px 16px;
+cursor: pointer;
+color: var(–muted);
+font-size: 13px;
+font-weight: 500;
+text-align: center;
+transition: border-color 0.2s, color 0.2s;
+margin-bottom: 10px;
+}
+.ical-upload-label:hover { border-color: #1a1a1a; color: var(–text); }
+.ical-upload-label.has-file { border-color: #1a7a45; color: #1a7a45; border-style: solid; }
+
+.ical-paste {
+width: 100%;
+min-height: 90px;
+background: var(–card2);
+border: 1px solid var(–border);
+border-radius: 12px;
+padding: 12px 14px;
+color: var(–text);
+font-size: 11px;
+font-family: monospace;
+outline: none;
+resize: none;
+box-sizing: border-box;
+margin-bottom: 10px;
+color-scheme: light;
+}
+.ical-paste:focus { border-color: #1a1a1a; }
+
+.btn-ical-sync {
+width: 100%;
+padding: 11px;
+background: #1a1a1a;
+border: none;
+border-radius: 10px;
+color: #fff;
+font-size: 13px;
+font-weight: 600;
+cursor: pointer;
+font-family: ‘DM Sans’, sans-serif;
+transition: opacity 0.2s;
+}
+.btn-ical-sync:hover { opacity: 0.85; }
+.btn-ical-sync:disabled { opacity: 0.5; cursor: not-allowed; }
+
+.ical-url-actions {
+display: flex;
+align-items: center;
+gap: 10px;
+margin-bottom: 8px;
+}
+
+.btn-ical-open {
+flex: 1;
+padding: 10px;
+background: var(–card2);
+border: 1px solid var(–border);
+border-radius: 10px;
+color: var(–text);
+font-size: 12px;
+font-weight: 600;
+cursor: pointer;
+font-family: ‘DM Sans’, sans-serif;
+transition: background 0.2s;
+text-align: center;
+}
+.btn-ical-open:hover { background: var(–border); }
+
+.ical-url-saved {
+font-size: 11px;
+color: #1a7a45;
+font-weight: 600;
+white-space: nowrap;
+}
+
+/* Calendar */
+.cal-header {
+display: flex;
+align-items: center;
+justify-content: space-between;
+margin-bottom: 16px;
+background: #1a1a1a;
+border-radius: 16px;
+padding: 10px 14px;
+}
+
+.cal-nav {
+width: 36px; height: 36px;
+background: rgba(255,255,255,0.1);
+border: none;
+border-radius: 10px;
+font-size: 20px;
+color: #fff;
+cursor: pointer;
+display: flex; align-items: center; justify-content: center;
+transition: background 0.2s;
+font-family: ‘DM Sans’, sans-serif;
+}
+.cal-nav:hover { background: rgba(255,255,255,0.2); }
+
+.cal-title {
+font-size: 15px;
+font-weight: 700;
+color: #fff;
+text-transform: capitalize;
+letter-spacing: 0.3px;
+}
+
+.cal-grid {
+display: grid;
+grid-template-columns: repeat(7, 1fr);
+gap: 4px;
+margin-bottom: 16px;
+}
+
+.cal-day-name {
+text-align: center;
+font-size: 10px;
+font-weight: 700;
+color: var(–muted);
+padding: 4px 0 8px;
+letter-spacing: 0.5px;
+text-transform: uppercase;
+}
+
+.cal-day {
+aspect-ratio: 1;
+border-radius: 10px;
+display: flex;
+align-items: center;
+justify-content: center;
+font-size: 13px;
+font-weight: 500;
+cursor: default;
+transition: all 0.15s;
+color: var(–text);
+background: var(–card);
+border: 1.5px solid var(–border);
+}
+
+.cal-day.empty {
+background: none;
+border-color: transparent;
+}
+
+.cal-day.occupied {
+background: #1a1a1a;
+color: #fff;
+border-color: #1a1a1a;
+}
+
+.cal-day.ical-occ {
+background: #1a6ed4;
+color: #fff;
+border-color: #1a6ed4;
+}
+
+.cal-day.today:not(.occupied):not(.ical-occ) {
+border-color: #1a1a1a;
+border-width: 2px;
+font-weight: 700;
+}
+
+.cal-legend {
+display: flex;
+gap: 14px;
+font-size: 12px;
+color: var(–muted);
+margin-bottom: 20px;
+align-items: center;
+background: var(–card);
+border: 1px solid var(–border);
+border-radius: 12px;
+padding: 10px 14px;
+}
+
+.legend-dot {
+display: inline-block;
+width: 10px; height: 10px;
+border-radius: 3px;
+margin-right: 4px;
+flex-shrink: 0;
+}
+.legend-dot.occupied { background: #1a1a1a; }
+.legend-dot.ical { background: #1a6ed4; }
+.legend-dot.free { background: var(–card); border: 1px solid var(–border); }
+
+.booking-form { margin-bottom: 16px; }
+
+.booking-dates {
+display: flex;
+gap: 10px;
+margin-bottom: 10px;
+}
+
+.date-input, .guest-input {
+width: 100%;
+background: var(–card);
+border: 1px solid var(–border);
+border-radius: 12px;
+padding: 12px 14px;
+color: var(–text);
+font-size: 14px;
+font-family: ‘DM Sans’, sans-serif;
+outline: none;
+color-scheme: light;
+transition: border-color 0.2s;
+}
+.date-input:focus, .guest-input:focus { border-color: #1a1a1a; }
+
+.guest-input { margin-bottom: 10px; }
+
+.btn-book {
+width: 100%;
+padding: 13px;
+background: #1a1a1a;
+border: none;
+border-radius: 12px;
+color: #fff;
+font-size: 14px;
+font-weight: 600;
+cursor: pointer;
+font-family: ‘DM Sans’, sans-serif;
+transition: opacity 0.2s;
+}
+.btn-book:hover { opacity: 0.85; }
+
+.bookings-list { display: flex; flex-direction: column; gap: 8px; margin-top: 4px; }
+
+.booking-item {
+display: flex;
+align-items: center;
+background: var(–card);
+border: 1px solid var(–border);
+border-radius: 12px;
+padding: 11px 14px;
+gap: 10px;
+}
+
+.booking-dot {
+width: 8px; height: 8px;
+border-radius: 50%;
+background: #1a1a1a;
+flex-shrink: 0;
+}
+
+.booking-info { flex: 1; }
+.booking-dates-text { font-size: 13px; font-weight: 500; color: var(–text); }
+.booking-guest { font-size: 11px; color: var(–muted); margin-top: 1px; }
+
+.booking-del {
+background: none;
+border: none;
+color: var(–muted);
+font-size: 18px;
+cursor: pointer;
+padding: 2px 6px;
+transition: color 0.2s;
+line-height: 1;
+}
+.booking-del:hover { color: #e55; }
+
+.panel { display: none; }
+.panel.active { display: block; }
+
+</style>
+</head>
+<body>
+<div class="app">
+  <div class="header">
+    <div class="logo">🔑</div>
+    <h1>Manager Dostępu</h1>
+    <p>Kody PIN i wiadomości do apartamentów</p>
+    <div class="header-line"></div>
+  </div>
+
+  <div class="tabs">
+    <button class="tab active" id="tab-welcome" onclick="switchTab('welcome')">♡ Powitanie</button>
+    <button class="tab" id="tab-pin" onclick="switchTab('pin')">✈️ Wyślij PIN</button>
+    <button class="tab" id="tab-apts" onclick="switchTab('apts')">⚙️ Apartamenty</button>
+    <button class="tab" id="tab-cal" onclick="switchTab('cal')">📅 Kalendarz</button>
+  </div>
+
+  <!-- WYŚLIJ PIN -->
+
+  <div class="panel" id="panel-pin">
+    <div class="field">
+      <div class="label">Numer telefonu gościa</div>
+      <div class="input-wrap">
+        <input type="tel" id="pin-phone" placeholder="+48 600 000 000">
+        <button class="btn-paste" onclick="pastePhone('pin-phone')">WKLEJ</button>
+      </div>
+    </div>
+    <div class="field">
+      <div class="label">Wybierz apartament</div>
+      <select id="pin-apt" onchange="updatePinPreview()">
+        <option value="">— wybierz apartament —</option>
+      </select>
+    </div>
+    <div class="field">
+      <div class="label">Kod PIN</div>
+      <div class="pin-display">
+        <input class="pin-digits" id="pin-display" type="text" inputmode="numeric" maxlength="10" placeholder="· · · ·" oninput="onPinInput()" onblur="savePinInline()">
+      </div>
+    </div>
+    <div class="field">
+      <div class="lang-tabs">
+        <button class="lang-tab active" onclick="switchLang('pl', this)">🇵🇱 PL</button>
+        <button class="lang-tab" onclick="switchLang('en', this)">🇬🇧 EN</button>
+        <button class="lang-tab" onclick="switchLang('uk', this)">🇺🇦 UA</button>
+      </div>
+      <div class="preview-header" style="margin-top:10px">
+        <div class="label" style="margin:0">Podgląd wiadomości (edytowalny)</div>
+        <button class="btn-copy-small" onclick="copyActivePinMsg()">📋 Kopiuj</button>
+      </div>
+      <textarea class="message-box" id="pin-msg-pl" style="color:#1a1a1a"></textarea>
+      <textarea class="message-box" id="pin-msg-en" style="display:none;color:#1a1a1a"></textarea>
+      <textarea class="message-box" id="pin-msg-uk" style="display:none;color:#1a1a1a"></textarea>
+    </div>
+    <div class="send-buttons">
+      <button class="btn-whatsapp" onclick="sendActivePinMsg('whatsapp')">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg>
+        WhatsApp Business
+      </button>
+      <div class="btn-row">
+        <button class="btn-msg btn-sms" onclick="sendActivePinMsg('sms')">💬 SMS</button>
+        <button class="btn-msg btn-viber" onclick="sendActivePinMsg('viber')">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M11.997 0C5.375 0 0 5.373 0 11.994c0 2.395.706 4.629 1.923 6.5L.662 24l5.668-1.232a11.938 11.938 0 005.667 1.43c6.624 0 11.997-5.375 11.997-12.004C24 5.573 18.621 0 11.997 0zm5.93 17.126c-.28.79-1.389 1.442-2.282 1.631-.607.128-1.399.231-4.063-.873-3.41-1.398-5.604-4.859-5.774-5.085-.163-.226-1.374-1.832-1.374-3.494s.862-2.475 1.168-2.815c.307-.34.666-.424.888-.424.22 0 .443.002.636.012.204.01.478-.078.747.567.28.672.952 2.323 1.035 2.492.083.17.139.367.028.591-.11.224-.165.363-.329.559-.163.198-.344.44-.49.59-.164.164-.335.342-.145.671.19.33.847 1.397 1.817 2.26 1.249 1.112 2.302 1.456 2.63 1.621.33.165.52.138.71-.083.19-.222.814-.951 1.033-1.278.218-.325.435-.273.735-.164.3.11 1.9.896 2.226 1.059.327.163.545.245.624.38.08.133.08.77-.2 1.563z"/></svg>
+          Viber
+        </button>
+      </div>
+      <div class="btn-row">
+        <button class="btn-msg btn-telegram" onclick="sendActivePinMsg('telegram')">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/></svg>
+          Telegram
+        </button>
+        <button class="btn-msg btn-signal" onclick="sendActivePinMsg('signal')">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.373 0 0 5.373 0 12c0 2.099.542 4.074 1.497 5.789L0 24l6.316-1.479A11.943 11.943 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm.007 4.51c2.107 0 4.088.822 5.578 2.313a7.836 7.836 0 012.315 5.58c0 4.352-3.54 7.893-7.893 7.893a7.872 7.872 0 01-3.735-.942l-4.15.971.994-4.06a7.87 7.87 0 01-1.056-3.95c0-4.353 3.54-7.894 7.893-7.894.004 0 .038-.01.054-.011z"/></svg>
+          Signal
+        </button>
+      </div>
+      <button class="btn-copy-text" onclick="copyActivePinMsg()">📋 Kopiuj tekst do schowka</button>
+    </div>
+  </div>
+
+  <!-- POWITANIE -->
+
+  <div class="panel active" id="panel-welcome">
+    <div class="field">
+      <div class="label">Numer telefonu gościa</div>
+      <div class="input-wrap">
+        <input type="tel" id="wel-phone" placeholder="+48 600 000 000">
+        <button class="btn-paste" onclick="pastePhone('wel-phone')">WKLEJ</button>
+      </div>
+    </div>
+    <div class="field">
+      <div class="label">Wybierz apartament</div>
+      <select id="wel-apt" onchange="updateWelcomePreview()">
+        <option value="">— wybierz apartament —</option>
+      </select>
+    </div>
+    <div class="field">
+      <div class="preview-header">
+        <div class="label" style="margin:0">Podgląd wiadomości powitalnej (edytowalny)</div>
+        <button class="btn-copy-small" onclick="copyMsg('wel-msg')">📋 Kopiuj</button>
+      </div>
+      <textarea class="message-box" id="wel-msg" rows="6" style="color:#1a1a1a"></textarea>
+    </div>
+    <div class="send-buttons">
+      <button class="btn-whatsapp" onclick="sendMsg('wel-phone','wel-msg','whatsapp')">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg>
+        WhatsApp Business
+      </button>
+      <div class="btn-row">
+        <button class="btn-msg btn-sms" onclick="sendMsg('wel-phone','wel-msg','sms')">💬 SMS</button>
+        <button class="btn-msg btn-viber" onclick="sendMsg('wel-phone','wel-msg','viber')">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M11.997 0C5.375 0 0 5.373 0 11.994c0 2.395.706 4.629 1.923 6.5L.662 24l5.668-1.232a11.938 11.938 0 005.667 1.43c6.624 0 11.997-5.375 11.997-12.004C24 5.573 18.621 0 11.997 0zm5.93 17.126c-.28.79-1.389 1.442-2.282 1.631-.607.128-1.399.231-4.063-.873-3.41-1.398-5.604-4.859-5.774-5.085-.163-.226-1.374-1.832-1.374-3.494s.862-2.475 1.168-2.815c.307-.34.666-.424.888-.424.22 0 .443.002.636.012.204.01.478-.078.747.567.28.672.952 2.323 1.035 2.492.083.17.139.367.028.591-.11.224-.165.363-.329.559-.163.198-.344.44-.49.59-.164.164-.335.342-.145.671.19.33.847 1.397 1.817 2.26 1.249 1.112 2.302 1.456 2.63 1.621.33.165.52.138.71-.083.19-.222.814-.951 1.033-1.278.218-.325.435-.273.735-.164.3.11 1.9.896 2.226 1.059.327.163.545.245.624.38.08.133.08.77-.2 1.563z"/></svg>
+          Viber
+        </button>
+      </div>
+      <div class="btn-row">
+        <button class="btn-msg btn-telegram" onclick="sendMsg('wel-phone','wel-msg','telegram')">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/></svg>
+          Telegram
+        </button>
+        <button class="btn-msg btn-signal" onclick="sendMsg('wel-phone','wel-msg','signal')">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.373 0 0 5.373 0 12c0 2.099.542 4.074 1.497 5.789L0 24l6.316-1.479A11.943 11.943 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm.007 4.51c2.107 0 4.088.822 5.578 2.313a7.836 7.836 0 012.315 5.58c0 4.352-3.54 7.893-7.893 7.893a7.872 7.872 0 01-3.735-.942l-4.15.971.994-4.06a7.87 7.87 0 01-1.056-3.95c0-4.353 3.54-7.894 7.893-7.894.004 0 .038-.01.054-.011z"/></svg>
+          Signal
+        </button>
+      </div>
+      <button class="btn-copy-text" onclick="copyMsg('wel-msg')">📋 Kopiuj tekst do schowka</button>
+    </div>
+  </div>
+
+  <!-- APARTAMENTY -->
+
+  <div class="panel" id="panel-apts">
+    <div class="label">Lista apartamentów</div>
+    <div class="apt-list" id="apt-list"></div>
+    <button class="btn-add" onclick="addApartment()">+ Dodaj apartament</button>
+
+```
+<div class="ical-section">
+  <div class="label" style="margin-top:20px">Synchronizacja iCal</div>
+  <div id="ical-apt-list"></div>
+</div>
+```
+
+  </div>
+
+  <!-- KALENDARZ -->
+
+  <div class="panel" id="panel-cal">
+    <div class="field">
+      <div class="label">Wybierz apartament</div>
+      <select id="cal-apt" onchange="onCalAptChange()">
+        <option value="">— wybierz apartament —</option>
+      </select>
+    </div>
+
+```
+<div class="cal-header">
+  <button class="cal-nav" onclick="changeMonth(-1)">‹</button>
+  <div class="cal-title" id="cal-title"></div>
+  <button class="cal-nav" onclick="changeMonth(1)">›</button>
+</div>
+<div class="cal-grid" id="cal-grid"></div>
+<div class="cal-legend">
+  <span class="legend-dot occupied"></span> Zajęty (ręcznie)
+  <span class="legend-dot ical"></span> Booking.com
+  <span class="legend-dot free"></span> Wolny
+</div>
+
+<!-- Add booking -->
+<div class="booking-form" id="booking-form" style="display:none">
+  <div class="label" style="margin-top:4px">Dodaj rezerwację ręcznie</div>
+  <div class="booking-dates">
+    <div class="field" style="flex:1;margin:0">
+      <div class="label">Od</div>
+      <input type="date" id="book-from" class="date-input">
+    </div>
+    <div class="field" style="flex:1;margin:0">
+      <div class="label">Do</div>
+      <input type="date" id="book-to" class="date-input">
+    </div>
+  </div>
+  <input type="text" id="book-guest" class="guest-input" placeholder="Imię gościa (opcjonalnie)">
+  <button class="btn-book" onclick="addBooking()">+ Dodaj rezerwację</button>
+</div>
+
+<div class="bookings-list" id="bookings-list"></div>
+```
+
+  </div>
+</div>
+
+<!-- Template modal -->
+
+<div class="modal-overlay" id="modal">
+  <div class="modal">
+    <h3>Szablon wiadomości</h3>
+    <p id="modal-apt-name"></p>
+    <label>Kod PIN</label>
+    <div class="modal-pin-wrap">
+      <input type="text" id="modal-pin-code" maxlength="10" placeholder="np. 1234" inputmode="numeric" pattern="[0-9]*">
+      <span class="modal-pin-hint">Użyj {PIN} w szablonie aby wstawić kod automatycznie</span>
+    </div>
+    <label>Szablon powitalny</label>
+    <textarea id="modal-welcome" rows="4" placeholder="Wiadomość powitalna..."></textarea>
+    <label>Szablon PIN</label>
+    <textarea id="modal-pin" rows="4" placeholder="Wiadomość z kodem PIN..."></textarea>
+    <div class="modal-actions">
+      <button class="btn-cancel" onclick="closeModal()">Anuluj</button>
+      <button class="btn-save" onclick="saveTemplate()">Zapisz</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+const EMOJIS = ['☀️','🏔️','🌊','🌸','🏡','🌿','⭐','🌙','🔥','🎯'];
+
+let apartments = JSON.parse(localStorage.getItem('apts') || 'null') || [
+  { id:1, name:'Elegant 1', emoji:'☀️',
+    welcomeTemplate: '☀️ Dzień dobry!\n\nSerdecznie witamy w Elegant 1! Cieszymy się, że do nas trafiłeś.\n\nJesteśmy do Twojej dyspozycji przez cały czas pobytu. Gdybyś potrzebował pomocy, skontaktuj się z nami.\n\nMiłego pobytu! 🏡',
+    pinTemplate: 'Kod PIN do apartamentu: {PIN}\n\nProsimy wpisać kod na klawiaturze przy drzwiach wejściowych.\n\nW razie pytań jesteśmy do dyspozycji. Miłego pobytu! 🏡',
+    pin: '1234'
+  },
+  { id:2, name:'Elegant 2', emoji:'🏔️',
+    welcomeTemplate: '🏔️ Dzień dobry!\n\nSerdecznie witamy w Elegant 2! Cieszymy się, że do nas trafiłeś.\n\nJesteśmy do Twojej dyspozycji przez cały czas pobytu. Gdybyś potrzebował pomocy, skontaktuj się z nami.\n\nMiłego pobytu! 🏡',
+    pinTemplate: 'Kod PIN do apartamentu: {PIN}\n\nProsimy wpisać kod na klawiaturze przy drzwiach wejściowych.\n\nW razie pytań jesteśmy do dyspozycji. Miłego pobytu! 🏡',
+    pin: '5678'
+  }
+];
+
+let editingId = null;
+
+function save() {
+  localStorage.setItem('apts', JSON.stringify(apartments));
+  renderApts();
+  updateSelects();
+}
+
+function getApt(id) { return apartments.find(a => a.id === id); }
+
+function renderApts() {
+  const list = document.getElementById('apt-list');
+  list.innerHTML = '';
+  apartments.forEach(apt => {
+    const div = document.createElement('div');
+    div.className = 'apt-item';
+    div.innerHTML = `
+      <div class="apt-row">
+        <span class="apt-emoji" onclick="cycleEmoji(${apt.id})" style="cursor:pointer" title="Zmień emoji">${apt.emoji}</span>
+        <input class="apt-name" value="${apt.name}" onchange="renameApt(${apt.id}, this.value)">
+        <button class="btn-template" onclick="openModal(${apt.id})">✏️ Szablon</button>
+        <button class="btn-remove" onclick="removeApt(${apt.id})">×</button>
+      </div>
+    `;
+    list.appendChild(div);
+  });
+  renderIcalSection();
+}
+
+function renderIcalSection() {
+  const container = document.getElementById('ical-apt-list');
+  if (!container) return;
+  container.innerHTML = '';
+  apartments.forEach(apt => {
+    const div = document.createElement('div');
+    div.className = 'ical-apt-item';
+    div.innerHTML = `
+      <div class="ical-apt-label">${apt.emoji} ${apt.name} ${apt.icalSynced ? '<span class="apt-ical-ok">✓ ' + apt.icalSynced + '</span>' : ''}</div>
+      <div class="apt-ical-row">
+        <div class="apt-ical-wrap">
+          <span class="apt-ical-icon">🔗</span>
+          <input class="apt-ical-input" type="url" placeholder="Link iCal z Booking.com..." value="${apt.icalUrl || ''}">
+        </div>
+        <button class="btn-ical-fetch">↻</button>
+      </div>
+    `;
+    // Attach click directly in JS — no inline onclick
+    const btn = div.querySelector('.btn-ical-fetch');
+    const input = div.querySelector('.apt-ical-input');
+    btn.addEventListener('click', () => doFetchIcal(apt.id, input, btn));
+    container.appendChild(div);
+  });
+}
+
+async function doFetchIcal(id, inputEl, btn) {
+  const apt = getApt(id);
+  const url = inputEl.value.trim();
+  if (!url) { showToast('Wklej link iCal'); return; }
+
+  apt.icalUrl = url;
+  localStorage.setItem('apts', JSON.stringify(apartments));
+
+  btn.textContent = '⏳';
+  btn.disabled = true;
+
+  const proxyUrl = 'https://nameless-base-0f4d.dziabaa.workers.dev/?url=' + encodeURIComponent(url);
+
+  try {
+    const res = await fetch(proxyUrl);
+    if (!res.ok) throw new Error('HTTP ' + res.status);
+    const t = await res.text();
+    if (!t.includes('BEGIN:VCALENDAR')) throw new Error('Brak VCALENDAR w odpowiedzi');
+    const events = parseIcal(t);
+    apt.icalEvents = events;
+    apt.icalSynced = new Date().toLocaleString('pl-PL', {day:'2-digit',month:'2-digit',year:'numeric',hour:'2-digit',minute:'2-digit'});
+    localStorage.setItem('apts', JSON.stringify(apartments));
+    renderApts();
+    showToast(apt.emoji + ' Pobrano ' + events.length + ' rezerwacji ✓');
+  } catch(e) {
+    btn.textContent = '↻';
+    btn.disabled = false;
+    showToast('Błąd: ' + e.message);
+  }
+}
+
+function saveIcalUrl(id, url) {
+  const apt = getApt(id);
+  apt.icalUrl = url.trim();
+  localStorage.setItem('apts', JSON.stringify(apartments));
+}
+
+async function fetchIcalForApt(id, btn) {
+  const apt = getApt(id);
+  const inputEl = btn ? btn.closest('.apt-ical-row').querySelector('.apt-ical-input') : document.getElementById('ical-input-' + id);
+
+  const url = (inputEl ? inputEl.value.trim() : '') || apt.icalUrl || '';
+  if (!url) { showToast('Wklej najpierw link iCal'); return; }
+
+  apt.icalUrl = url;
+  localStorage.setItem('apts', JSON.stringify(apartments));
+
+  if (btn) { btn.textContent = '⏳'; btn.disabled = true; }
+
+  const proxyUrl = `https://nameless-base-0f4d.dziabaa.workers.dev/?url=${encodeURIComponent(url)}`;
+
+  let status = '?', bodyStart = '?', errMsg = '';
+  try {
+    const res = await fetch(proxyUrl, { signal: AbortSignal.timeout(12000) });
+    status = res.status;
+    const t = await res.text();
+    bodyStart = t.slice(0, 50);
+    if (t.includes('BEGIN:VCALENDAR')) {
+      const events = parseIcal(t);
+      apt.icalEvents = events;
+      apt.icalSynced = new Date().toLocaleString('pl-PL', {day:'2-digit',month:'2-digit',year:'numeric',hour:'2-digit',minute:'2-digit'});
+      localStorage.setItem('apts', JSON.stringify(apartments));
+      if (btn) { btn.textContent = '↻'; btn.disabled = false; }
+      renderApts();
+      showToast(`${apt.emoji} Pobrano ${events.length} rezerwacji ✓`);
+      return;
+    }
+  } catch(e) { errMsg = e.message; }
+
+  if (btn) { btn.textContent = '↻'; btn.disabled = false; }
+  alert(`Debug:\nHTTP: ${status}\nErr: ${errMsg}\nOdp: ${bodyStart}`);
+}
+
+function cycleEmoji(id) {
+  const apt = getApt(id);
+  const i = EMOJIS.indexOf(apt.emoji);
+  apt.emoji = EMOJIS[(i + 1) % EMOJIS.length];
+  save();
+}
+
+function renameApt(id, name) {
+  getApt(id).name = name;
+  save();
+}
+
+function removeApt(id) {
+  apartments = apartments.filter(a => a.id !== id);
+  save();
+}
+
+function addApartment() {
+  const id = Date.now();
+  apartments.push({
+    id,
+    name: 'Nowy apartament',
+    emoji: EMOJIS[apartments.length % EMOJIS.length],
+    welcomeTemplate: 'Serdecznie witamy! Jesteśmy do dyspozycji. Miłego pobytu! 🏡',
+    pinTemplate: 'Kod PIN do apartamentu: {PIN}\n\nProsimy wpisać kod przy drzwiach. Miłego pobytu! 🏡',
+    pin: '0000'
+  });
+  save();
+  switchTab('apts');
+}
+
+function updateSelects() {
+  ['pin-apt','wel-apt','cal-apt'].forEach(id => {
+    const sel = document.getElementById(id);
+    if (!sel) return;
+    const val = sel.value;
+    sel.innerHTML = '<option value="">— wybierz apartament —</option>';
+    apartments.forEach(a => {
+      const opt = document.createElement('option');
+      opt.value = a.id;
+      opt.textContent = a.emoji + ' ' + a.name;
+      sel.appendChild(opt);
+    });
+    sel.value = val;
+  });
+}
+
+function updatePinPreview() {
+  const id = parseInt(document.getElementById('pin-apt').value);
+  const apt = getApt(id);
+  ['pl','en','uk'].forEach(l => {
+    const el = document.getElementById('pin-msg-' + l);
+    if (!el) return;
+    el.style.display = '';
+    if (!apt) { el.value = ''; }
+    else { el.value = PIN_TEMPLATES[l](apt.pin || '0000'); }
+    el.style.height = 'auto';
+  });
+  if (apt) {
+    document.getElementById('pin-display').value = apt.pin || '0000';
+  } else {
+    document.getElementById('pin-display').value = '';
+  }
+  // Sync all to tallest
+  const heights = ['pl','en','uk'].map(l => document.getElementById('pin-msg-' + l).scrollHeight);
+  const maxH = Math.max(...heights);
+  ['pl','en','uk'].forEach(l => {
+    const el = document.getElementById('pin-msg-' + l);
+    el.style.height = maxH + 'px';
+    el.style.display = l === activePinLang ? '' : 'none';
+  });
+}
+
+function onPinInput() {
+  const id = parseInt(document.getElementById('pin-apt').value);
+  const apt = getApt(id);
+  const pin = document.getElementById('pin-display').value;
+  if (apt) {
+    ['pl','en','uk'].forEach(l => {
+      const el = document.getElementById('pin-msg-' + l);
+      if (el) { el.value = PIN_TEMPLATES[l](pin); autoResize(el); }
+    });
+  }
+}
+
+function savePinInline() {
+  const id = parseInt(document.getElementById('pin-apt').value);
+  const apt = getApt(id);
+  const pin = document.getElementById('pin-display').value.trim();
+  if (!apt || !pin) return;
+  apt.pin = pin;
+  localStorage.setItem('apts', JSON.stringify(apartments));
+  ['pl','en','uk'].forEach(l => {
+    const el = document.getElementById('pin-msg-' + l);
+    if (el) { el.value = PIN_TEMPLATES[l](pin); autoResize(el); }
+  });
+  showToast('PIN zapisany ✓');
+}
+
+function updateWelcomePreview() {
+  const id = parseInt(document.getElementById('wel-apt').value);
+  const apt = getApt(id);
+  if (!apt) { document.getElementById('wel-msg').value = ''; return; }
+  document.getElementById('wel-msg').value = apt.welcomeTemplate;
+  autoResize(document.getElementById('wel-msg'));
+}
+
+// Default welcome preview
+function initWelcomePreview() {
+  const apt = apartments[0];
+  if (apt) {
+    document.getElementById('wel-msg').value = apt.welcomeTemplate;
+    autoResize(document.getElementById('wel-msg'));
+  }
+}
+
+function openModal(id) {
+  editingId = id;
+  const apt = getApt(id);
+  document.getElementById('modal-apt-name').textContent = apt.emoji + ' ' + apt.name;
+  document.getElementById('modal-pin-code').value = apt.pin || '';
+  document.getElementById('modal-welcome').value = apt.welcomeTemplate;
+  document.getElementById('modal-pin').value = apt.pinTemplate;
+  document.getElementById('modal').classList.add('open');
+  setTimeout(() => {
+    autoResize(document.getElementById('modal-welcome'));
+    autoResize(document.getElementById('modal-pin'));
+    ['modal-welcome','modal-pin'].forEach(id => {
+      const el = document.getElementById(id);
+      el.oninput = () => autoResize(el);
+    });
+  }, 30);
+}
+
+function closeModal() {
+  document.getElementById('modal').classList.remove('open');
+  editingId = null;
+}
+
+function saveTemplate() {
+  const apt = getApt(editingId);
+  const newPin = document.getElementById('modal-pin-code').value.trim();
+  if (newPin) apt.pin = newPin;
+  apt.welcomeTemplate = document.getElementById('modal-welcome').value;
+  apt.pinTemplate = document.getElementById('modal-pin').value;
+  save();
+  closeModal();
+  updatePinPreview();
+  showToast('Zapisano ✓');
+}
+
+function switchTab(tab) {
+  ['pin','welcome','apts','cal'].forEach(t => {
+    document.getElementById('tab-'+t).classList.toggle('active', t===tab);
+    document.getElementById('panel-'+t).classList.toggle('active', t===tab);
+  });
+  if (tab === 'cal') renderCalendar();
+}
+
+async function pastePhone(inputId) {
+  try {
+    const text = await navigator.clipboard.readText();
+    document.getElementById(inputId).value = text.trim();
+  } catch(e) {
+    showToast('Wklej ręcznie numer telefonu');
+  }
+}
+
+function copyMsg(textareaId) {
+  const txt = document.getElementById(textareaId).value;
+  navigator.clipboard.writeText(txt).then(() => showToast('Skopiowano ✓'));
+}
+
+function getPhone(inputId) {
+  return document.getElementById(inputId).value.replace(/\s+/g,'').replace(/^\+/,'');
+}
+
+function sendMsg(phoneId, msgId, app) {
+  const phone = getPhone(phoneId);
+  const msg = encodeURIComponent(document.getElementById(msgId).value);
+  let url = '';
+  if (app === 'whatsapp') url = `https://wa.me/${phone}?text=${msg}`;
+  else if (app === 'sms') url = `sms:+${phone}?body=${msg}`;
+  else if (app === 'viber') url = `viber://chat?number=%2B${phone}&text=${msg}`;
+  else if (app === 'telegram') url = `https://t.me/+${phone}`;
+  else if (app === 'signal') url = `https://signal.me/#p/+${phone}`;
+  if (url) window.open(url, '_blank');
+}
+
+const DIGIT_EMOJI = {'0':'0️⃣','1':'1️⃣','2':'2️⃣','3':'3️⃣','4':'4️⃣','5':'5️⃣','6':'6️⃣','7':'7️⃣','8':'8️⃣','9':'9️⃣'};
+
+function pinToEmoji(pin) {
+  return pin.split('').map(d => DIGIT_EMOJI[d] || d).join('');
+}
+
+let activePinLang = 'pl';
+
+const PIN_TEMPLATES = {
+  pl: (pin) => `Kod PIN do apartamentu: ${pinToEmoji(pin)}#️⃣\n\nProsimy wpisać kod na klawiaturze przy drzwiach wejściowych.\n\nW razie pytań jesteśmy do dyspozycji. Miłego pobytu! 🏡`,
+  en: (pin) => `Your apartment PIN code: ${pinToEmoji(pin)}#️⃣\n\nPlease enter the code on the keypad at the entrance door.\n\nIf you have any questions, we are at your disposal. Enjoy your stay! 🏡`,
+  uk: (pin) => `Код PIN для квартири: ${pinToEmoji(pin)}#️⃣\n\nБудь ласка, введіть код на клавіатурі біля вхідних дверей.\n\nЯкщо у вас є запитання, ми до ваших послуг. Приємного перебування! 🏡`
+};
+
+function switchLang(lang, btn) {
+  activePinLang = lang;
+  document.querySelectorAll('.lang-tab').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  ['pl','en','uk'].forEach(l => {
+    const el = document.getElementById('pin-msg-' + l);
+    el.style.display = l === lang ? '' : 'none';
+  });
+  // Sync all heights to the tallest
+  const heights = ['pl','en','uk'].map(l => {
+    const el = document.getElementById('pin-msg-' + l);
+    el.style.display = '';
+    el.style.height = 'auto';
+    return el.scrollHeight;
+  });
+  const maxH = Math.max(...heights);
+  ['pl','en','uk'].forEach(l => {
+    const el = document.getElementById('pin-msg-' + l);
+    el.style.height = maxH + 'px';
+    el.style.display = l === lang ? '' : 'none';
+  });
+}
+
+function getActivePinMsg() {
+  return document.getElementById('pin-msg-' + activePinLang).value;
+}
+
+function copyActivePinMsg() {
+  navigator.clipboard.writeText(getActivePinMsg()).then(() => showToast('Skopiowano ✓'));
+}
+
+function sendActivePinMsg(app) {
+  const phone = getPhone('pin-phone');
+  const msg = encodeURIComponent(getActivePinMsg());
+  let url = '';
+  if (app === 'whatsapp') url = `https://wa.me/${phone}?text=${msg}`;
+  else if (app === 'sms') url = `sms:+${phone}?body=${msg}`;
+  else if (app === 'viber') url = `viber://chat?number=%2B${phone}&text=${msg}`;
+  else if (app === 'telegram') url = `https://t.me/+${phone}`;
+  else if (app === 'signal') url = `https://signal.me/#p/+${phone}`;
+  if (url) window.open(url, '_blank');
+}
+
+function autoResize(el) {
+  el.style.height = 'auto';
+  el.style.height = el.scrollHeight + 'px';
+}
+
+function applyAutoResize() {
+  document.querySelectorAll('.message-box').forEach(el => {
+    el.addEventListener('input', () => autoResize(el));
+    autoResize(el);
+  });
+}
+
+function onCalAptChange() {
+  const aptId = document.getElementById('cal-apt').value;
+  document.getElementById('booking-form').style.display = aptId ? '' : 'none';
+  renderCalendar();
+}
+
+function switchIcalTab(tab) {
+  document.getElementById('itab-file').classList.toggle('active', tab==='file');
+  document.getElementById('itab-paste').classList.toggle('active', tab==='paste');
+  document.getElementById('ical-panel-file').style.display = tab==='file' ? '' : 'none';
+  document.getElementById('ical-panel-paste').style.display = tab==='paste' ? '' : 'none';
+}
+
+function updateIcalUrlActions(val) {
+  const isUrl = val && (val.startsWith('http://') || val.startsWith('https://'));
+  const el = document.getElementById('ical-url-actions');
+  if (el) el.style.display = isUrl ? 'flex' : 'none';
+}
+
+function openIcalInBrowser() {
+  const url = document.getElementById('ical-paste-area').value.trim();
+  if (url) window.open(url, '_blank');
+}
+
+function onIcalFileSelected(input) {
+  const file = input.files[0];
+  if (!file) return;
+  const label = document.getElementById('ical-file-label');
+  label.textContent = '⏳ Wczytywanie...';
+  const reader = new FileReader();
+  reader.onload = e => {
+    const text = e.target.result;
+    if (!text.includes('BEGIN:VCALENDAR')) {
+      label.textContent = '✗ Nieprawidłowy plik iCal';
+      return;
+    }
+    processIcal(text, file.name);
+    label.textContent = '✓ ' + file.name;
+    document.querySelector('.ical-upload-label').classList.add('has-file');
+  };
+  reader.onerror = () => { label.textContent = '✗ Błąd odczytu pliku'; };
+  reader.readAsText(file);
+}
+
+function syncIcalFromPaste() {
+  const raw = document.getElementById('ical-paste-area').value.trim();
+  if (!raw) { showToast('Wklej link lub zawartość iCal'); return; }
+
+  if (raw.startsWith('http://') || raw.startsWith('https://')) {
+    // Save the URL first
+    const aptId = parseInt(document.getElementById('cal-apt').value);
+    if (aptId) {
+      const apt = getApt(aptId);
+      apt.icalUrl = raw;
+      localStorage.setItem('apts', JSON.stringify(apartments));
+      updateIcalUrlActions(raw);
+    }
+    fetchIcalUrl(raw);
+    return;
+  }
+
+  if (!raw.includes('BEGIN:VCALENDAR')) { showToast('To nie wygląda na plik iCal'); return; }
+  processIcal(raw, 'wklejony');
+}
+
+async function fetchIcalUrl(url) {
+  const btn = document.querySelector('#ical-panel-paste .btn-ical-sync');
+  btn.disabled = true;
+  btn.textContent = '⏳ Pobieranie...';
+
+  const proxyUrl = `https://nameless-base-0f4d.dziabaa.workers.dev/?url=${encodeURIComponent(url)}`;
+
+  let text = null;
+  try {
+    const res = await fetch(proxyUrl, { signal: AbortSignal.timeout(12000) });
+    if (res.ok) {
+      const t = await res.text();
+      if (t.includes('BEGIN:VCALENDAR')) text = t;
+    }
+  } catch(e) {}
+
+  btn.disabled = false;
+  btn.textContent = '↻ Wczytaj';
+
+  if (!text) {
+    showToast('Nie udało się pobrać. Sprawdź link iCal.');
+    return;
+  }
+  processIcal(text, 'Booking.com');
+}
+
+function processIcal(text, source) {
+  const aptId = parseInt(document.getElementById('cal-apt').value);
+  const apt = getApt(aptId);
+  const events = parseIcal(text);
+  apt.icalEvents = events;
+  apt.icalSynced = new Date().toLocaleString('pl-PL', {day:'2-digit',month:'2-digit',year:'numeric',hour:'2-digit',minute:'2-digit'});
+  localStorage.setItem('apts', JSON.stringify(apartments));
+  updateIcalBadge(apt);
+  renderCalendar();
+  showToast(`Wczytano ${events.length} rezerwacji ✓`);
+}
+
+function updateIcalBadge(apt) {
+  const badge = document.getElementById('ical-badge');
+  const status = document.getElementById('ical-status');
+  if (!badge) return;
+  if (apt && apt.icalSynced) {
+    badge.textContent = '✓ Zsynchronizowano';
+    badge.className = 'ical-badge synced';
+    status.textContent = 'Ostatnia sync: ' + apt.icalSynced;
+  } else {
+    badge.textContent = '';
+    badge.className = 'ical-badge';
+    if (status) status.textContent = '';
+  }
+}
+
+function clearIcal() {
+  const aptId = parseInt(document.getElementById('cal-apt').value);
+  const apt = getApt(aptId);
+  apt.icalEvents = [];
+  apt.icalSynced = null;
+  localStorage.setItem('apts', JSON.stringify(apartments));
+  updateIcalBadge(apt);
+  renderCalendar();
+  showToast('Usunięto dane iCal');
+}
+
+function parseIcal(text) {
+  const events = [];
+  const vevents = text.split('BEGIN:VEVENT');
+  for (let i = 1; i < vevents.length; i++) {
+    const block = vevents[i];
+    const dtstart = block.match(/DTSTART(?:;[^:]+)?:(\d{8})/);
+    const dtend   = block.match(/DTEND(?:;[^:]+)?:(\d{8})/);
+    const summary = block.match(/SUMMARY:(.+)/);
+    if (dtstart && dtend) {
+      events.push({
+        from: isoDate(dtstart[1]),
+        to:   isoDate(addDays(dtend[1], -1)),
+        guest: summary ? summary[1].trim().replace(/\r/g,'') : 'Booking.com'
+      });
+    }
+  }
+  return events;
+}
+
+function isoDate(d8) {
+  return d8.slice(0,4) + '-' + d8.slice(4,6) + '-' + d8.slice(6,8);
+}
+
+function addDays(d8, n) {
+  const d = new Date(d8.slice(0,4), parseInt(d8.slice(4,6))-1, parseInt(d8.slice(6,8)));
+  d.setDate(d.getDate() + n);
+  const y = d.getFullYear();
+  const m = String(d.getMonth()+1).padStart(2,'0');
+  const day = String(d.getDate()).padStart(2,'0');
+  return y+m+day;
+}
+
+function isIcalOccupied(aptId, dateStr) {
+  const apt = getApt(parseInt(aptId));
+  if (!apt || !apt.icalEvents) return false;
+  return apt.icalEvents.some(e => dateStr >= e.from && dateStr <= e.to);
+}
+
+
+let calYear = new Date().getFullYear();
+let calMonth = new Date().getMonth();
+const DAYS = ['Pn','Wt','Śr','Cz','Pt','So','Nd'];
+const MONTHS = ['Styczeń','Luty','Marzec','Kwiecień','Maj','Czerwiec','Lipiec','Sierpień','Wrzesień','Październik','Listopad','Grudzień'];
+
+function changeMonth(dir) {
+  calMonth += dir;
+  if (calMonth > 11) { calMonth = 0; calYear++; }
+  if (calMonth < 0)  { calMonth = 11; calYear--; }
+  renderCalendar();
+}
+
+function getBookings(aptId) {
+  if (!aptId) return [];
+  const apt = getApt(parseInt(aptId));
+  return apt ? (apt.bookings || []) : [];
+}
+
+function isOccupied(aptId, dateStr) {
+  return getBookings(aptId).some(b => dateStr >= b.from && dateStr <= b.to);
+}
+
+function dateStr(y, m, d) {
+  return `${y}-${String(m+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
+}
+
+function renderCalendar() {
+  const aptId = document.getElementById('cal-apt').value;
+  const titleEl = document.getElementById('cal-title');
+  if (titleEl) titleEl.textContent = `${MONTHS[calMonth]} ${calYear}`;
+
+  const grid = document.getElementById('cal-grid');
+  grid.innerHTML = '';
+
+  DAYS.forEach(d => {
+    const el = document.createElement('div');
+    el.className = 'cal-day-name';
+    el.textContent = d;
+    grid.appendChild(el);
+  });
+
+  const firstDay = new Date(calYear, calMonth, 1);
+  let startOffset = (firstDay.getDay() + 6) % 7;
+  const daysInMonth = new Date(calYear, calMonth + 1, 0).getDate();
+  const today = new Date();
+  const todayStr = dateStr(today.getFullYear(), today.getMonth(), today.getDate());
+
+  for (let i = 0; i < startOffset; i++) {
+    const el = document.createElement('div');
+    el.className = 'cal-day empty';
+    grid.appendChild(el);
+  }
+
+  for (let d = 1; d <= daysInMonth; d++) {
+    const ds = dateStr(calYear, calMonth, d);
+    const occ  = aptId && isOccupied(aptId, ds);
+    const ical = aptId && isIcalOccupied(aptId, ds);
+    const el = document.createElement('div');
+    let cls = 'cal-day';
+    if (ical)       cls += ' ical-occ';
+    else if (occ)   cls += ' occupied';
+    if (ds === todayStr) cls += ' today';
+    el.className = cls;
+    el.textContent = d;
+    el.title = ical ? 'Booking.com' : occ ? 'Zajęty (ręcznie)' : 'Wolny';
+    grid.appendChild(el);
+  }
+
+  renderBookingsList(aptId);
+}
+
+function renderBookingsList(aptId) {
+  const list = document.getElementById('bookings-list');
+  list.innerHTML = '';
+  if (!aptId) return;
+  const bookings = getBookings(aptId).sort((a,b) => a.from.localeCompare(b.from));
+  if (bookings.length === 0) {
+    list.innerHTML = '<div style="font-size:13px;color:var(--muted);text-align:center;padding:8px 0">Brak rezerwacji</div>';
+    return;
+  }
+  bookings.forEach((b, i) => {
+    const div = document.createElement('div');
+    div.className = 'booking-item';
+    div.innerHTML = `
+      <div class="booking-dot"></div>
+      <div class="booking-info">
+        <div class="booking-dates-text">${formatDate(b.from)} — ${formatDate(b.to)}</div>
+        ${b.guest ? `<div class="booking-guest">👤 ${b.guest}</div>` : ''}
+      </div>
+      <button class="booking-del" onclick="deleteBooking('${aptId}',${i})">×</button>
+    `;
+    list.appendChild(div);
+  });
+}
+
+function formatDate(ds) {
+  const [y,m,d] = ds.split('-');
+  return `${d}.${m}.${y}`;
+}
+
+function addBooking() {
+  const aptId = parseInt(document.getElementById('cal-apt').value);
+  const from = document.getElementById('book-from').value;
+  const to = document.getElementById('book-to').value;
+  const guest = document.getElementById('book-guest').value.trim();
+  if (!aptId || !from || !to) { showToast('Wybierz daty rezerwacji'); return; }
+  if (from > to) { showToast('Data "od" musi być przed "do"'); return; }
+  const apt = getApt(aptId);
+  if (!apt.bookings) apt.bookings = [];
+  apt.bookings.push({ from, to, guest });
+  localStorage.setItem('apts', JSON.stringify(apartments));
+  document.getElementById('book-from').value = '';
+  document.getElementById('book-to').value = '';
+  document.getElementById('book-guest').value = '';
+  renderCalendar();
+  showToast('Rezerwacja dodana ✓');
+}
+
+function deleteBooking(aptId, index) {
+  const apt = getApt(parseInt(aptId));
+  apt.bookings.splice(index, 1);
+  localStorage.setItem('apts', JSON.stringify(apartments));
+  renderCalendar();
+  showToast('Usunięto ✓');
+}
+// ─────────────────────────────────────────────────────
+
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 2500);
+}
+
+// Init
+renderApts();
+updateSelects();
+initWelcomePreview();
+switchTab('welcome');
+setTimeout(() => {
+  applyAutoResize();
+  const pinApt = document.getElementById('pin-apt');
+  const welApt = document.getElementById('wel-apt');
+  if (pinApt.value) updatePinPreview();
+  if (welApt.value) updateWelcomePreview();
+}, 50);
+</script>
+
+</body>
+</html>
