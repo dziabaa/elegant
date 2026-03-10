@@ -953,49 +953,41 @@ font-size: 13px;
 font-weight: 500;
 cursor: default;
 color: var(–text);
-position: relative;
-/* subtle grid lines */
-border: 0.5px solid #e8e4de;
+border: 0.5px solid #e4e0da;
 background: var(–card);
-border-radius: 0;
 }
 
 .cal-day.empty {
-background: none;
-border-color: #e8e4de;
+background: transparent;
+border-color: #e4e0da;
 }
 
-/* The number shown above the pill */
 .cal-day .day-num {
 position: relative;
 z-index: 2;
 line-height: 1;
 }
 
-/* Reservation styles - using background directly */
-.cal-day.res {
-background: transparent;
-border-color: #e8e4de;
-color: #fff;
-}
+/* Reservation styles */
+.cal-day.res { color: #fff; }
 
-/* Checkin: right half colored */
-.cal-day.res-left.res-ical   { background: linear-gradient(to right, transparent 50%, #1a3a6b 50%); }
-.cal-day.res-left.res-manual { background: linear-gradient(to right, transparent 50%, #1a1a1a 50%); }
+/* Middle days — full width, no border */
+.cal-day.res-mid.res-ical   { background: #1a3a6b; border-color: #1a3a6b; }
+.cal-day.res-mid.res-manual { background: #1a1a1a; border-color: #1a1a1a; }
 
-/* Checkout: left half colored */
-.cal-day.res-right.res-ical   { background: linear-gradient(to left, transparent 50%, #1a3a6b 50%); }
-.cal-day.res-right.res-manual { background: linear-gradient(to left, transparent 50%, #1a1a1a 50%); }
+/* Checkin — transparent left half, color right half, rounded circle on number */
+.cal-day.res-left.res-ical   { background: linear-gradient(to right, var(–card) 50%, #1a3a6b 50%); border-color: #e4e0da; }
+.cal-day.res-left.res-manual { background: linear-gradient(to right, var(–card) 50%, #1a1a1a 50%); border-color: #e4e0da; }
 
-/* Middle: full color */
-.cal-day.res-mid.res-ical   { background: #1a3a6b; }
-.cal-day.res-mid.res-manual { background: #1a1a1a; }
+/* Checkout — color left half, transparent right half */
+.cal-day.res-right.res-ical   { background: linear-gradient(to right, #1a3a6b 50%, var(–card) 50%); border-color: #e4e0da; }
+.cal-day.res-right.res-manual { background: linear-gradient(to right, #1a1a1a 50%, var(–card) 50%); border-color: #e4e0da; }
 
-/* Solo: full color with rounded look via padding */
-.cal-day.res-solo.res-ical   { background: #1a3a6b; border-radius: 50%; }
-.cal-day.res-solo.res-manual { background: #1a1a1a; border-radius: 50%; }
+/* Solo */
+.cal-day.res-solo.res-ical   { background: #1a3a6b; border-radius: 50%; border-color: #1a3a6b; }
+.cal-day.res-solo.res-manual { background: #1a1a1a; border-radius: 50%; border-color: #1a1a1a; }
 
-/* Day number */
+/* Number circle */
 .cal-day.res .day-num {
 width: 30px; height: 30px;
 display: flex; align-items: center; justify-content: center;
@@ -1003,21 +995,12 @@ border-radius: 50%;
 color: #fff;
 font-weight: 700;
 font-size: 13px;
-position: relative; z-index: 2;
+z-index: 2;
 }
-.cal-day.res-left .day-num,
-.cal-day.res-right .day-num {
-background: inherit;
-background: #1a3a6b;
-}
+.cal-day.res-left.res-ical .day-num,
+.cal-day.res-right.res-ical .day-num  { background: #1a3a6b; }
 .cal-day.res-left.res-manual .day-num,
-.cal-day.res-right.res-manual .day-num {
-background: #1a1a1a;
-}
-/* checkin number positioned in right half */
-.cal-day.res-left .day-num  { margin-left: 30%; }
-/* checkout number positioned in left half */
-.cal-day.res-right .day-num { margin-right: 30%; }
+.cal-day.res-right.res-manual .day-num { background: #1a1a1a; }
 
 .cal-day.today:not(.res) .day-num {
 width: 28px; height: 28px;
