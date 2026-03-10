@@ -971,39 +971,38 @@ width: 28px; height: 28px;
 display: flex; align-items: center; justify-content: center;
 }
 
-/* Reservation cells — transparent background, bar via ::before */
+/* Reservation cells */
 .cal-day.res {
 background: transparent;
 border-color: #e4e0da;
 color: #fff;
+position: relative;
 }
 
-.cal-day.res::before {
-content: ‘’;
+/* The bar inside each reservation cell */
+.res-bar {
 position: absolute;
 top: 22%; bottom: 22%;
 left: 0; right: 0;
 z-index: 0;
 pointer-events: none;
 }
+.cal-day.res-ical   .res-bar { background: #1a3a6b; }
+.cal-day.res-manual .res-bar { background: #1a1a1a; }
 
-/* Bar colors */
-.cal-day.res-ical::before   { background: #1a3a6b; }
-.cal-day.res-manual::before { background: #1a1a1a; }
+/* Checkin: bar starts at center */
+.cal-day.res-left .res-bar { left: 50%; right: 0; border-radius: 50px 0 0 50px; }
 
-/* Checkin: bar from center to right, rounded left */
-.cal-day.res-left::before { left: 50%; right: 0; border-radius: 50px 0 0 50px; }
-
-/* Checkout: bar from left to center, rounded right */
-.cal-day.res-right::before { left: 0; right: 50%; border-radius: 0 50px 50px 0; }
+/* Checkout: bar ends at center */
+.cal-day.res-right .res-bar { left: 0; right: 50%; border-radius: 0 50px 50px 0; }
 
 /* Solo */
-.cal-day.res-solo::before { left: 15%; right: 15%; border-radius: 50px; }
+.cal-day.res-solo .res-bar { left: 10%; right: 10%; border-radius: 50px; }
 
-/* Middle: full width, no radius */
-.cal-day.res-mid::before { border-radius: 0; }
+/* Middle: full width */
+.cal-day.res-mid .res-bar { border-radius: 0; }
 
-/* Number circle on top */
+/* Number circle */
 .cal-day.res .day-num {
 position: relative; z-index: 2;
 width: 28px; height: 28px;
@@ -1014,16 +1013,15 @@ color: #fff; font-weight: 700; font-size: 13px;
 .cal-day.res-ical .day-num   { background: #1a3a6b; }
 .cal-day.res-manual .day-num { background: #1a1a1a; }
 
-/* Free day number */
-.cal-day:not(.res) .day-num {
-color: var(–text);
-}
+.cal-day:not(.res) .day-num { color: var(–text); }
 .cal-day.today:not(.res) .day-num {
 background: #1a1a1a; color: #fff; border-radius: 50%;
 width: 28px; height: 28px;
 display: flex; align-items: center; justify-content: center;
 font-weight: 700;
 }
+
+.cal-day.res::before { content: none; }
 
 .cal-legend {
 display: flex;
@@ -2057,11 +2055,11 @@ function renderCalendar() {
       else                        shapeClass = 'res-mid';
 
       el.className = `cal-day res ${colorClass} ${shapeClass}${isToday ? ' today' : ''}`;
+      el.innerHTML = `<div class="res-bar"></div><span class="day-num">${d}</span>`;
     } else {
       el.className = `cal-day${isToday ? ' today' : ''}`;
+      el.innerHTML = `<span class="day-num">${d}</span>`;
     }
-
-    el.innerHTML = `<span class="day-num">${d}</span>`;
     grid.appendChild(el);
   }
 
