@@ -974,33 +974,36 @@ display: flex; align-items: center; justify-content: center;
 /* Reservation cells */
 .cal-day.res {
 background: transparent;
-border-color: #e4e0da;
+border-color: transparent;
 color: #fff;
 position: relative;
+}
+
+/* Keep border only on free days */
+.cal-day:not(.res):not(.empty) {
+border-color: #e4e0da;
 }
 
 /* The bar inside each reservation cell */
 .res-bar {
 position: absolute;
-top: 22%; bottom: 22%;
+top: 20%; bottom: 20%;
 left: 0; right: 0;
 z-index: 0;
 pointer-events: none;
+border-radius: 0;
 }
 .cal-day.res-ical   .res-bar { background: #1a3a6b; }
 .cal-day.res-manual .res-bar { background: #1a1a1a; }
 
-/* Checkin: bar starts at center */
+/* Checkin: bar starts at center, rounded left side */
 .cal-day.res-left .res-bar { left: 50%; right: 0; border-radius: 50px 0 0 50px; }
 
-/* Checkout: bar ends at center */
+/* Checkout: bar ends at center, rounded right side */
 .cal-day.res-right .res-bar { left: 0; right: 50%; border-radius: 0 50px 50px 0; }
 
 /* Solo */
 .cal-day.res-solo .res-bar { left: 10%; right: 10%; border-radius: 50px; }
-
-/* Middle: full width */
-.cal-day.res-mid .res-bar { border-radius: 0; }
 
 /* Number circle */
 .cal-day.res .day-num {
