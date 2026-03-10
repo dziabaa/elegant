@@ -996,10 +996,10 @@ border-radius: 0;
 .cal-day.res-ical   .res-bar { background: #1a3a6b; }
 .cal-day.res-manual .res-bar { background: #1a1a1a; }
 
-/* Checkin: bar starts at center, rounded left side */
+/* Checkin: bar starts at center, right half, rounded on LEFT */
 .cal-day.res-left .res-bar { left: 50%; right: 0; border-radius: 50px 0 0 50px; }
 
-/* Checkout: bar ends at center, rounded right side */
+/* Checkout: bar ends at center, left half, rounded on RIGHT */
 .cal-day.res-right .res-bar { left: 0; right: 50%; border-radius: 0 50px 50px 0; }
 
 /* Solo */
@@ -2053,8 +2053,8 @@ function renderCalendar() {
       const colorClass = res.color === 'ical' ? 'res-ical' : 'res-manual';
       let shapeClass = '';
       if (trueStart && trueEnd)   shapeClass = 'res-solo';
-      else if (trueStart)         shapeClass = 'res-left';
-      else if (trueEnd)           shapeClass = 'res-right';
+      else if (trueStart)         shapeClass = 'res-right';
+      else if (trueEnd)           shapeClass = 'res-left';
       else                        shapeClass = 'res-mid';
 
       el.className = `cal-day res ${colorClass} ${shapeClass}${isToday ? ' today' : ''}`;
