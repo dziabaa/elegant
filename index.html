@@ -972,45 +972,32 @@ z-index: 2;
 line-height: 1;
 }
 
-/* Full-width background bar */
-.cal-day.res::before {
-content: ‘’;
-position: absolute;
-top: 50%; left: 0; right: 0;
-height: 58%;
-transform: translateY(-50%);
-z-index: 0;
-border-radius: 0;
-}
-.cal-day.res-ical::before   { background: #1a3a6b; }
-.cal-day.res-manual::before { background: #1a1a1a; }
-
-/* Checkin day — bar starts at center, rounded on left */
-.cal-day.res-left::before {
-left: 50%; right: 0;
-border-radius: 50px 0 0 50px;
+/* Reservation styles - using background directly */
+.cal-day.res {
+background: transparent;
+border-color: #e8e4de;
+color: #fff;
 }
 
-/* Checkout day — bar ends at center, rounded on right */
-.cal-day.res-right::before {
-left: 0; right: 50%;
-border-radius: 0 50px 50px 0;
-}
+/* Checkin: right half colored */
+.cal-day.res-left.res-ical   { background: linear-gradient(to right, transparent 50%, #1a3a6b 50%); }
+.cal-day.res-left.res-manual { background: linear-gradient(to right, transparent 50%, #1a1a1a 50%); }
 
-/* Solo — full pill */
-.cal-day.res-solo::before {
-left: 10%; right: 10%;
-border-radius: 50px;
-}
+/* Checkout: left half colored */
+.cal-day.res-right.res-ical   { background: linear-gradient(to left, transparent 50%, #1a3a6b 50%); }
+.cal-day.res-right.res-manual { background: linear-gradient(to left, transparent 50%, #1a1a1a 50%); }
 
-/* Middle days — full width */
-.cal-day.res-mid::before {
-left: 0; right: 0;
-}
+/* Middle: full color */
+.cal-day.res-mid.res-ical   { background: #1a3a6b; }
+.cal-day.res-mid.res-manual { background: #1a1a1a; }
 
-/* Number circle on top of bar */
+/* Solo: full color with rounded look via padding */
+.cal-day.res-solo.res-ical   { background: #1a3a6b; border-radius: 50%; }
+.cal-day.res-solo.res-manual { background: #1a1a1a; border-radius: 50%; }
+
+/* Day number */
 .cal-day.res .day-num {
-width: 28px; height: 28px;
+width: 30px; height: 30px;
 display: flex; align-items: center; justify-content: center;
 border-radius: 50%;
 color: #fff;
@@ -1018,6 +1005,19 @@ font-weight: 700;
 font-size: 13px;
 position: relative; z-index: 2;
 }
+.cal-day.res-left .day-num,
+.cal-day.res-right .day-num {
+background: inherit;
+background: #1a3a6b;
+}
+.cal-day.res-left.res-manual .day-num,
+.cal-day.res-right.res-manual .day-num {
+background: #1a1a1a;
+}
+/* checkin number positioned in right half */
+.cal-day.res-left .day-num  { margin-left: 30%; }
+/* checkout number positioned in left half */
+.cal-day.res-right .day-num { margin-right: 30%; }
 
 .cal-day.today:not(.res) .day-num {
 width: 28px; height: 28px;
@@ -1027,8 +1027,6 @@ background: #1a1a1a;
 color: #fff;
 font-weight: 700;
 }
-
-.cal-day.res { background: transparent; border-color: #e8e4de; }
 
 .cal-legend {
 display: flex;
