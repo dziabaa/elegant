@@ -1578,6 +1578,7 @@ function switchTab(tab) {
 
 async function syncAllIcal() {
   const apts = apartments.filter(a => a.icalUrl);
+  alert('syncAllIcal: ' + apts.length + ' apt(s) z iCal URL');
   if (apts.length === 0) return;
   showToast('🔄 Synchronizuję kalendarze...');
   let updated = 0;
