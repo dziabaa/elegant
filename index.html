@@ -866,6 +866,33 @@ font-weight: 600;
 white-space: nowrap;
 }
 
+/* Apt pill selector */
+.cal-apt-pills {
+display: flex;
+gap: 8px;
+flex-wrap: wrap;
+}
+.cal-apt-pill {
+display: flex;
+align-items: center;
+gap: 6px;
+padding: 10px 16px;
+border-radius: 50px;
+border: 1.5px solid var(–border);
+background: var(–card);
+font-size: 14px;
+font-weight: 500;
+color: var(–text);
+cursor: pointer;
+transition: all 0.15s;
+font-family: ‘DM Sans’, sans-serif;
+}
+.cal-apt-pill.active {
+background: #1a1a1a;
+border-color: #1a1a1a;
+color: #fff;
+}
+
 /* Calendar */
 .cal-header {
 display: flex;
@@ -902,7 +929,7 @@ letter-spacing: 0.3px;
 .cal-grid {
 display: grid;
 grid-template-columns: repeat(7, 1fr);
-gap: 4px;
+gap: 3px 0;
 margin-bottom: 16px;
 }
 
@@ -936,23 +963,28 @@ background: none;
 border-color: transparent;
 }
 
-.cal-day.occupied {
-background: #1a1a1a;
+/* Reservation pill styles */
+.cal-day.res {
+border: none;
+border-radius: 0;
 color: #fff;
-border-color: #1a1a1a;
+font-weight: 600;
+position: relative;
 }
+.cal-day.res-ical  { background: #1a3a6b; }
+.cal-day.res-manual { background: #1a1a1a; }
 
-.cal-day.ical-occ {
-background: #1a6ed4;
-color: #fff;
-border-color: #1a6ed4;
-}
+.cal-day.res-solo   { border-radius: 50px; }
+.cal-day.res-left   { border-radius: 50px 0 0 50px; margin-right: -1px; }
+.cal-day.res-right  { border-radius: 0 50px 50px 0; margin-left: -1px; }
+.cal-day.res-mid    { margin: 0 -1px; }
 
-.cal-day.today:not(.occupied):not(.ical-occ) {
+.cal-day.today:not(.res) {
 border-color: #1a1a1a;
 border-width: 2px;
 font-weight: 700;
 }
+.cal-day.today.res { outline: 2px solid #fff; outline-offset: -3px; }
 
 .cal-legend {
 display: flex;
@@ -975,7 +1007,7 @@ margin-right: 4px;
 flex-shrink: 0;
 }
 .legend-dot.occupied { background: #1a1a1a; }
-.legend-dot.ical { background: #1a6ed4; }
+.legend-dot.ical { background: #1a3a6b; }
 .legend-dot.free { background: var(–card); border: 1px solid var(–border); }
 
 .booking-form { margin-bottom: 16px; }
@@ -1206,9 +1238,7 @@ line-height: 1;
   <div class="panel" id="panel-cal">
     <div class="field">
       <div class="label">Wybierz apartament</div>
-      <select id="cal-apt" onchange="onCalAptChange()">
-        <option value="">— wybierz apartament —</option>
-      </select>
+      <div class="cal-apt-pills" id="cal-apt-pills"></div>
     </div>
 
 ```
@@ -1446,7 +1476,7 @@ function addApartment() {
 }
 
 function updateSelects() {
-  ['pin-apt','wel-apt','cal-apt'].forEach(id => {
+  ['pin-apt','wel-apt'].forEach(id => {
     const sel = document.getElementById(id);
     if (!sel) return;
     const val = sel.value;
@@ -1459,7 +1489,32 @@ function updateSelects() {
     });
     sel.value = val;
   });
+  renderCalAptPills();
 }
+
+function renderCalAptPills() {
+  const container = document.getElementById('cal-apt-pills');
+  if (!container) return;
+  const current = getCalAptId();
+  container.innerHTML = '';
+  apartments.forEach(a => {
+    const btn = document.createElement('button');
+    btn.className = 'cal-apt-pill' + (a.id === current ? ' active' : '');
+    btn.textContent = a.emoji + ' ' + a.name;
+    btn.addEventListener('click', () => {
+      setCalAptId(a.id);
+      renderCalAptPills();
+      renderCalendar();
+      renderBookingsList(a.id);
+      document.getElementById('booking-form').style.display = '';
+    });
+    container.appendChild(btn);
+  });
+}
+
+let _calAptId = null;
+function getCalAptId() { return _calAptId; }
+function setCalAptId(id) { _calAptId = id; }
 
 function updatePinPreview() {
   const id = parseInt(document.getElementById('pin-apt').value);
@@ -1700,7 +1755,7 @@ function applyAutoResize() {
 }
 
 function onCalAptChange() {
-  const aptId = document.getElementById('cal-apt').value;
+  const aptId = getCalAptId();
   document.getElementById('booking-form').style.display = aptId ? '' : 'none';
   renderCalendar();
 }
@@ -1749,7 +1804,7 @@ function syncIcalFromPaste() {
 
   if (raw.startsWith('http://') || raw.startsWith('https://')) {
     // Save the URL first
-    const aptId = parseInt(document.getElementById('cal-apt').value);
+    const aptId = getCalAptId();
     if (aptId) {
       const apt = getApt(aptId);
       apt.icalUrl = raw;
@@ -1791,7 +1846,7 @@ async function fetchIcalUrl(url) {
 }
 
 function processIcal(text, source) {
-  const aptId = parseInt(document.getElementById('cal-apt').value);
+  const aptId = getCalAptId();
   const apt = getApt(aptId);
   const events = parseIcal(text);
   apt.icalEvents = events;
@@ -1818,7 +1873,7 @@ function updateIcalBadge(apt) {
 }
 
 function clearIcal() {
-  const aptId = parseInt(document.getElementById('cal-apt').value);
+  const aptId = getCalAptId();
   const apt = getApt(aptId);
   apt.icalEvents = [];
   apt.icalSynced = null;
@@ -1894,7 +1949,7 @@ function dateStr(y, m, d) {
 }
 
 function renderCalendar() {
-  const aptId = document.getElementById('cal-apt').value;
+  const aptId = getCalAptId();
   const titleEl = document.getElementById('cal-title');
   if (titleEl) titleEl.textContent = `${MONTHS[calMonth]} ${calYear}`;
 
@@ -1909,10 +1964,29 @@ function renderCalendar() {
   });
 
   const firstDay = new Date(calYear, calMonth, 1);
-  let startOffset = (firstDay.getDay() + 6) % 7;
+  const startOffset = (firstDay.getDay() + 6) % 7;
   const daysInMonth = new Date(calYear, calMonth + 1, 0).getDate();
   const today = new Date();
   const todayStr = dateStr(today.getFullYear(), today.getMonth(), today.getDate());
+
+  // Build list of all reservations for this month
+  const reservations = []; // {from, to, color}
+  if (aptId) {
+    const apt = getApt(parseInt(aptId));
+    // Manual bookings
+    (apt && apt.bookings || []).forEach(b => {
+      reservations.push({ from: b.from, to: b.to, color: 'manual' });
+    });
+    // iCal bookings — merge consecutive events into blocks
+    (apt && apt.icalEvents || []).forEach(e => {
+      reservations.push({ from: e.from, to: e.to, color: 'ical' });
+    });
+  }
+
+  // For each day figure out which reservation it belongs to and position
+  function getDayReservation(ds) {
+    return reservations.find(r => ds >= r.from && ds < r.to) || null;
+  }
 
   for (let i = 0; i < startOffset; i++) {
     const el = document.createElement('div');
@@ -1922,16 +1996,33 @@ function renderCalendar() {
 
   for (let d = 1; d <= daysInMonth; d++) {
     const ds = dateStr(calYear, calMonth, d);
-    const occ  = aptId && isOccupied(aptId, ds);
-    const ical = aptId && isIcalOccupied(aptId, ds);
+    const res = getDayReservation(ds);
     const el = document.createElement('div');
-    let cls = 'cal-day';
-    if (ical)       cls += ' ical-occ';
-    else if (occ)   cls += ' occupied';
-    if (ds === todayStr) cls += ' today';
-    el.className = cls;
+    const isToday = ds === todayStr;
+
+    if (res) {
+      const prevDs = d > 1 ? dateStr(calYear, calMonth, d - 1) : null;
+      const nextDs = d < daysInMonth ? dateStr(calYear, calMonth, d + 1) : null;
+      const isStart = !prevDs || getDayReservation(prevDs) !== res;
+      const isEnd   = !nextDs || getDayReservation(nextDs) !== res;
+      // day of week (0=Sun..6=Sat), adjusted to Mon-start
+      const dow = (new Date(calYear, calMonth, d).getDay() + 6) % 7;
+      const isRowStart = dow === 0;
+      const isRowEnd   = dow === 6;
+
+      const colorClass = res.color === 'ical' ? 'res-ical' : 'res-manual';
+      let shapeClass = '';
+      if ((isStart || isRowStart) && (isEnd || isRowEnd)) shapeClass = 'res-solo';
+      else if (isStart || isRowStart) shapeClass = 'res-left';
+      else if (isEnd || isRowEnd) shapeClass = 'res-right';
+      else shapeClass = 'res-mid';
+
+      el.className = `cal-day res ${colorClass} ${shapeClass}${isToday ? ' today' : ''}`;
+    } else {
+      el.className = `cal-day${isToday ? ' today' : ''}`;
+    }
+
     el.textContent = d;
-    el.title = ical ? 'Booking.com' : occ ? 'Zajęty (ręcznie)' : 'Wolny';
     grid.appendChild(el);
   }
 
@@ -1968,7 +2059,7 @@ function formatDate(ds) {
 }
 
 function addBooking() {
-  const aptId = parseInt(document.getElementById('cal-apt').value);
+  const aptId = getCalAptId();
   const from = document.getElementById('book-from').value;
   const to = document.getElementById('book-to').value;
   const guest = document.getElementById('book-guest').value.trim();
