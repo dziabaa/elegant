@@ -1524,8 +1524,11 @@ function updateSelects() {
       opt.textContent = a.emoji + ' ' + a.name;
       sel.appendChild(opt);
     });
-    sel.value = val;
+    if (val) sel.value = val;
+    else if (apartments.length > 0) sel.value = apartments[0].id;
   });
+  updatePinPreview();
+  updateWelcomePreview();
   renderCalAptPills();
 }
 
