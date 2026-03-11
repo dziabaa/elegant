@@ -2040,12 +2040,12 @@ function renderCalendar() {
 
   // For each day figure out which reservation it belongs to and position
   function getDayReservation(ds) {
+    // Checkout day takes priority if it exists (show end of previous stay)
+    const chk = reservations.find(r => ds === r.to);
+    if (chk) return { ...chk, checkoutOnly: true };
     // Occupied days: from <= ds < to
     const occ = reservations.find(r => ds >= r.from && ds < r.to);
     if (occ) return occ;
-    // Checkout day: ds === to (not occupied, but show checkout marker)
-    const chk = reservations.find(r => ds === r.to);
-    if (chk) return { ...chk, checkoutOnly: true };
     return null;
   }
 
@@ -2057,22 +2057,34 @@ function renderCalendar() {
 
   for (let d = 1; d <= daysInMonth; d++) {
     const ds = dateStr(calYear, calMonth, d);
-    const res = getDayReservation(ds);
     const el = document.createElement('div');
     const isToday = ds === todayStr;
 
-    if (res) {
+    // Check for checkout on this day
+    const chkRes = reservations.find(r => ds === r.to);
+    // Check for checkin/mid on this day
+    const occRes = reservations.find(r => ds >= r.from && ds < r.to);
+
+    if (chkRes && occRes) {
+      // Same day: checkout left 20% + checkin right 80%
+      const chkColor = chkRes.color === 'ical' ? 'res-ical' : 'res-manual';
+      const occColor = occRes.color === 'ical' ? 'res-ical' : 'res-manual';
+      el.className = `cal-day${isToday ? ' today' : ''}`;
+      el.innerHTML = `
+        <div class="res-bar" style="left:0;right:80%;background:${chkRes.color==='ical'?'#1a3a6b':'#1a1a1a'};border-radius:0 6px 6px 0;top:18%;bottom:18%;position:absolute;"></div>
+        <div class="res-bar" style="left:20%;right:0;background:${occRes.color==='ical'?'#1a3a6b':'#1a1a1a'};border-radius:6px 0 0 6px;top:18%;bottom:18%;position:absolute;"></div>
+        <span class="day-num" style="position:absolute;left:50%;transform:translate(-50%,-50%);top:50%;z-index:2;color:#fff;font-weight:700;font-size:13px;">${d}</span>`;
+    } else if (chkRes || occRes) {
+      const res = chkRes || occRes;
       const colorClass = res.color === 'ical' ? 'res-ical' : 'res-manual';
       let shapeClass = '';
-      if (res.checkoutOnly) {
+      if (chkRes) {
         shapeClass = 'res-left';
       } else {
         const trueStart = ds === res.from;
-        const trueEnd   = false; // to is exclusive now
         if (trueStart) shapeClass = 'res-right';
         else           shapeClass = 'res-mid';
       }
-
       el.className = `cal-day res ${colorClass} ${shapeClass}${isToday ? ' today' : ''}`;
       el.innerHTML = `<div class="res-bar"></div><span class="day-num">${d}</span>`;
     } else {
