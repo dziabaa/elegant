@@ -953,15 +953,14 @@ font-size: 13px;
 font-weight: 500;
 cursor: default;
 color: var(–text);
-border: none;
-outline: 0.5px solid #c8c2b8;
+border: 0.5px solid #c8c2b8;
 background: var(–card);
 position: relative;
 }
 
 .cal-day.empty {
 background: transparent;
-outline-color: #c8c2b8;
+border-color: #c8c2b8;
 }
 
 .cal-day .day-num {
@@ -972,13 +971,14 @@ width: 28px; height: 28px;
 display: flex; align-items: center; justify-content: center;
 }
 
-/* Reservation cells */
+/* Reservation cells - only horizontal borders, no vertical */
 .cal-day.res {
 background: transparent;
-outline: 0.5px solid #c8c2b8;
+border-left-color: transparent;
+border-right-color: transparent;
 }
 
-/* Keep outline only on free days */
+/* Keep vertical borders only on free days */
 .cal-day:not(.res) {
 outline: 0.5px solid #c8c2b8;
 }
@@ -2071,6 +2071,8 @@ function renderCalendar() {
       const occColor = occRes.color === 'ical' ? 'res-ical' : 'res-manual';
       el.className = `cal-day${isToday ? ' today' : ''}`;
       el.style.outline = 'none';
+      el.style.borderTop = '0.5px solid #c8c2b8';
+      el.style.borderBottom = '0.5px solid #c8c2b8';
       el.innerHTML = `
         <div class="res-bar" style="left:0;right:88%;background:${chkRes.color==='ical'?'#1a3a6b':'#1a1a1a'};border-radius:0 6px 6px 0;top:18%;bottom:18%;position:absolute;"></div>
         <div class="res-bar" style="left:30%;right:0;background:${occRes.color==='ical'?'#1a3a6b':'#1a1a1a'};border-radius:6px 0 0 6px;top:18%;bottom:18%;position:absolute;"></div>
