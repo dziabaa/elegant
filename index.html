@@ -967,10 +967,18 @@ background: transparent;
 outline: 0.5px solid #c8c2b8;
 }
 
-/* Reservation cells - only top and bottom lines, no vertical */
+/* Reservation cells - pseudo-element for top/bottom lines only */
 .cal-day.res {
 background: transparent;
-box-shadow: 0 -0.5px 0 0 #c8c2b8 inset, 0 0.5px 0 0 #c8c2b8 inset;
+box-shadow: none;
+}
+.cal-day.res::after {
+content: ‘’;
+position: absolute;
+left: 0; right: 0; bottom: -0.5px;
+height: 0.5px;
+background: #c8c2b8;
+z-index: 3;
 }
 
 .cal-day .day-num {
