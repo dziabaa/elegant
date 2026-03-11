@@ -975,8 +975,8 @@ display: flex; align-items: center; justify-content: center;
 /* Reservation cells */
 .cal-day.res {
 background: transparent;
-border-left-color: transparent;
-border-right-color: transparent;
+outline: none;
+overflow: visible;
 }
 
 /* Keep borders only on free days */
@@ -991,10 +991,10 @@ top: 18%; bottom: 18%;
 z-index: 0;
 pointer-events: none;
 }
-.cal-day.res-mid   .res-bar { left: 0;   right: 0;   border-radius: 0; }
-.cal-day.res-right .res-bar { left: 20%; right: 0;   border-radius: 6px 0 0 6px; }
-.cal-day.res-left  .res-bar { left: 0;   right: 20%; border-radius: 0 6px 6px 0; }
-.cal-day.res-solo  .res-bar { left: 12%; right: 12%; border-radius: 50px; }
+.cal-day.res-mid   .res-bar { left: 0;   right: 0;    border-radius: 0; }
+.cal-day.res-right .res-bar { left: 20%; right: 0;    border-radius: 6px 0 0 6px; }
+.cal-day.res-left  .res-bar { left: 0;   right: -20%; border-radius: 0 6px 6px 0; z-index: 3; }
+.cal-day.res-solo  .res-bar { left: 12%; right: 12%;  border-radius: 50px; }
 
 .cal-day.res-ical   .res-bar { background: #1a3a6b; }
 .cal-day.res-manual .res-bar { background: #1a1a1a; }
@@ -2026,7 +2026,6 @@ function renderCalendar() {
     (apt && apt.icalEvents || []).forEach(e => {
       reservations.push({ from: e.from, to: e.to, color: 'ical' });
     });
-    console.log('RESERVATIONS:', JSON.stringify(reservations));
   }
 
   // For each day figure out which reservation it belongs to and position
@@ -2051,14 +2050,10 @@ function renderCalendar() {
     const el = document.createElement('div');
     const isToday = ds === todayStr;
 
-    // Check for checkout: ds is last occupied day (r.to===ds or r.to===tomorrow for iCal exclusive DTEND)
-    const tomorrowDs = addDays(ds, 1);
-    const chkRes = reservations.find(r => ds === r.to || tomorrowDs === r.to);
-    // Check for checkin/mid: from <= ds < to, excluding checkout days
-    const occRes = reservations.find(r => {
-      if (ds === r.to || tomorrowDs === r.to) return false; // it's a checkout day
-      return ds >= r.from && ds < r.to;
-    });
+    // Check for checkout on this day
+    const chkRes = reservations.find(r => ds === r.to);
+    // Check for checkin/mid on this day
+    const occRes = reservations.find(r => ds >= r.from && ds < r.to);
 
     if (chkRes && occRes) {
       // Same day: checkout left 20% + checkin right 80%
