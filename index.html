@@ -969,11 +969,18 @@ border-color: transparent;
 background: transparent;
 border-left-color: transparent;
 border-right-color: transparent;
+overflow: visible;
 }
 .cal-day.res.res-manual {
 border-left-color: transparent;
 border-right-color: transparent;
 }
+
+/* Bar extends slightly beyond cell to cover borders */
+.cal-day.res-mid   .res-bar { left: -1px; right: -1px; border-radius: 0; }
+.cal-day.res-right .res-bar { left: 20%;  right: -1px; border-radius: 6px 0 0 6px; }
+.cal-day.res-left  .res-bar { left: -1px; right: 80%;  border-radius: 0 6px 6px 0; }
+.cal-day.res-solo  .res-bar { left: 12%;  right: 12%;  border-radius: 50px; }
 
 /* Free days */
 .cal-day:not(.res):not(.empty) {
@@ -993,16 +1000,12 @@ display: flex; align-items: center; justify-content: center;
 .res-bar {
 position: absolute;
 top: 18%; bottom: 18%;
-z-index: 0;
+z-index: 3;
 pointer-events: none;
 }
-.cal-day.res-mid   .res-bar { left: 0;   right: 0;   border-radius: 0; }
-.cal-day.res-right .res-bar { left: 20%; right: 0;   border-radius: 6px 0 0 6px; }
-.cal-day.res-left  .res-bar { left: 0;   right: 80%; border-radius: 0 6px 6px 0; }
-.cal-day.res-solo  .res-bar { left: 12%; right: 12%; border-radius: 50px; }
 
 /* Vertical border on checkin/checkout cells */
-.cal-day.res-right { outline: 0.5px solid #c8c2b8; }
+.cal-day.res-right { outline: none; }
 
 .cal-day.res-ical   .res-bar { background: #1a3a6b; }
 .cal-day.res-manual .res-bar { background: #1a1a1a; }
