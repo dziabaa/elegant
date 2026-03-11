@@ -2026,6 +2026,7 @@ function renderCalendar() {
     (apt && apt.icalEvents || []).forEach(e => {
       reservations.push({ from: e.from, to: e.to, color: 'ical' });
     });
+    console.log('RESERVATIONS:', JSON.stringify(reservations));
   }
 
   // For each day figure out which reservation it belongs to and position
