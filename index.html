@@ -996,11 +996,11 @@ border-radius: 0;
 .cal-day.res-ical   .res-bar { background: #1a3a6b; }
 .cal-day.res-manual .res-bar { background: #1a1a1a; }
 
-/* Checkin: bar starts at center, right half, rounded on LEFT */
-.cal-day.res-left .res-bar { left: 50%; right: 0; border-radius: 50px 0 0 50px; }
+/* res-right = CHECKIN day: bar occupies right half, rounded on LEFT end */
+.cal-day.res-right .res-bar { left: 50%; right: 0; border-radius: 50px 0 0 50px; }
 
-/* Checkout: bar ends at center, left half, rounded on RIGHT */
-.cal-day.res-right .res-bar { left: 0; right: 50%; border-radius: 0 50px 50px 0; }
+/* res-left = CHECKOUT day: bar occupies left half, rounded on RIGHT end */
+.cal-day.res-left .res-bar { left: 0; right: 50%; border-radius: 0 50px 50px 0; }
 
 /* Solo */
 .cal-day.res-solo .res-bar { left: 10%; right: 10%; border-radius: 50px; }
