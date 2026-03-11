@@ -1233,7 +1233,7 @@ line-height: 1;
         <div class="label" style="margin:0">Podgląd wiadomości powitalnej (edytowalny)</div>
         <button class="btn-copy-small" onclick="copyMsg('wel-msg')">📋 Kopiuj</button>
       </div>
-      <textarea class="message-box" id="wel-msg" rows="6" style="color:#1a1a1a"></textarea>
+      <textarea class="message-box" id="wel-msg" rows="10" style="color:#1a1a1a"></textarea>
     </div>
     <div class="send-buttons">
       <button class="btn-whatsapp" onclick="sendMsg('wel-phone','wel-msg','whatsapp')">
@@ -1565,20 +1565,16 @@ function updatePinPreview() {
     const el = document.getElementById('pin-msg-' + l);
     if (!el) return;
     el.value = apt ? PIN_TEMPLATES[l](apt.pin || '0000') : '';
-    // show temporarily to measure
-    const wasHidden = el.style.display === 'none';
-    if (wasHidden) { el.style.display = ''; }
-    autoResize(el);
-    if (wasHidden) { el.style.display = 'none'; }
+    el.style.display = l === activePinLang ? '' : 'none';
   });
   if (apt) {
     document.getElementById('pin-display').value = apt.pin || '0000';
   } else {
     document.getElementById('pin-display').value = '';
   }
-  ['pl','en','uk'].forEach(l => {
-    const el = document.getElementById('pin-msg-' + l);
-    el.style.display = l === activePinLang ? '' : 'none';
+  requestAnimationFrame(() => {
+    const el = document.getElementById('pin-msg-' + activePinLang);
+    if (el) autoResize(el);
   });
 }
 
@@ -1590,6 +1586,10 @@ function onPinInput() {
     ['pl','en','uk'].forEach(l => {
       const el = document.getElementById('pin-msg-' + l);
       if (el) el.value = PIN_TEMPLATES[l](pin);
+    });
+    requestAnimationFrame(() => {
+      const el = document.getElementById('pin-msg-' + activePinLang);
+      if (el) autoResize(el);
     });
   }
 }
@@ -1605,23 +1605,29 @@ function savePinInline() {
     const el = document.getElementById('pin-msg-' + l);
     if (el) el.value = PIN_TEMPLATES[l](pin);
   });
+  requestAnimationFrame(() => {
+    const el = document.getElementById('pin-msg-' + activePinLang);
+    if (el) autoResize(el);
+  });
   showToast('PIN zapisany ✓');
 }
 
 function updateWelcomePreview() {
   const id = parseInt(document.getElementById('wel-apt').value);
   const apt = getApt(id);
-  if (!apt) { document.getElementById('wel-msg').value = ''; return; }
-  document.getElementById('wel-msg').value = apt.welcomeTemplate;
-  autoResize(document.getElementById('wel-msg'));
+  const el = document.getElementById('wel-msg');
+  if (!apt) { el.value = ''; return; }
+  el.value = apt.welcomeTemplate;
+  requestAnimationFrame(() => autoResize(el));
 }
 
 // Default welcome preview
 function initWelcomePreview() {
   const apt = apartments[0];
   if (apt) {
-    document.getElementById('wel-msg').value = apt.welcomeTemplate;
-    autoResize(document.getElementById('wel-msg'));
+    const el = document.getElementById('wel-msg');
+    el.value = apt.welcomeTemplate;
+    requestAnimationFrame(() => autoResize(el));
   }
 }
 
@@ -1667,6 +1673,18 @@ function switchTab(tab) {
     renderCalAptPills();
     renderCalendar();
     syncAllIcal();
+  }
+  if (tab === 'pin') {
+    requestAnimationFrame(() => {
+      const el = document.getElementById('pin-msg-' + activePinLang);
+      if (el) autoResize(el);
+    });
+  }
+  if (tab === 'welcome') {
+    requestAnimationFrame(() => {
+      const el = document.getElementById('wel-msg');
+      if (el) autoResize(el);
+    });
   }
 }
 
