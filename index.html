@@ -1019,8 +1019,9 @@ left: 50%; transform: translate(-50%, -50%);
 .cal-day.res-ical   .day-num { background: #1a3a6b; }
 .cal-day.res-manual .day-num { background: #1a1a1a; }
 
-/* No circle on checkin/checkout — number on bar=white, number outside=dark */
-.cal-day.res-right .day-num,
+/* Checkin: white number (on dark bar) */
+.cal-day.res-right .day-num { background: transparent; color: #fff; font-weight: 700; }
+/* Checkout: dark number (on light background) */
 .cal-day.res-left  .day-num { background: transparent; color: #1a1a1a; font-weight: 700; }
 
 /* Free day number */
