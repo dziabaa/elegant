@@ -953,14 +953,15 @@ font-size: 13px;
 font-weight: 500;
 cursor: default;
 color: var(–text);
-border: 0.5px solid #e4e0da;
+border: none;
+outline: 0.5px solid #e4e0da;
 background: var(–card);
 position: relative;
 }
 
 .cal-day.empty {
 background: transparent;
-border-color: #e4e0da;
+outline-color: #e4e0da;
 }
 
 .cal-day .day-num {
@@ -974,12 +975,12 @@ display: flex; align-items: center; justify-content: center;
 /* Reservation cells */
 .cal-day.res {
 background: transparent;
-border-color: transparent;
+outline: none;
 }
 
-/* Keep border only on free/empty days */
+/* Keep outline only on free days */
 .cal-day:not(.res) {
-border-color: #e4e0da;
+outline: 0.5px solid #e4e0da;
 }
 
 /* Bar */
@@ -1010,8 +1011,8 @@ left: 50%; transform: translate(-50%, -50%);
 }
 /* Checkin: number centered in right half → left = 75% */
 .cal-day.res-right .day-num { left: 75%; }
-/* Checkout: number centered in left half → left = 25% */
-.cal-day.res-left  .day-num { left: 25%; }
+/* Checkout: number centered in left half → left = 30% */
+.cal-day.res-left  .day-num { left: 30%; }
 
 .cal-day.res-ical   .day-num { background: #1a3a6b; }
 .cal-day.res-manual .day-num { background: #1a1a1a; }
