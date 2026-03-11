@@ -954,32 +954,23 @@ font-weight: 500;
 cursor: default;
 color: var(–text);
 border: none;
+border-top: 0.5px solid #c8c2b8;
+border-bottom: 0.5px solid #c8c2b8;
 background: var(–card);
 position: relative;
+margin-bottom: -0.5px;
 }
 
 .cal-day.empty {
 background: transparent;
 }
 
-/* Free days get full border box */
-.cal-day:not(.res):not(.empty) {
-outline: 0.5px solid #c8c2b8;
-}
-
-/* Reservation cells - pseudo-element for top/bottom lines only */
+/* Reservation cells - no side borders */
 .cal-day.res {
 background: transparent;
 box-shadow: none;
 }
-.cal-day.res::after {
-content: ‘’;
-position: absolute;
-left: 0; right: 0; bottom: -0.5px;
-height: 0.5px;
-background: #c8c2b8;
-z-index: 3;
-}
+.cal-day.res::after { content: none; }
 
 .cal-day .day-num {
 position: relative;
