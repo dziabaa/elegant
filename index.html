@@ -2040,7 +2040,13 @@ function renderCalendar() {
 
   // For each day figure out which reservation it belongs to and position
   function getDayReservation(ds) {
-    return reservations.find(r => ds >= r.from && ds <= r.to) || null;
+    // Occupied days: from <= ds < to
+    const occ = reservations.find(r => ds >= r.from && ds < r.to);
+    if (occ) return occ;
+    // Checkout day: ds === to (not occupied, but show checkout marker)
+    const chk = reservations.find(r => ds === r.to);
+    if (chk) return { ...chk, checkoutOnly: true };
+    return null;
   }
 
   for (let i = 0; i < startOffset; i++) {
@@ -2056,15 +2062,16 @@ function renderCalendar() {
     const isToday = ds === todayStr;
 
     if (res) {
-      const trueStart = ds === res.from;
-      const trueEnd   = ds === res.to;
-
       const colorClass = res.color === 'ical' ? 'res-ical' : 'res-manual';
       let shapeClass = '';
-      if (trueStart && trueEnd)   shapeClass = 'res-solo';
-      else if (trueStart)         shapeClass = 'res-right';
-      else if (trueEnd)           shapeClass = 'res-left';
-      else                        shapeClass = 'res-mid';
+      if (res.checkoutOnly) {
+        shapeClass = 'res-left';
+      } else {
+        const trueStart = ds === res.from;
+        const trueEnd   = false; // to is exclusive now
+        if (trueStart) shapeClass = 'res-right';
+        else           shapeClass = 'res-mid';
+      }
 
       el.className = `cal-day res ${colorClass} ${shapeClass}${isToday ? ' today' : ''}`;
       el.innerHTML = `<div class="res-bar"></div><span class="day-num">${d}</span>`;
