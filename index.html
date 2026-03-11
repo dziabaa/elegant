@@ -971,16 +971,11 @@ width: 28px; height: 28px;
 display: flex; align-items: center; justify-content: center;
 }
 
-/* Reservation cells - only horizontal borders, no vertical */
+/* Reservation cells - no vertical borders, only horizontal via box-shadow */
 .cal-day.res {
 background: transparent;
-border-left-color: transparent;
-border-right-color: transparent;
-}
-
-/* Keep vertical borders only on free days */
-.cal-day:not(.res) {
-outline: 0.5px solid #c8c2b8;
+border-color: transparent;
+box-shadow: 0 -0.5px 0 #c8c2b8, 0 0.5px 0 #c8c2b8;
 }
 
 /* Bar */
