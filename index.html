@@ -929,7 +929,7 @@ letter-spacing: 0.3px;
 .cal-grid {
 display: grid;
 grid-template-columns: repeat(7, 1fr);
-row-gap: 3px;
+row-gap: 0;
 column-gap: 0;
 margin-bottom: 16px;
 }
@@ -953,15 +953,15 @@ font-size: 13px;
 font-weight: 500;
 cursor: default;
 color: var(–text);
-border: none;
-outline: 0.5px solid #c8c2b8;
-background: var(–card);
+border: 0.5px solid #c8c2b8;
+background: var(–bg);
 position: relative;
+margin-bottom: -0.5px;
 }
 
 .cal-day.empty {
 background: transparent;
-outline-color: #c8c2b8;
+border-color: transparent;
 }
 
 .cal-day .day-num {
@@ -975,12 +975,13 @@ display: flex; align-items: center; justify-content: center;
 /* Reservation cells */
 .cal-day.res {
 background: transparent;
-outline: none;
+border-left-color: transparent;
+border-right-color: transparent;
 }
 
-/* Keep outline only on free days */
+/* Keep borders only on free days */
 .cal-day:not(.res) {
-outline: 0.5px solid #c8c2b8;
+border-color: #c8c2b8;
 }
 
 /* Bar */
@@ -991,8 +992,8 @@ z-index: 0;
 pointer-events: none;
 }
 .cal-day.res-mid   .res-bar { left: 0;   right: 0;   border-radius: 0; }
-.cal-day.res-right .res-bar { left: 50%; right: 0;   border-radius: 50px 0 0 50px; }
-.cal-day.res-left  .res-bar { left: 0;   right: 90%; border-radius: 0 50px 50px 0; }
+.cal-day.res-right .res-bar { left: 20%; right: 0;   border-radius: 6px 0 0 6px; }
+.cal-day.res-left  .res-bar { left: 0;   right: 80%; border-radius: 0 6px 6px 0; }
 .cal-day.res-solo  .res-bar { left: 12%; right: 12%; border-radius: 50px; }
 
 .cal-day.res-ical   .res-bar { background: #1a3a6b; }
