@@ -976,7 +976,6 @@ display: flex; align-items: center; justify-content: center;
 .cal-day.res {
 background: transparent;
 outline: none;
-overflow: visible;
 }
 
 /* Keep borders only on free days */
@@ -991,10 +990,10 @@ top: 18%; bottom: 18%;
 z-index: 0;
 pointer-events: none;
 }
-.cal-day.res-mid   .res-bar { left: 0;   right: 0;    border-radius: 0; }
-.cal-day.res-right .res-bar { left: 20%; right: 0;    border-radius: 6px 0 0 6px; }
-.cal-day.res-left  .res-bar { left: 0;   right: -20%; border-radius: 0 6px 6px 0; z-index: 3; }
-.cal-day.res-solo  .res-bar { left: 12%; right: 12%;  border-radius: 50px; }
+.cal-day.res-mid   .res-bar { left: 0;   right: 0;   border-radius: 0; }
+.cal-day.res-right .res-bar { left: 20%; right: 0;   border-radius: 6px 0 0 6px; }
+.cal-day.res-left  .res-bar { left: 0;   right: 0;   border-radius: 0 6px 6px 0; }
+.cal-day.res-solo  .res-bar { left: 12%; right: 12%; border-radius: 50px; }
 
 .cal-day.res-ical   .res-bar { background: #1a3a6b; }
 .cal-day.res-manual .res-bar { background: #1a1a1a; }
