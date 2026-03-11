@@ -1325,11 +1325,6 @@ line-height: 1;
   <div class="modal">
     <h3>Szablon wiadomości</h3>
     <p id="modal-apt-name"></p>
-    <label>Kod PIN</label>
-    <div class="modal-pin-wrap">
-      <input type="text" id="modal-pin-code" maxlength="10" placeholder="np. 1234" inputmode="numeric" pattern="[0-9]*">
-      <span class="modal-pin-hint">Użyj {PIN} w szablonie aby wstawić kod automatycznie</span>
-    </div>
     <label>Szablon powitalny</label>
     <textarea id="modal-welcome" rows="4" placeholder="Wiadomość powitalna..."></textarea>
     <label>Szablon PIN</label>
@@ -1631,7 +1626,6 @@ function openModal(id) {
   editingId = id;
   const apt = getApt(id);
   document.getElementById('modal-apt-name').textContent = apt.emoji + ' ' + apt.name;
-  document.getElementById('modal-pin-code').value = apt.pin || '';
   document.getElementById('modal-welcome').value = apt.welcomeTemplate;
   document.getElementById('modal-pin').value = apt.pinTemplate;
   document.getElementById('modal').classList.add('open');
@@ -1652,8 +1646,6 @@ function closeModal() {
 
 function saveTemplate() {
   const apt = getApt(editingId);
-  const newPin = document.getElementById('modal-pin-code').value.trim();
-  if (newPin) apt.pin = newPin;
   apt.welcomeTemplate = document.getElementById('modal-welcome').value;
   apt.pinTemplate = document.getElementById('modal-pin').value;
   save();
