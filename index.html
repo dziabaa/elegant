@@ -972,26 +972,17 @@ width: 28px; height: 28px;
 display: flex; align-items: center; justify-content: center;
 }
 
-/* Reservation cells - hide vertical borders by matching bar color */
+/* Reservation cells - all borders gray */
 .cal-day.res {
 background: transparent;
+border-color: #c8c2b8;
 }
-.cal-day.res-ical {
-border-color: #1a3a6b;
-border-top-color: #c8c2b8;
-border-bottom-color: #c8c2b8;
-}
-.cal-day.res-manual {
-border-color: #1a1a1a;
-border-top-color: #c8c2b8;
-border-bottom-color: #c8c2b8;
-}
-/* Checkout: right border gray (free side), left matches bar */
-.cal-day.res-left.res-ical   { border-right-color: #c8c2b8; border-left-color: #1a3a6b; }
-.cal-day.res-left.res-manual { border-right-color: #c8c2b8; border-left-color: #1a1a1a; }
-/* Checkin: left border gray (free side), right matches bar */
-.cal-day.res-right.res-ical   { border-left-color: #c8c2b8; border-right-color: #1a3a6b; }
-.cal-day.res-right.res-manual { border-left-color: #c8c2b8; border-right-color: #1a1a1a; }
+.cal-day.res-ical  { border-left-color: #1a3a6b; border-right-color: #1a3a6b; }
+.cal-day.res-manual{ border-left-color: #1a1a1a; border-right-color: #1a1a1a; }
+.cal-day.res-left.res-ical,
+.cal-day.res-left.res-manual  { border-left-color: #c8c2b8; border-right-color: #c8c2b8; }
+.cal-day.res-right.res-ical,
+.cal-day.res-right.res-manual { border-left-color: #c8c2b8; border-right-color: #c8c2b8; }
 
 /* Bar */
 .res-bar {
@@ -1029,7 +1020,7 @@ top: 50%; left: 50%; transform: translate(-50%, -50%);
 /* Free day number */
 .cal-day:not(.res) .day-num { color: var(–text); }
 .cal-day.today:not(.res) .day-num {
-background: #1a1a1a; color: #fff; border-radius: 50%;
+background: #D23249; color: #fff; border-radius: 50%;
 width: 28px; height: 28px;
 display: flex; align-items: center; justify-content: center;
 font-weight: 700;
@@ -1153,8 +1144,8 @@ line-height: 1;
   <div class="tabs">
     <button class="tab active" id="tab-welcome" onclick="switchTab('welcome')">♡ Powitanie</button>
     <button class="tab" id="tab-pin" onclick="switchTab('pin')">✈️ Wyślij PIN</button>
-    <button class="tab" id="tab-apts" onclick="switchTab('apts')">⚙️ Apartamenty</button>
     <button class="tab" id="tab-cal" onclick="switchTab('cal')">📅 Kalendarz</button>
+    <button class="tab" id="tab-apts" onclick="switchTab('apts')">⚙️ Ustawienia</button>
   </div>
 
   <!-- WYŚLIJ PIN -->
