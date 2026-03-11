@@ -1005,16 +1005,16 @@ z-index: 2;
 width: 30px; height: 30px;
 display: flex; align-items: center; justify-content: center;
 border-radius: 50%;
-color: #fff; font-weight: 700; font-size: 13px;
+font-weight: 700; font-size: 13px;
 top: 50%; left: 50%; transform: translate(-50%, -50%);
 }
 
-/* All occupied days: colored circle */
-.cal-day.res-ical:not(.res-left)   .day-num { background: #1a3a6b; }
-.cal-day.res-manual:not(.res-left) .day-num { background: #1a1a1a; }
+/* All occupied days: colored circle, white text */
+.cal-day.res-ical:not(.res-left)   .day-num { background: #1a3a6b; color: #fff; }
+.cal-day.res-manual:not(.res-left) .day-num { background: #1a1a1a; color: #fff; }
 
 /* Checkout: no circle, dark text */
-.cal-day.res-left .day-num { background: transparent !important; color: var(–text) !important; font-weight: 500; }
+.cal-day.res-left .day-num { background: transparent; color: var(–text); font-weight: 500; }
 
 /* Free day number */
 .cal-day:not(.res) .day-num { color: var(–text); }
