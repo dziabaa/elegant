@@ -1013,10 +1013,9 @@ color: #fff; font-weight: 700; font-size: 13px;
 top: 50%; transform: translateY(-50%);
 left: 50%; transform: translate(-50%, -50%);
 }
-/* Checkin: number centered in right half → left = 75% */
-.cal-day.res-right .day-num { left: 75%; }
-/* Checkout: number at left edge over the small bar */
-.cal-day.res-left  .day-num { left: -10%; }
+/* Checkin and checkout: number always centered */
+.cal-day.res-right .day-num { left: 50%; transform: translate(-50%, -50%); }
+.cal-day.res-left  .day-num { left: 50%; transform: translate(-50%, -50%); }
 
 .cal-day.res-ical   .day-num { background: #1a3a6b; }
 .cal-day.res-manual .day-num { background: #1a1a1a; }
