@@ -953,9 +953,7 @@ font-size: 13px;
 font-weight: 500;
 cursor: default;
 color: var(–text);
-border: none;
-border-top: 0.5px solid #c8c2b8;
-border-bottom: 0.5px solid #c8c2b8;
+border: 0.5px solid #c8c2b8;
 background: var(–bg);
 position: relative;
 margin-bottom: -0.5px;
@@ -974,17 +972,39 @@ width: 28px; height: 28px;
 display: flex; align-items: center; justify-content: center;
 }
 
-/* Reservation cells */
+/* Reservation cells - vertical borders match bar color */
 .cal-day.res {
 background: transparent;
-border-top: 0.5px solid #c8c2b8;
-border-bottom: 0.5px solid #c8c2b8;
 }
-
-/* Keep borders only on free days */
-.cal-day:not(.res) {
-border-top: 0.5px solid #c8c2b8;
-border-bottom: 0.5px solid #c8c2b8;
+.cal-day.res-ical {
+border-left-color: #1a3a6b;
+border-right-color: #1a3a6b;
+border-top-color: #c8c2b8;
+border-bottom-color: #c8c2b8;
+}
+.cal-day.res-manual {
+border-left-color: #1a1a1a;
+border-right-color: #1a1a1a;
+border-top-color: #c8c2b8;
+border-bottom-color: #c8c2b8;
+}
+/* Checkout day - left border matches bar, right border normal */
+.cal-day.res-left.res-ical {
+border-left-color: #1a3a6b;
+border-right-color: #c8c2b8;
+}
+.cal-day.res-left.res-manual {
+border-left-color: #1a1a1a;
+border-right-color: #c8c2b8;
+}
+/* Checkin day - right border matches bar, left border normal */
+.cal-day.res-right.res-ical {
+border-left-color: #c8c2b8;
+border-right-color: #1a3a6b;
+}
+.cal-day.res-right.res-manual {
+border-left-color: #c8c2b8;
+border-right-color: #1a1a1a;
 }
 
 /* Bar */
