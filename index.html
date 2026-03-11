@@ -953,14 +953,24 @@ font-size: 13px;
 font-weight: 500;
 cursor: default;
 color: var(–text);
-border: 0.5px solid #c8c2b8;
+border: none;
 background: var(–card);
 position: relative;
 }
 
 .cal-day.empty {
 background: transparent;
-border-color: #c8c2b8;
+}
+
+/* Free days get full border box */
+.cal-day:not(.res):not(.empty) {
+outline: 0.5px solid #c8c2b8;
+}
+
+/* Reservation cells - only top and bottom lines, no vertical */
+.cal-day.res {
+background: transparent;
+box-shadow: 0 -0.5px 0 0 #c8c2b8 inset, 0 0.5px 0 0 #c8c2b8 inset;
 }
 
 .cal-day .day-num {
@@ -969,13 +979,6 @@ z-index: 2;
 line-height: 1;
 width: 28px; height: 28px;
 display: flex; align-items: center; justify-content: center;
-}
-
-/* Reservation cells - no vertical borders, only horizontal via box-shadow */
-.cal-day.res {
-background: transparent;
-border-color: transparent;
-box-shadow: 0 -0.5px 0 #c8c2b8, 0 0.5px 0 #c8c2b8;
 }
 
 /* Bar */
