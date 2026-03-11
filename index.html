@@ -993,7 +993,7 @@ pointer-events: none;
 }
 .cal-day.res-mid   .res-bar { left: 0;   right: 0;   border-radius: 0; }
 .cal-day.res-right .res-bar { left: 20%; right: 0;   border-radius: 6px 0 0 6px; }
-.cal-day.res-left  .res-bar { left: 0;   right: 80%; border-radius: 0 6px 6px 0; }
+.cal-day.res-left  .res-bar { left: 0;   right: 50%; border-radius: 0 6px 6px 0; }
 .cal-day.res-solo  .res-bar { left: 12%; right: 12%; border-radius: 50px; }
 
 .cal-day.res-ical   .res-bar { background: #1a3a6b; }
@@ -1009,12 +1009,18 @@ border-radius: 50%;
 color: #fff; font-weight: 700; font-size: 13px;
 top: 50%; left: 50%; transform: translate(-50%, -50%);
 }
-/* Checkin and checkout: number always centered */
-.cal-day.res-right .day-num,
-.cal-day.res-left  .day-num { left: 50%; transform: translate(-50%, -50%); }
 
-.cal-day.res-ical   .day-num { background: #1a3a6b; color: #fff; }
-.cal-day.res-manual .day-num { background: #1a1a1a; color: #fff; }
+/* Mid/solo: colored circle */
+.cal-day.res-mid.res-ical   .day-num,
+.cal-day.res-solo.res-ical  .day-num { background: #1a3a6b; }
+.cal-day.res-mid.res-manual  .day-num,
+.cal-day.res-solo.res-manual .day-num { background: #1a1a1a; }
+
+/* Checkin (res-right): no circle, white text on bar */
+.cal-day.res-right .day-num { background: transparent; color: #fff; left: 75%; }
+
+/* Checkout (res-left): no circle, white text on bar, centered in left half */
+.cal-day.res-left  .day-num { background: transparent; color: #fff; left: 25%; }
 
 /* Free day number */
 .cal-day:not(.res) .day-num { color: var(–text); }
