@@ -953,10 +953,8 @@ font-size: 13px;
 font-weight: 500;
 cursor: default;
 color: var(–text);
-border: none;
-border-top: 0.5px solid #c8c2b8;
-border-bottom: 0.5px solid #c8c2b8;
-background: transparent;
+border: 0.5px solid #c8c2b8;
+background: var(–bg);
 position: relative;
 margin-bottom: -0.5px;
 }
@@ -966,14 +964,23 @@ background: transparent;
 border-color: transparent;
 }
 
-/* Free days get card background */
-.cal-day:not(.res):not(.empty) {
-background: var(–bg);
-}
-
-/* Reservation cells */
+/* Reservation cells - vertical borders match bar color so invisible */
 .cal-day.res {
 background: transparent;
+border-color: #1a3a6b;
+border-top-color: #c8c2b8;
+border-bottom-color: #c8c2b8;
+}
+.cal-day.res.res-manual {
+border-color: #1a1a1a;
+border-top-color: #c8c2b8;
+border-bottom-color: #c8c2b8;
+}
+
+/* Free days */
+.cal-day:not(.res):not(.empty) {
+background: var(–bg);
+border-color: #c8c2b8;
 }
 
 .cal-day .day-num {
