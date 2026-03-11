@@ -316,14 +316,13 @@ color: #1a1a1a !important;
 white-space: pre-wrap;
 outline: none;
 margin-bottom: 20px;
-resize: vertical;
+resize: none;
 font-family: ‘DM Sans’, sans-serif;
 width: 100%;
-overflow-y: auto;
+overflow: hidden;
 box-sizing: border-box;
 color-scheme: light;
 display: block;
-min-height: 180px;
 }
 
 /* Send buttons */
@@ -1566,6 +1565,11 @@ function updatePinPreview() {
     const el = document.getElementById('pin-msg-' + l);
     if (!el) return;
     el.value = apt ? PIN_TEMPLATES[l](apt.pin || '0000') : '';
+    // show temporarily to measure
+    const wasHidden = el.style.display === 'none';
+    if (wasHidden) { el.style.display = ''; }
+    autoResize(el);
+    if (wasHidden) { el.style.display = 'none'; }
   });
   if (apt) {
     document.getElementById('pin-display').value = apt.pin || '0000';
@@ -1770,7 +1774,9 @@ function autoResize(el) {
 }
 
 function applyAutoResize() {
-  // message-box uses min-height, no auto resize needed
+  document.querySelectorAll('.message-box').forEach(el => {
+    el.addEventListener('input', () => autoResize(el));
+  });
 }
 
 function onCalAptChange() {
