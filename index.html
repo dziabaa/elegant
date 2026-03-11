@@ -310,19 +310,20 @@ background: #ffffff;
 border: 1.5px solid var(–border);
 border-radius: 14px;
 padding: 16px;
-min-height: 80px;
 font-size: 14px;
 line-height: 1.65;
 color: #1a1a1a !important;
 white-space: pre-wrap;
 outline: none;
 margin-bottom: 20px;
-resize: none;
+resize: vertical;
 font-family: ‘DM Sans’, sans-serif;
 width: 100%;
-overflow: hidden;
+overflow-y: auto;
 box-sizing: border-box;
 color-scheme: light;
+display: block;
+min-height: 180px;
 }
 
 /* Send buttons */
@@ -1182,9 +1183,9 @@ line-height: 1;
         <div class="label" style="margin:0">Podgląd wiadomości (edytowalny)</div>
         <button class="btn-copy-small" onclick="copyActivePinMsg()">📋 Kopiuj</button>
       </div>
-      <textarea class="message-box" id="pin-msg-pl" style="color:#1a1a1a"></textarea>
-      <textarea class="message-box" id="pin-msg-en" style="display:none;color:#1a1a1a"></textarea>
-      <textarea class="message-box" id="pin-msg-uk" style="display:none;color:#1a1a1a"></textarea>
+      <textarea class="message-box" id="pin-msg-pl" rows="10" style="color:#1a1a1a"></textarea>
+      <textarea class="message-box" id="pin-msg-en" rows="10" style="display:none;color:#1a1a1a"></textarea>
+      <textarea class="message-box" id="pin-msg-uk" rows="10" style="display:none;color:#1a1a1a"></textarea>
     </div>
     <div class="send-buttons">
       <button class="btn-whatsapp" onclick="sendActivePinMsg('whatsapp')">
@@ -1564,22 +1565,15 @@ function updatePinPreview() {
   ['pl','en','uk'].forEach(l => {
     const el = document.getElementById('pin-msg-' + l);
     if (!el) return;
-    el.style.display = '';
-    if (!apt) { el.value = ''; }
-    else { el.value = PIN_TEMPLATES[l](apt.pin || '0000'); }
-    el.style.height = 'auto';
+    el.value = apt ? PIN_TEMPLATES[l](apt.pin || '0000') : '';
   });
   if (apt) {
     document.getElementById('pin-display').value = apt.pin || '0000';
   } else {
     document.getElementById('pin-display').value = '';
   }
-  // Sync all to tallest
-  const heights = ['pl','en','uk'].map(l => document.getElementById('pin-msg-' + l).scrollHeight);
-  const maxH = Math.max(...heights);
   ['pl','en','uk'].forEach(l => {
     const el = document.getElementById('pin-msg-' + l);
-    el.style.height = maxH + 'px';
     el.style.display = l === activePinLang ? '' : 'none';
   });
 }
@@ -1591,7 +1585,7 @@ function onPinInput() {
   if (apt) {
     ['pl','en','uk'].forEach(l => {
       const el = document.getElementById('pin-msg-' + l);
-      if (el) { el.value = PIN_TEMPLATES[l](pin); autoResize(el); }
+      if (el) el.value = PIN_TEMPLATES[l](pin);
     });
   }
 }
@@ -1605,7 +1599,7 @@ function savePinInline() {
   localStorage.setItem('apts', JSON.stringify(apartments));
   ['pl','en','uk'].forEach(l => {
     const el = document.getElementById('pin-msg-' + l);
-    if (el) { el.value = PIN_TEMPLATES[l](pin); autoResize(el); }
+    if (el) el.value = PIN_TEMPLATES[l](pin);
   });
   showToast('PIN zapisany ✓');
 }
@@ -1746,20 +1740,7 @@ function switchLang(lang, btn) {
   btn.classList.add('active');
   ['pl','en','uk'].forEach(l => {
     const el = document.getElementById('pin-msg-' + l);
-    el.style.display = l === lang ? '' : 'none';
-  });
-  // Sync all heights to the tallest
-  const heights = ['pl','en','uk'].map(l => {
-    const el = document.getElementById('pin-msg-' + l);
-    el.style.display = '';
-    el.style.height = 'auto';
-    return el.scrollHeight;
-  });
-  const maxH = Math.max(...heights);
-  ['pl','en','uk'].forEach(l => {
-    const el = document.getElementById('pin-msg-' + l);
-    el.style.height = maxH + 'px';
-    el.style.display = l === lang ? '' : 'none';
+    el.style.display = l === lang ? 'block' : 'none';
   });
 }
 
@@ -1789,10 +1770,7 @@ function autoResize(el) {
 }
 
 function applyAutoResize() {
-  document.querySelectorAll('.message-box').forEach(el => {
-    el.addEventListener('input', () => autoResize(el));
-    autoResize(el);
-  });
+  // message-box uses min-height, no auto resize needed
 }
 
 function onCalAptChange() {
