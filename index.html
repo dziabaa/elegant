@@ -2071,8 +2071,8 @@ function renderCalendar() {
       const occColor = occRes.color === 'ical' ? 'res-ical' : 'res-manual';
       el.className = `cal-day${isToday ? ' today' : ''}`;
       el.innerHTML = `
-        <div class="res-bar" style="left:0;right:80%;background:${chkRes.color==='ical'?'#1a3a6b':'#1a1a1a'};border-radius:0 6px 6px 0;top:18%;bottom:18%;position:absolute;"></div>
-        <div class="res-bar" style="left:20%;right:0;background:${occRes.color==='ical'?'#1a3a6b':'#1a1a1a'};border-radius:6px 0 0 6px;top:18%;bottom:18%;position:absolute;"></div>
+        <div class="res-bar" style="left:0;right:82%;background:${chkRes.color==='ical'?'#1a3a6b':'#1a1a1a'};border-radius:0 6px 6px 0;top:18%;bottom:18%;position:absolute;"></div>
+        <div class="res-bar" style="left:22%;right:0;background:${occRes.color==='ical'?'#1a3a6b':'#1a1a1a'};border-radius:6px 0 0 6px;top:18%;bottom:18%;position:absolute;"></div>
         <span class="day-num" style="position:absolute;left:50%;transform:translate(-50%,-50%);top:50%;z-index:2;color:#fff;font-weight:700;font-size:13px;">${d}</span>`;
     } else if (chkRes || occRes) {
       const res = chkRes || occRes;
