@@ -956,21 +956,25 @@ color: var(–text);
 border: none;
 border-top: 0.5px solid #c8c2b8;
 border-bottom: 0.5px solid #c8c2b8;
-background: var(–card);
+background: transparent;
 position: relative;
 margin-bottom: -0.5px;
 }
 
 .cal-day.empty {
 background: transparent;
+border-color: transparent;
 }
 
-/* Reservation cells - no side borders */
+/* Free days get card background */
+.cal-day:not(.res):not(.empty) {
+background: var(–bg);
+}
+
+/* Reservation cells */
 .cal-day.res {
 background: transparent;
-box-shadow: none;
 }
-.cal-day.res::after { content: none; }
 
 .cal-day .day-num {
 position: relative;
