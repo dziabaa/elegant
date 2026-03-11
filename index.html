@@ -2051,10 +2051,14 @@ function renderCalendar() {
     const el = document.createElement('div');
     const isToday = ds === todayStr;
 
-    // Check for checkout on this day
-    const chkRes = reservations.find(r => ds === r.to);
-    // Check for checkin/mid on this day
-    const occRes = reservations.find(r => ds >= r.from && ds < r.to);
+    // Check for checkout: ds is last occupied day (r.to===ds or r.to===tomorrow for iCal exclusive DTEND)
+    const tomorrowDs = addDays(ds, 1);
+    const chkRes = reservations.find(r => ds === r.to || tomorrowDs === r.to);
+    // Check for checkin/mid: from <= ds < to, excluding checkout days
+    const occRes = reservations.find(r => {
+      if (ds === r.to || tomorrowDs === r.to) return false; // it's a checkout day
+      return ds >= r.from && ds < r.to;
+    });
 
     if (chkRes && occRes) {
       // Same day: checkout left 20% + checkin right 80%
