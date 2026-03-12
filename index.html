@@ -1761,8 +1761,8 @@ let activeWelLang = 'pl';
 
 const WEL_TEMPLATES = {
   pl: (apt) => apt.welcomeTemplate   || '',
-  en: (apt) => apt.welcomeTemplateEn || apt.welcomeTemplate || '',
-  uk: (apt) => apt.welcomeTemplateUk || apt.welcomeTemplate || ''
+  en: (apt) => apt.welcomeTemplateEn || `Good day! ☀️\n\nWelcome to ${apt.name}! We are so glad you chose us.\n\nWe are at your disposal throughout your entire stay. If you need any assistance, please don't hesitate to contact us.\n\nEnjoy your stay! 🏡`,
+  uk: (apt) => apt.welcomeTemplateUk || `Доброго дня! ☀️\n\nСердечно вітаємо Вас у ${apt.name}! Раді, що Ви обрали нас.\n\nМи до Ваших послуг протягом усього перебування. Якщо Вам потрібна допомога, будь ласка, зв'яжіться з нами.\n\nПриємного перебування! 🏡`
 };
 
 function switchWelLang(lang, btn) {
