@@ -937,6 +937,8 @@ grid-template-columns: repeat(7, 1fr);
 row-gap: 0;
 column-gap: 0;
 margin-bottom: 16px;
+border-left: 1px solid #1a3a6b;
+border-top: 1px solid #1a3a6b;
 }
 
 .cal-day-name {
@@ -958,15 +960,18 @@ font-size: 13px;
 font-weight: 500;
 cursor: default;
 color: #1a1a1a;
-border: 0.5px solid #1a3a6b;
+border-right: 1px solid #1a3a6b;
+border-bottom: 1px solid #1a3a6b;
+border-top: none;
+border-left: none;
 background: #f0ede8;
 position: relative;
-margin-bottom: -0.5px;
 }
 
 .cal-day.empty {
 background: transparent;
-border-color: transparent;
+border-right-color: transparent;
+border-bottom-color: transparent;
 }
 
 .cal-day .day-num {
