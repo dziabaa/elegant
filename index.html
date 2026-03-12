@@ -1245,6 +1245,71 @@ transition: opacity 0.2s;
 
 .bookings-list { display: flex; flex-direction: column; gap: 8px; margin-top: 4px; }
 
+.bcard {
+background: #e8e4de;
+border-radius: 14px;
+padding: 12px 14px;
+font-family: ‘DM Sans’, sans-serif;
+}
+.bcard-top {
+display: flex;
+align-items: center;
+gap: 8px;
+margin-bottom: 4px;
+}
+.bcard-dates {
+font-size: 14px;
+font-weight: 600;
+color: #1a1a1a;
+flex: 1;
+}
+.bcard-nights {
+font-size: 11px;
+font-weight: 600;
+color: #fff;
+background: #1a1a1a;
+border-radius: 20px;
+padding: 2px 8px;
+white-space: nowrap;
+}
+.bcard-person {
+display: flex;
+flex-wrap: wrap;
+gap: 6px 12px;
+margin-top: 6px;
+}
+.bcard-name { font-size: 13px; color: #1a1a1a; font-weight: 500; }
+.bcard-phone { font-size: 13px; color: #444; }
+.bcard-chips {
+display: flex;
+flex-wrap: wrap;
+gap: 6px;
+margin-top: 6px;
+}
+.bchip {
+font-size: 12px;
+background: #d0cbc3;
+border-radius: 20px;
+padding: 3px 10px;
+color: #1a1a1a;
+font-weight: 500;
+}
+.bcard-note {
+font-size: 12px;
+color: #666660;
+margin-top: 6px;
+line-height: 1.4;
+}
+.bcard-apt-label {
+font-size: 12px;
+font-weight: 700;
+letter-spacing: 0.5px;
+color: #666660;
+text-transform: uppercase;
+margin: 12px 0 6px;
+padding-left: 2px;
+}
+
 .booking-item {
 display: flex;
 align-items: center;
@@ -2497,6 +2562,28 @@ function populateResAptSelect() {
   if (cur) sel.value = cur;
 }
 
+function bookingCardHtml(b, deleteCall) {
+  const nights = b.nights || Math.round((new Date(b.to) - new Date(b.from)) / 86400000);
+  const noc = nights===1?'noc':nights<5?'noce':'nocy';
+  const chips = [
+    b.people ? `<span class="bchip">👥 ${b.people}</span>` : '',
+    b.price  ? `<span class="bchip">💰 ${b.price} PLN</span>` : '',
+  ].filter(Boolean).join('');
+  return `<div class="bcard">
+    <div class="bcard-top">
+      <div class="bcard-dates">${formatDate(b.from)} — ${formatDate(b.to)}</div>
+      <div class="bcard-nights">${nights} ${noc}</div>
+      <button class="booking-del" onclick="${deleteCall}">×</button>
+    </div>
+    ${b.guest || b.phone ? `<div class="bcard-person">
+      ${b.guest ? `<span class="bcard-name">👤 ${b.guest}</span>` : ''}
+      ${b.phone ? `<span class="bcard-phone">📞 ${b.phone}</span>` : ''}
+    </div>` : ''}
+    ${chips ? `<div class="bcard-chips">${chips}</div>` : ''}
+    ${b.note ? `<div class="bcard-note">📝 ${b.note}</div>` : ''}
+  </div>`;
+}
+
 function renderResList() {
   const list = document.getElementById('res-list');
   if (!list) return;
@@ -2507,21 +2594,9 @@ function renderResList() {
   apts.forEach(apt => {
     const bookings = (apt.bookings || []).sort((a,b) => a.from.localeCompare(b.from));
     if (bookings.length === 0) return;
-    html += `<div style="font-size:12px;font-weight:700;letter-spacing:0.5px;color:#666660;text-transform:uppercase;margin:12px 0 6px;padding-left:2px">${apt.emoji} ${apt.name}</div>`;
+    html += `<div class="bcard-apt-label">${apt.emoji} ${apt.name}</div>`;
     bookings.forEach((b, i) => {
-      const nights = b.nights || Math.round((new Date(b.to) - new Date(b.from)) / 86400000);
-      html += `<div class="booking-item" style="margin-bottom:8px">
-        <div class="booking-dot"></div>
-        <div class="booking-info">
-          <div class="booking-dates-text">${formatDate(b.from)} — ${formatDate(b.to)} <span style="font-size:11px;color:#666660;font-weight:400">(${nights} ${nights===1?'noc':nights<5?'noce':'nocy'})</span></div>
-          ${b.guest  ? `<div class="booking-guest">👤 ${b.guest}</div>` : ''}
-          ${b.phone  ? `<div class="booking-guest">📞 ${b.phone}</div>` : ''}
-          ${b.people ? `<div class="booking-guest">👥 ${b.people} gości</div>` : ''}
-          ${b.price  ? `<div class="booking-guest">💰 ${b.price} PLN</div>` : ''}
-          ${b.note   ? `<div class="booking-guest" style="color:#666660">📝 ${b.note}</div>` : ''}
-        </div>
-        <button class="booking-del" onclick="deleteBookingRes('${apt.id}',${i})">×</button>
-      </div>`;
+      html += bookingCardHtml(b, `deleteBookingRes('${apt.id}',${i})`);
       total++;
     });
   });
@@ -2542,6 +2617,7 @@ function deleteBookingRes(aptId, index) {
 
 function renderBookingsList(aptId) {
   const list = document.getElementById('bookings-list');
+  if (!list) return;
   list.innerHTML = '';
   if (!aptId) return;
   const bookings = getBookings(aptId).sort((a,b) => a.from.localeCompare(b.from));
@@ -2549,24 +2625,7 @@ function renderBookingsList(aptId) {
     list.innerHTML = '<div style="font-size:13px;color:var(--muted);text-align:center;padding:8px 0">Brak rezerwacji</div>';
     return;
   }
-  bookings.forEach((b, i) => {
-    const div = document.createElement('div');
-    div.className = 'booking-item';
-    const nights = b.nights || Math.round((new Date(b.to) - new Date(b.from)) / 86400000);
-    div.innerHTML = `
-      <div class="booking-dot"></div>
-      <div class="booking-info">
-        <div class="booking-dates-text">${formatDate(b.from)} — ${formatDate(b.to)} <span style="font-size:11px;color:#666660;font-weight:400">(${nights} ${nights===1?'noc':nights<5?'noce':'nocy'})</span></div>
-        ${b.guest ? `<div class="booking-guest">👤 ${b.guest}</div>` : ''}
-        ${b.phone ? `<div class="booking-guest">📞 ${b.phone}</div>` : ''}
-        ${b.people ? `<div class="booking-guest">👥 ${b.people} ${b.people===1?'gość':b.people<5?'gości':'gości'}</div>` : ''}
-        ${b.price ? `<div class="booking-guest">💰 ${b.price} PLN</div>` : ''}
-        ${b.note ? `<div class="booking-guest" style="color:#666660">📝 ${b.note}</div>` : ''}
-      </div>
-      <button class="booking-del" onclick="deleteBooking('${aptId}',${i})">×</button>
-    `;
-    list.appendChild(div);
-  });
+  list.innerHTML = bookings.map((b,i) => bookingCardHtml(b, `deleteBooking('${aptId}',${i})`)).join('');
 }
 
 function formatDate(ds) {
