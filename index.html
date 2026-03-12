@@ -605,7 +605,7 @@ margin-bottom: 6px;
 
 .modal label { font-size: 11px; font-weight: 600; letter-spacing: 1px; color: var(–muted); text-transform: uppercase; display: block; margin-bottom: 6px; }
 
-#modal-welcome, #modal-pin {
+#modal-welcome, #modal-welcome-en, #modal-welcome-uk, #modal-pin {
 width: 100%;
 background: var(–card2);
 border: 1px solid var(–border);
@@ -622,7 +622,7 @@ margin-bottom: 14px;
 overflow: hidden;
 box-sizing: border-box;
 }
-#modal-welcome:focus, #modal-pin:focus {
+#modal-welcome:focus, #modal-welcome-en:focus, #modal-welcome-uk:focus, #modal-pin:focus {
 border-color: #1a1a1a;
 box-shadow: 0 0 0 3px rgba(26,26,26,0.08);
 }
@@ -1437,8 +1437,12 @@ color: #1a1a1a;
   <div class="modal">
     <h3>Szablon wiadomości</h3>
     <p id="modal-apt-name"></p>
-    <label>Szablon powitalny</label>
-    <textarea id="modal-welcome" rows="4" placeholder="Wiadomość powitalna..."></textarea>
+    <label>Szablon powitalny 🇵🇱 PL</label>
+    <textarea id="modal-welcome" rows="4" placeholder="Wiadomość powitalna PL..."></textarea>
+    <label>Szablon powitalny 🇬🇧 EN</label>
+    <textarea id="modal-welcome-en" rows="4" placeholder="Welcome message EN..."></textarea>
+    <label>Szablon powitalny 🇺🇦 UA</label>
+    <textarea id="modal-welcome-uk" rows="4" placeholder="Вітальне повідомлення UA..."></textarea>
     <label>Szablon PIN</label>
     <textarea id="modal-pin" rows="4" placeholder="Wiadomość z kodem PIN..."></textarea>
     <div class="modal-actions">
@@ -1756,19 +1760,18 @@ function savePinInline() {
 let activeWelLang = 'pl';
 
 const WEL_TEMPLATES = {
-  pl: (apt) => apt.welcomeTemplate || 'Serdecznie witamy! Jesteśmy do dyspozycji. Miłego pobytu! 🏡',
-  en: (apt) => apt.welcomeTemplateEn || 'Welcome! We are at your disposal. Enjoy your stay! 🏡',
-  uk: (apt) => apt.welcomeTemplateUk || 'Ласково просимо! Ми до ваших послуг. Приємного перебування! 🏡'
+  pl: (apt) => apt.welcomeTemplate   || '',
+  en: (apt) => apt.welcomeTemplateEn || apt.welcomeTemplate || '',
+  uk: (apt) => apt.welcomeTemplateUk || apt.welcomeTemplate || ''
 };
 
 function switchWelLang(lang, btn) {
   activeWelLang = lang;
   document.querySelectorAll('.wel-lang-tab').forEach(b => b.classList.remove('active'));
   btn.classList.add('active');
-  ['pl','en','uk'].forEach(l => {
-    const el = document.getElementById('wel-msg-' + l);
-    if (el) el.style.display = l === lang ? 'block' : 'none';
-  });
+  document.getElementById('wel-msg-pl').style.display = lang === 'pl' ? 'block' : 'none';
+  document.getElementById('wel-msg-en').style.display = lang === 'en' ? 'block' : 'none';
+  document.getElementById('wel-msg-uk').style.display = lang === 'uk' ? 'block' : 'none';
   requestAnimationFrame(() => {
     const el = document.getElementById('wel-msg-' + lang);
     if (el) autoResize(el);
@@ -1796,14 +1799,18 @@ function sendActiveWelMsg(app) {
 }
 
 function updateWelcomePreview() {
-  const id = parseInt(document.getElementById('wel-apt').value);
-  const apt = getApt(id);
-  ['pl','en','uk'].forEach(l => {
-    const el = document.getElementById('wel-msg-' + l);
-    if (!el) return;
-    el.value = apt ? WEL_TEMPLATES[l](apt) : '';
-    el.style.display = l === activeWelLang ? '' : 'none';
-    requestAnimationFrame(() => autoResize(el));
+  const selEl = document.getElementById('wel-apt');
+  const id = parseInt(selEl.value);
+  const apt = isNaN(id) ? null : getApt(id);
+  document.getElementById('wel-msg-pl').value = apt ? (apt.welcomeTemplate || '') : '';
+  document.getElementById('wel-msg-en').value = apt ? (apt.welcomeTemplateEn || apt.welcomeTemplate || '') : '';
+  document.getElementById('wel-msg-uk').value = apt ? (apt.welcomeTemplateUk || apt.welcomeTemplate || '') : '';
+  document.getElementById('wel-msg-pl').style.display = activeWelLang === 'pl' ? 'block' : 'none';
+  document.getElementById('wel-msg-en').style.display = activeWelLang === 'en' ? 'block' : 'none';
+  document.getElementById('wel-msg-uk').style.display = activeWelLang === 'uk' ? 'block' : 'none';
+  requestAnimationFrame(() => {
+    const el = document.getElementById('wel-msg-' + activeWelLang);
+    if (el) autoResize(el);
   });
 }
 
@@ -1811,14 +1818,15 @@ function openModal(id) {
   editingId = id;
   const apt = getApt(id);
   document.getElementById('modal-apt-name').textContent = apt.emoji + ' ' + apt.name;
-  document.getElementById('modal-welcome').value = apt.welcomeTemplate;
+  document.getElementById('modal-welcome').value = apt.welcomeTemplate || '';
+  document.getElementById('modal-welcome-en').value = apt.welcomeTemplateEn || '';
+  document.getElementById('modal-welcome-uk').value = apt.welcomeTemplateUk || '';
   document.getElementById('modal-pin').value = apt.pinTemplate;
   document.getElementById('modal').classList.add('open');
   setTimeout(() => {
-    autoResize(document.getElementById('modal-welcome'));
-    autoResize(document.getElementById('modal-pin'));
-    ['modal-welcome','modal-pin'].forEach(id => {
+    ['modal-welcome','modal-welcome-en','modal-welcome-uk','modal-pin'].forEach(id => {
       const el = document.getElementById(id);
+      autoResize(el);
       el.oninput = () => autoResize(el);
     });
   }, 30);
@@ -1831,7 +1839,9 @@ function closeModal() {
 
 function saveTemplate() {
   const apt = getApt(editingId);
-  apt.welcomeTemplate = document.getElementById('modal-welcome').value;
+  apt.welcomeTemplate   = document.getElementById('modal-welcome').value;
+  apt.welcomeTemplateEn = document.getElementById('modal-welcome-en').value;
+  apt.welcomeTemplateUk = document.getElementById('modal-welcome-uk').value;
   apt.pinTemplate = document.getElementById('modal-pin').value;
   save();
   closeModal();
