@@ -932,15 +932,12 @@ letter-spacing: 0.3px;
 }
 
 .cal-grid {
-display: grid;
-grid-template-columns: repeat(7, 1fr);
-gap: 0;
+width: 100%;
+border-collapse: collapse;
 margin-bottom: 16px;
-border-top: 0.5px solid #1a3a6b;
 }
 
 .cal-day-name {
-border: none !important;
 text-align: center;
 font-size: 10px;
 font-weight: 700;
@@ -948,29 +945,26 @@ color: var(–muted);
 padding: 4px 0 8px;
 letter-spacing: 0.5px;
 text-transform: uppercase;
+border: none !important;
 }
 
 .cal-day {
+width: calc(100% / 7);
 aspect-ratio: 1;
-display: flex;
-align-items: center;
-justify-content: center;
+text-align: center;
+vertical-align: middle;
 font-size: 13px;
 font-weight: 500;
 cursor: default;
 color: #1a1a1a;
-border-right: 0.5px solid #1a3a6b;
-border-bottom: 0.5px solid #1a3a6b;
-border-left: 0.5px solid #1a3a6b;
-border-top: none;
+border: 0.5px solid #1a3a6b;
 background: #f0ede8;
 position: relative;
 }
 
 .cal-day.empty {
 background: transparent;
-border-color: transparent !important;
-visibility: hidden;
+border-color: transparent;
 }
 
 .cal-day .day-num {
@@ -1312,7 +1306,7 @@ color: #1a1a1a;
   <div class="cal-title" id="cal-title"></div>
   <button class="cal-nav" onclick="changeMonth(1)">›</button>
 </div>
-<div class="cal-grid" id="cal-grid"></div>
+<table class="cal-grid" id="cal-grid"></table>
 <div class="cal-legend">
   <span class="legend-dot occupied"></span> Zajęty (ręcznie)
   <span class="legend-dot ical"></span> Booking.com
@@ -2023,12 +2017,15 @@ function renderCalendar() {
   const grid = document.getElementById('cal-grid');
   grid.innerHTML = '';
 
+  // Header row with day names
+  const headerRow = document.createElement('tr');
   DAYS.forEach(d => {
-    const el = document.createElement('div');
-    el.className = 'cal-day-name';
-    el.textContent = d;
-    grid.appendChild(el);
+    const th = document.createElement('th');
+    th.className = 'cal-day-name';
+    th.textContent = d;
+    headerRow.appendChild(th);
   });
+  grid.appendChild(headerRow);
 
   const firstDay = new Date(calYear, calMonth, 1);
   const startOffset = (firstDay.getDay() + 6) % 7;
@@ -2061,24 +2058,30 @@ function renderCalendar() {
     return null;
   }
 
+  let row = document.createElement('tr');
+  let cellCount = 0;
+
   for (let i = 0; i < startOffset; i++) {
-    const el = document.createElement('div');
-    el.className = 'cal-day empty';
-    grid.appendChild(el);
+    const td = document.createElement('td');
+    td.className = 'cal-day empty';
+    row.appendChild(td);
+    cellCount++;
   }
 
   for (let d = 1; d <= daysInMonth; d++) {
+    if (cellCount === 7) {
+      grid.appendChild(row);
+      row = document.createElement('tr');
+      cellCount = 0;
+    }
     const ds = dateStr(calYear, calMonth, d);
-    const el = document.createElement('div');
+    const el = document.createElement('td');
     const isToday = ds === todayStr;
 
-    // Check for checkout on this day
     const chkRes = reservations.find(r => ds === r.to);
-    // Check for checkin/mid on this day
     const occRes = reservations.find(r => ds >= r.from && ds < r.to);
 
     if (chkRes && occRes) {
-      // Same day: checkout left 20% + checkin right 80%
       const chkColor = chkRes.color === 'ical' ? 'res-ical' : 'res-manual';
       const occColor = occRes.color === 'ical' ? 'res-ical' : 'res-manual';
       el.className = `cal-day${isToday ? ' today' : ''}`;
@@ -2103,8 +2106,18 @@ function renderCalendar() {
       el.className = `cal-day${isToday ? ' today' : ''}`;
       el.innerHTML = `<span class="day-num">${d}</span>`;
     }
-    grid.appendChild(el);
+    row.appendChild(el);
+    cellCount++;
   }
+
+  // Fill last row
+  while (cellCount % 7 !== 0) {
+    const td = document.createElement('td');
+    td.className = 'cal-day empty';
+    row.appendChild(td);
+    cellCount++;
+  }
+  grid.appendChild(row);
 
   renderBookingsList(aptId);
 }
