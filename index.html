@@ -9,13 +9,14 @@
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
   :root {
-    --bg: #1a1a1a;
-    --card: #2d2d2d;
-    --card2: #242424;
-    --border: #3a3a3a;
-    --gold: #c8b99a;
-    --gold-light: #e0d4c0;
+    --bg: #1e1e1e;
+    --card: #f0ede8;
+    --card2: #e8e4de;
+    --border: #d0cbc3;
+    --gold: #2c2c2c;
+    --gold-light: #1a1a1a;
     --text: #f0ede8;
+    --text-card: #1a1a1a;
     --muted: #888880;
     --green: #25D366;
     --blue: #1877F2;
@@ -25,7 +26,7 @@
   }
 
 html {
-background: #1a1a1a;
+background: #1e1e1e;
 }
 
 - { box-sizing: border-box; margin: 0; padding: 0; }
@@ -1133,7 +1134,26 @@ line-height: 1;
 .booking-del:hover { color: #e55; }
 
 .panel { display: none; }
-.panel.active { display: block; }
+.panel.active {
+display: block;
+background: #f0ede8;
+border-radius: 20px;
+padding: 20px 16px;
+color: #1a1a1a;
+}
+.panel.active .label { color: #666660; }
+.panel.active .input-wrap { background: #ffffff; border-color: #d0cbc3; }
+.panel.active .input-wrap input { color: #1a1a1a; }
+.panel.active select { background: #ffffff; border-color: #d0cbc3; color: #1a1a1a; }
+.panel.active select option { background: #ffffff; color: #1a1a1a; }
+.panel.active .pin-display { background: #ffffff; border-color: #d0cbc3; }
+.panel.active .message-box { background: #ffffff; color: #1a1a1a !important; border-color: #d0cbc3; }
+.panel.active .preview-header .label { color: #666660; }
+.panel.active .btn-copy-small { background: #e8e4dd; border-color: #d0cbc3; color: #1a1a1a; }
+.panel.active .btn-copy-text { background: #e8e4dd; border-color: #d0cbc3; color: #1a1a1a; }
+.panel.active .lang-tabs { background: #e8e4dd; }
+.panel.active .lang-tab { color: #666660; }
+.panel.active .lang-tab.active { background: #ffffff; color: #1a1a1a; }
 
 </style>
 </head>
