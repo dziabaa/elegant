@@ -1134,10 +1134,13 @@ flex-shrink: 0;
 display: flex;
 gap: 10px;
 margin-bottom: 10px;
+overflow: hidden;
 }
 
 .date-input, .guest-input {
 width: 100%;
+min-width: 0;
+box-sizing: border-box;
 background: var(–card);
 border: 1px solid var(–border);
 border-radius: 12px;
