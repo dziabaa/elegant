@@ -990,7 +990,7 @@ border-color: rgba(255,255,255,0.15);
 /* Bar */
 .res-bar {
 position: absolute;
-top: 18%; bottom: 18%;
+top: 25%; bottom: 25%;
 z-index: 0;
 pointer-events: none;
 }
@@ -1002,7 +1002,7 @@ pointer-events: none;
 .cal-day.res-ical   .res-bar { background: #1a3a6b; }
 .cal-day.res-manual .res-bar { background: #1a1a1a; }
 
-/* Number circle — absolutely positioned */
+/* Number circle — only on reservation days */
 .cal-day.res .day-num {
 position: absolute;
 z-index: 2;
@@ -1013,15 +1013,20 @@ font-weight: 700; font-size: 13px;
 top: 50%; left: 50%; transform: translate(-50%, -50%);
 }
 
-/* All occupied days: colored circle, white text */
+/* Occupied days: colored circle, white text */
 .cal-day.res-ical:not(.res-left)   .day-num { background: #1a3a6b; color: #fff; }
 .cal-day.res-manual:not(.res-left) .day-num { background: #1a1a1a; color: #fff; }
 
-/* Checkout: no circle, dark text */
-.cal-day.res-left .day-num { background: transparent; color: var(–text); font-weight: 500; }
+/* Checkout: no circle, normal text */
+.cal-day.res-left .day-num { background: transparent; color: #1a1a1a; font-weight: 500; }
 
-/* Free day number */
-.cal-day:not(.res) .day-num { color: var(–text); }
+/* Free day number — no circle, no background */
+.cal-day:not(.res) .day-num {
+color: #1a1a1a;
+background: transparent;
+border-radius: 0;
+width: auto; height: auto;
+}
 .cal-day.today:not(.res) .day-num {
 background: #D23249; color: #fff; border-radius: 50%;
 width: 28px; height: 28px;
@@ -1030,6 +1035,7 @@ font-weight: 700;
 }
 .cal-day.today.res .day-num {
 background: #D23249 !important; color: #fff !important;
+}
 }
 
 .cal-day.res::before { content: none; }
@@ -2089,8 +2095,8 @@ function renderCalendar() {
       el.style.borderTop = '0.5px solid rgba(255,255,255,0.15)';
       el.style.borderBottom = '0.5px solid rgba(255,255,255,0.15)';
       el.innerHTML = `
-        <div class="res-bar" style="left:0;right:88%;background:${chkRes.color==='ical'?'#1a3a6b':'#1a1a1a'};border-radius:0 6px 6px 0;top:18%;bottom:18%;position:absolute;"></div>
-        <div class="res-bar" style="left:30%;right:0;background:${occRes.color==='ical'?'#1a3a6b':'#1a1a1a'};border-radius:6px 0 0 6px;top:18%;bottom:18%;position:absolute;"></div>
+        <div class="res-bar" style="left:0;right:88%;background:${chkRes.color==='ical'?'#1a3a6b':'#1a1a1a'};border-radius:0 6px 6px 0;top:25%;bottom:25%;position:absolute;"></div>
+        <div class="res-bar" style="left:30%;right:0;background:${occRes.color==='ical'?'#1a3a6b':'#1a1a1a'};border-radius:6px 0 0 6px;top:25%;bottom:25%;position:absolute;"></div>
         <span class="day-num" style="position:absolute;left:50%;transform:translate(-50%,-50%);top:50%;z-index:2;color:#fff;font-weight:700;font-size:13px;">${d}</span>`;
     } else if (chkRes || occRes) {
       const res = chkRes || occRes;
