@@ -617,11 +617,12 @@ color: #1a1a1a;
 font-size: 13px;
 line-height: 1.65;
 font-family: ‘DM Sans’, sans-serif;
-resize: none;
+resize: vertical;
 outline: none;
-min-height: 70px;
+height: 100px;
+max-height: 150px;
 margin-bottom: 14px;
-overflow: hidden;
+overflow-y: auto;
 box-sizing: border-box;
 }
 #modal-welcome:focus, #modal-welcome-en:focus, #modal-welcome-uk:focus, #modal-pin:focus {
@@ -1825,13 +1826,6 @@ function openModal(id) {
   document.getElementById('modal-welcome-uk').value = apt.welcomeTemplateUk || '';
   document.getElementById('modal-pin').value = apt.pinTemplate;
   document.getElementById('modal').classList.add('open');
-  setTimeout(() => {
-    ['modal-welcome','modal-welcome-en','modal-welcome-uk','modal-pin'].forEach(id => {
-      const el = document.getElementById(id);
-      autoResize(el);
-      el.oninput = () => autoResize(el);
-    });
-  }, 30);
 }
 
 function closeModal() {
