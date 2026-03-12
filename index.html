@@ -2730,8 +2730,10 @@ function changeCleanMonth(dir) {
 
 function getCheckoutsMap() {
   // Returns { 'YYYY-MM-DD': [apt, apt, ...] }
+  // Excludes apt if a manual booking starts on the same day (back-to-back = no cleaning needed)
   const map = {};
   apartments.forEach(apt => {
+    const manualFromDates = new Set((apt.bookings || []).map(b => b.from));
     const allBookings = [
       ...(apt.bookings || []),
       ...(apt.icalEvents || []).map(e => ({ from: e.from, to: e.to })),
@@ -2739,6 +2741,8 @@ function getCheckoutsMap() {
     ];
     allBookings.forEach(b => {
       if (!b.to) return;
+      // Skip if a manual booking starts on the same day as this checkout (back-to-back)
+      if (manualFromDates.has(b.to)) return;
       if (!map[b.to]) map[b.to] = [];
       map[b.to].push(apt);
     });
