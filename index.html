@@ -537,7 +537,38 @@ gap: 8px;
 }
 .btn-add:hover { background: #e8e4dd; border-color: #bbb; }
 
-/* Template modal */
+.msg-subtabs {
+display: flex;
+gap: 4px;
+margin-bottom: 16px;
+background: #e8e4dd;
+border-radius: 14px;
+padding: 5px;
+}
+.msg-subtab {
+flex: 1;
+padding: 10px 8px;
+background: transparent;
+border: none;
+border-radius: 10px;
+color: #666660;
+font-size: 13px;
+font-weight: 600;
+cursor: pointer;
+font-family: ‘DM Sans’, sans-serif;
+transition: all 0.2s;
+display: flex;
+align-items: center;
+justify-content: center;
+gap: 6px;
+}
+.msg-subtab.active {
+background: #ffffff;
+color: #1a1a1a;
+box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+.msg-subtab:hover:not(.active) { background: rgba(0,0,0,0.05); color: #1a1a1a; }
+
 .modal-overlay {
 display: none;
 position: fixed; inset: 0;
@@ -1187,122 +1218,138 @@ color: #1a1a1a;
     <div class="header-line"></div>
   </div>
 
-  <div class="tabs">
-    <button class="tab active" id="tab-welcome" onclick="switchTab('welcome')"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg> Powitanie</button>
-    <button class="tab" id="tab-pin" onclick="switchTab('pin')"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg> PIN</button>
+  <div class="tabs" style="grid-template-columns:1fr 1fr 1fr">
+    <button class="tab active" id="tab-msg" onclick="switchTab('msg')"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg> Wiadomości</button>
     <button class="tab" id="tab-cal" onclick="switchTab('cal')"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg> Kalendarz</button>
     <button class="tab" id="tab-apts" onclick="switchTab('apts')"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg> Ustawienia</button>
   </div>
 
-  <!-- WYŚLIJ PIN -->
+  <!-- WIADOMOŚCI -->
 
-  <div class="panel" id="panel-pin">
-    <div class="field">
-      <div class="label">Numer telefonu gościa</div>
-      <div class="input-wrap">
-        <input type="tel" id="pin-phone" placeholder="+48 600 000 000">
-        <button class="btn-paste" onclick="pastePhone('pin-phone')">WKLEJ</button>
-      </div>
-    </div>
-    <div class="field">
-      <div class="label">Wybierz apartament</div>
-      <select id="pin-apt" onchange="updatePinPreview()">
-        <option value="">— wybierz apartament —</option>
-      </select>
-    </div>
-    <div class="field">
-      <div class="label">Kod PIN</div>
-      <div class="pin-display">
-        <input class="pin-digits" id="pin-display" type="text" inputmode="numeric" maxlength="10" placeholder="· · · ·" oninput="onPinInput()" onblur="savePinInline()">
-      </div>
-    </div>
-    <div class="field">
-      <div class="lang-tabs">
-        <button class="lang-tab active" onclick="switchLang('pl', this)">🇵🇱 PL</button>
-        <button class="lang-tab" onclick="switchLang('en', this)">🇬🇧 EN</button>
-        <button class="lang-tab" onclick="switchLang('uk', this)">🇺🇦 UA</button>
-      </div>
-      <div class="preview-header" style="margin-top:10px">
-        <div class="label" style="margin:0">Podgląd wiadomości (edytowalny)</div>
-        <button class="btn-copy-small" onclick="copyActivePinMsg()">📋 Kopiuj</button>
-      </div>
-      <textarea class="message-box" id="pin-msg-pl" rows="10" style="color:var(--text)"></textarea>
-      <textarea class="message-box" id="pin-msg-en" rows="10" style="display:none;color:var(--text)"></textarea>
-      <textarea class="message-box" id="pin-msg-uk" rows="10" style="display:none;color:var(--text)"></textarea>
-    </div>
-    <div class="send-buttons">
-      <button class="btn-whatsapp" onclick="sendActivePinMsg('whatsapp')">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg>
-        WhatsApp Business
+  <div class="panel active" id="panel-msg">
+    <!-- Sub-tabs -->
+    <div class="msg-subtabs" id="msg-subtabs">
+      <button class="msg-subtab active" id="msgtab-welcome" onclick="switchMsgTab('welcome')">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+        Powitanie
       </button>
-      <div class="btn-row">
-        <button class="btn-msg btn-sms" onclick="sendActivePinMsg('sms')">💬 SMS</button>
-        <button class="btn-msg btn-viber" onclick="sendActivePinMsg('viber')">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M11.997 0C5.375 0 0 5.373 0 11.994c0 2.395.706 4.629 1.923 6.5L.662 24l5.668-1.232a11.938 11.938 0 005.667 1.43c6.624 0 11.997-5.375 11.997-12.004C24 5.573 18.621 0 11.997 0zm5.93 17.126c-.28.79-1.389 1.442-2.282 1.631-.607.128-1.399.231-4.063-.873-3.41-1.398-5.604-4.859-5.774-5.085-.163-.226-1.374-1.832-1.374-3.494s.862-2.475 1.168-2.815c.307-.34.666-.424.888-.424.22 0 .443.002.636.012.204.01.478-.078.747.567.28.672.952 2.323 1.035 2.492.083.17.139.367.028.591-.11.224-.165.363-.329.559-.163.198-.344.44-.49.59-.164.164-.335.342-.145.671.19.33.847 1.397 1.817 2.26 1.249 1.112 2.302 1.456 2.63 1.621.33.165.52.138.71-.083.19-.222.814-.951 1.033-1.278.218-.325.435-.273.735-.164.3.11 1.9.896 2.226 1.059.327.163.545.245.624.38.08.133.08.77-.2 1.563z"/></svg>
-          Viber
-        </button>
-      </div>
-      <div class="btn-row">
-        <button class="btn-msg btn-telegram" onclick="sendActivePinMsg('telegram')">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/></svg>
-          Telegram
-        </button>
-        <button class="btn-msg btn-signal" onclick="sendActivePinMsg('signal')">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.373 0 0 5.373 0 12c0 2.099.542 4.074 1.497 5.789L0 24l6.316-1.479A11.943 11.943 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm.007 4.51c2.107 0 4.088.822 5.578 2.313a7.836 7.836 0 012.315 5.58c0 4.352-3.54 7.893-7.893 7.893a7.872 7.872 0 01-3.735-.942l-4.15.971.994-4.06a7.87 7.87 0 01-1.056-3.95c0-4.353 3.54-7.894 7.893-7.894.004 0 .038-.01.054-.011z"/></svg>
-          Signal
-        </button>
-      </div>
-      <button class="btn-copy-text" onclick="copyActivePinMsg()">📋 Kopiuj tekst do schowka</button>
+      <button class="msg-subtab" id="msgtab-pin" onclick="switchMsgTab('pin')">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+        PIN
+      </button>
+    </div>
+
+```
+<!-- Sub-panel: Powitanie -->
+<div id="msgpanel-welcome">
+  <div class="field">
+    <div class="label">Numer telefonu gościa</div>
+    <div class="input-wrap">
+      <input type="tel" id="wel-phone" placeholder="+48 600 000 000">
+      <button class="btn-paste" onclick="pastePhone('wel-phone')">WKLEJ</button>
     </div>
   </div>
-
-  <!-- POWITANIE -->
-
-  <div class="panel active" id="panel-welcome">
-    <div class="field">
-      <div class="label">Numer telefonu gościa</div>
-      <div class="input-wrap">
-        <input type="tel" id="wel-phone" placeholder="+48 600 000 000">
-        <button class="btn-paste" onclick="pastePhone('wel-phone')">WKLEJ</button>
-      </div>
+  <div class="field">
+    <div class="label">Wybierz apartament</div>
+    <select id="wel-apt" onchange="updateWelcomePreview()">
+      <option value="">— wybierz apartament —</option>
+    </select>
+  </div>
+  <div class="field">
+    <div class="preview-header">
+      <div class="label" style="margin:0">Podgląd wiadomości powitalnej (edytowalny)</div>
+      <button class="btn-copy-small" onclick="copyMsg('wel-msg')">📋 Kopiuj</button>
     </div>
-    <div class="field">
-      <div class="label">Wybierz apartament</div>
-      <select id="wel-apt" onchange="updateWelcomePreview()">
-        <option value="">— wybierz apartament —</option>
-      </select>
-    </div>
-    <div class="field">
-      <div class="preview-header">
-        <div class="label" style="margin:0">Podgląd wiadomości powitalnej (edytowalny)</div>
-        <button class="btn-copy-small" onclick="copyMsg('wel-msg')">📋 Kopiuj</button>
-      </div>
-      <textarea class="message-box" id="wel-msg" rows="10" style="color:var(--text)"></textarea>
-    </div>
-    <div class="send-buttons">
-      <button class="btn-whatsapp" onclick="sendMsg('wel-phone','wel-msg','whatsapp')">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg>
-        WhatsApp Business
+    <textarea class="message-box" id="wel-msg" rows="10" style="color:var(--text)"></textarea>
+  </div>
+  <div class="send-buttons">
+    <button class="btn-whatsapp" onclick="sendMsg('wel-phone','wel-msg','whatsapp')">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg>
+      WhatsApp Business
+    </button>
+    <div class="btn-row">
+      <button class="btn-msg btn-sms" onclick="sendMsg('wel-phone','wel-msg','sms')">💬 SMS</button>
+      <button class="btn-msg btn-viber" onclick="sendMsg('wel-phone','wel-msg','viber')">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M11.997 0C5.375 0 0 5.373 0 11.994c0 2.395.706 4.629 1.923 6.5L.662 24l5.668-1.232a11.938 11.938 0 005.667 1.43c6.624 0 11.997-5.375 11.997-12.004C24 5.573 18.621 0 11.997 0zm5.93 17.126c-.28.79-1.389 1.442-2.282 1.631-.607.128-1.399.231-4.063-.873-3.41-1.398-5.604-4.859-5.774-5.085-.163-.226-1.374-1.832-1.374-3.494s.862-2.475 1.168-2.815c.307-.34.666-.424.888-.424.22 0 .443.002.636.012.204.01.478-.078.747.567.28.672.952 2.323 1.035 2.492.083.17.139.367.028.591-.11.224-.165.363-.329.559-.163.198-.344.44-.49.59-.164.164-.335.342-.145.671.19.33.847 1.397 1.817 2.26 1.249 1.112 2.302 1.456 2.63 1.621.33.165.52.138.71-.083.19-.222.814-.951 1.033-1.278.218-.325.435-.273.735-.164.3.11 1.9.896 2.226 1.059.327.163.545.245.624.38.08.133.08.77-.2 1.563z"/></svg>
+        Viber
       </button>
-      <div class="btn-row">
-        <button class="btn-msg btn-sms" onclick="sendMsg('wel-phone','wel-msg','sms')">💬 SMS</button>
-        <button class="btn-msg btn-viber" onclick="sendMsg('wel-phone','wel-msg','viber')">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M11.997 0C5.375 0 0 5.373 0 11.994c0 2.395.706 4.629 1.923 6.5L.662 24l5.668-1.232a11.938 11.938 0 005.667 1.43c6.624 0 11.997-5.375 11.997-12.004C24 5.573 18.621 0 11.997 0zm5.93 17.126c-.28.79-1.389 1.442-2.282 1.631-.607.128-1.399.231-4.063-.873-3.41-1.398-5.604-4.859-5.774-5.085-.163-.226-1.374-1.832-1.374-3.494s.862-2.475 1.168-2.815c.307-.34.666-.424.888-.424.22 0 .443.002.636.012.204.01.478-.078.747.567.28.672.952 2.323 1.035 2.492.083.17.139.367.028.591-.11.224-.165.363-.329.559-.163.198-.344.44-.49.59-.164.164-.335.342-.145.671.19.33.847 1.397 1.817 2.26 1.249 1.112 2.302 1.456 2.63 1.621.33.165.52.138.71-.083.19-.222.814-.951 1.033-1.278.218-.325.435-.273.735-.164.3.11 1.9.896 2.226 1.059.327.163.545.245.624.38.08.133.08.77-.2 1.563z"/></svg>
-          Viber
-        </button>
-      </div>
-      <div class="btn-row">
-        <button class="btn-msg btn-telegram" onclick="sendMsg('wel-phone','wel-msg','telegram')">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/></svg>
-          Telegram
-        </button>
-        <button class="btn-msg btn-signal" onclick="sendMsg('wel-phone','wel-msg','signal')">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.373 0 0 5.373 0 12c0 2.099.542 4.074 1.497 5.789L0 24l6.316-1.479A11.943 11.943 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm.007 4.51c2.107 0 4.088.822 5.578 2.313a7.836 7.836 0 012.315 5.58c0 4.352-3.54 7.893-7.893 7.893a7.872 7.872 0 01-3.735-.942l-4.15.971.994-4.06a7.87 7.87 0 01-1.056-3.95c0-4.353 3.54-7.894 7.893-7.894.004 0 .038-.01.054-.011z"/></svg>
-          Signal
-        </button>
-      </div>
-      <button class="btn-copy-text" onclick="copyMsg('wel-msg')">📋 Kopiuj tekst do schowka</button>
     </div>
+    <div class="btn-row">
+      <button class="btn-msg btn-telegram" onclick="sendMsg('wel-phone','wel-msg','telegram')">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/></svg>
+        Telegram
+      </button>
+      <button class="btn-msg btn-signal" onclick="sendMsg('wel-phone','wel-msg','signal')">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.373 0 0 5.373 0 12c0 2.099.542 4.074 1.497 5.789L0 24l6.316-1.479A11.943 11.943 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm.007 4.51c2.107 0 4.088.822 5.578 2.313a7.836 7.836 0 012.315 5.58c0 4.352-3.54 7.893-7.893 7.893a7.872 7.872 0 01-3.735-.942l-4.15.971.994-4.06a7.87 7.87 0 01-1.056-3.95c0-4.353 3.54-7.894 7.893-7.894.004 0 .038-.01.054-.011z"/></svg>
+        Signal
+      </button>
+    </div>
+    <button class="btn-copy-text" onclick="copyMsg('wel-msg')">📋 Kopiuj tekst do schowka</button>
+  </div>
+</div>
+
+<!-- Sub-panel: PIN -->
+<div id="msgpanel-pin" style="display:none">
+  <div class="field">
+    <div class="label">Numer telefonu gościa</div>
+    <div class="input-wrap">
+      <input type="tel" id="pin-phone" placeholder="+48 600 000 000">
+      <button class="btn-paste" onclick="pastePhone('pin-phone')">WKLEJ</button>
+    </div>
+  </div>
+  <div class="field">
+    <div class="label">Wybierz apartament</div>
+    <select id="pin-apt" onchange="updatePinPreview()">
+      <option value="">— wybierz apartament —</option>
+    </select>
+  </div>
+  <div class="field">
+    <div class="label">Kod PIN</div>
+    <div class="pin-display">
+      <input class="pin-digits" id="pin-display" type="text" inputmode="numeric" maxlength="10" placeholder="· · · ·" oninput="onPinInput()" onblur="savePinInline()">
+    </div>
+  </div>
+  <div class="field">
+    <div class="lang-tabs">
+      <button class="lang-tab active" onclick="switchLang('pl', this)">🇵🇱 PL</button>
+      <button class="lang-tab" onclick="switchLang('en', this)">🇬🇧 EN</button>
+      <button class="lang-tab" onclick="switchLang('uk', this)">🇺🇦 UA</button>
+    </div>
+    <div class="preview-header" style="margin-top:10px">
+      <div class="label" style="margin:0">Podgląd wiadomości (edytowalny)</div>
+      <button class="btn-copy-small" onclick="copyActivePinMsg()">📋 Kopiuj</button>
+    </div>
+    <textarea class="message-box" id="pin-msg-pl" rows="10" style="color:var(--text)"></textarea>
+    <textarea class="message-box" id="pin-msg-en" rows="10" style="display:none;color:var(--text)"></textarea>
+    <textarea class="message-box" id="pin-msg-uk" rows="10" style="display:none;color:var(--text)"></textarea>
+  </div>
+  <div class="send-buttons">
+    <button class="btn-whatsapp" onclick="sendActivePinMsg('whatsapp')">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg>
+      WhatsApp Business
+    </button>
+    <div class="btn-row">
+      <button class="btn-msg btn-sms" onclick="sendActivePinMsg('sms')">💬 SMS</button>
+      <button class="btn-msg btn-viber" onclick="sendActivePinMsg('viber')">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M11.997 0C5.375 0 0 5.373 0 11.994c0 2.395.706 4.629 1.923 6.5L.662 24l5.668-1.232a11.938 11.938 0 005.667 1.43c6.624 0 11.997-5.375 11.997-12.004C24 5.573 18.621 0 11.997 0zm5.93 17.126c-.28.79-1.389 1.442-2.282 1.631-.607.128-1.399.231-4.063-.873-3.41-1.398-5.604-4.859-5.774-5.085-.163-.226-1.374-1.832-1.374-3.494s.862-2.475 1.168-2.815c.307-.34.666-.424.888-.424.22 0 .443.002.636.012.204.01.478-.078.747.567.28.672.952 2.323 1.035 2.492.083.17.139.367.028.591-.11.224-.165.363-.329.559-.163.198-.344.44-.49.59-.164.164-.335.342-.145.671.19.33.847 1.397 1.817 2.26 1.249 1.112 2.302 1.456 2.63 1.621.33.165.52.138.71-.083.19-.222.814-.951 1.033-1.278.218-.325.435-.273.735-.164.3.11 1.9.896 2.226 1.059.327.163.545.245.624.38.08.133.08.77-.2 1.563z"/></svg>
+        Viber
+      </button>
+    </div>
+    <div class="btn-row">
+      <button class="btn-msg btn-telegram" onclick="sendActivePinMsg('telegram')">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/></svg>
+        Telegram
+      </button>
+      <button class="btn-msg btn-signal" onclick="sendActivePinMsg('signal')">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.373 0 0 5.373 0 12c0 2.099.542 4.074 1.497 5.789L0 24l6.316-1.479A11.943 11.943 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm.007 4.51c2.107 0 4.088.822 5.578 2.313a7.836 7.836 0 012.315 5.58c0 4.352-3.54 7.893-7.893 7.893a7.872 7.872 0 01-3.735-.942l-4.15.971.994-4.06a7.87 7.87 0 01-1.056-3.95c0-4.353 3.54-7.894 7.893-7.894.004 0 .038-.01.054-.011z"/></svg>
+        Signal
+      </button>
+    </div>
+    <button class="btn-copy-text" onclick="copyActivePinMsg()">📋 Kopiuj tekst do schowka</button>
+  </div>
+</div>
+```
+
   </div>
 
   <!-- APARTAMENTY -->
@@ -1383,13 +1430,13 @@ color: #1a1a1a;
 </div>
 
 <div class="modal-overlay" id="modal-confirm">
-  <div class="modal" style="max-width:320px;text-align:center;background:#f0ede8;color:#1a1a1a">
-    <h3 style="margin-bottom:10px;color:#1a1a1a">Usuń apartament</h3>
-    <p id="confirm-apt-name" style="margin-bottom:20px;font-size:15px;color:#1a1a1a;font-weight:600"></p>
-    <p style="margin-bottom:24px;font-size:13px;color:#666660">Tej operacji nie można cofnąć.</p>
+  <div class="modal" style="max-width:320px;text-align:center;background:#f0ede8;color:#1a1a1a;font-family:'DM Sans',sans-serif">
+    <h3 style="margin-bottom:10px;color:#1a1a1a;font-family:'DM Sans',sans-serif;font-size:17px;font-weight:700">Usuń apartament</h3>
+    <p id="confirm-apt-name" style="margin-bottom:20px;font-size:15px;color:#1a1a1a;font-weight:600;font-family:'DM Sans',sans-serif"></p>
+    <p style="margin-bottom:24px;font-size:13px;color:#666660;font-family:'DM Sans',sans-serif">Tej operacji nie można cofnąć.</p>
     <div class="modal-actions">
       <button class="btn-cancel" onclick="closeConfirm()">Anuluj</button>
-      <button class="btn-save" style="background:#dc2626;border:none" onclick="confirmRemove()">Usuń</button>
+      <button class="btn-save" style="background:#dc2626;border:none;font-family:'DM Sans',sans-serif" onclick="confirmRemove()">Usuń</button>
     </div>
   </div>
 </div>
@@ -1738,17 +1785,14 @@ function saveTemplate() {
   showToast('Zapisano ✓');
 }
 
-function switchTab(tab) {
-  ['pin','welcome','apts','cal'].forEach(t => {
-    document.getElementById('tab-'+t).classList.toggle('active', t===tab);
-    document.getElementById('panel-'+t).classList.toggle('active', t===tab);
-  });
-  if (tab === 'cal') {
-    if (!getCalAptId() && apartments.length > 0) setCalAptId(apartments[0].id);
-    renderCalAptPills();
-    renderCalendar();
-    syncAllIcal();
-  }
+let activeMsgTab = 'welcome';
+
+function switchMsgTab(tab) {
+  activeMsgTab = tab;
+  document.querySelectorAll('.msg-subtab').forEach(b => b.classList.remove('active'));
+  document.getElementById('msgtab-' + tab).classList.add('active');
+  document.getElementById('msgpanel-welcome').style.display = tab === 'welcome' ? '' : 'none';
+  document.getElementById('msgpanel-pin').style.display = tab === 'pin' ? '' : 'none';
   if (tab === 'pin') {
     requestAnimationFrame(() => {
       const el = document.getElementById('pin-msg-' + activePinLang);
@@ -1760,6 +1804,22 @@ function switchTab(tab) {
       const el = document.getElementById('wel-msg');
       if (el) autoResize(el);
     });
+  }
+}
+
+function switchTab(tab) {
+  ['msg','cal','apts'].forEach(t => {
+    document.getElementById('tab-'+t).classList.toggle('active', t===tab);
+    document.getElementById('panel-'+t).classList.toggle('active', t===tab);
+  });
+  if (tab === 'cal') {
+    if (!getCalAptId() && apartments.length > 0) setCalAptId(apartments[0].id);
+    renderCalAptPills();
+    renderCalendar();
+    syncAllIcal();
+  }
+  if (tab === 'msg') {
+    requestAnimationFrame(() => switchMsgTab(activeMsgTab));
   }
 }
 
@@ -2227,7 +2287,7 @@ function showToast(msg) {
 renderApts();
 updateSelects();
 initWelcomePreview();
-switchTab('welcome');
+switchTab('msg');
 setTimeout(() => {
   applyAutoResize();
   const pinApt = document.getElementById('pin-apt');
