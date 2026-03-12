@@ -1059,9 +1059,10 @@ pointer-events: none;
 .cal-day.res-left  .res-bar { left: 0;   right: 80%; border-radius: 0 6px 6px 0; }
 .cal-day.res-solo  .res-bar { left: 12%; right: 12%; border-radius: 50px; }
 
-.cal-day.res-ical   .res-bar { background: #1a3a6b; }
-.cal-day.res-manual .res-bar { background: #1a1a1a; }
-.cal-day.res-active .res-bar { background: #16a34a !important; }
+.cal-day.res-ical    .res-bar { background: #1a3a6b; }
+.cal-day.res-airbnb  .res-bar { background: #FF5A5F; }
+.cal-day.res-manual  .res-bar { background: #1a1a1a; }
+.cal-day.res-active  .res-bar { background: #16a34a !important; }
 
 /* Number on reservation days — circle, absolutely centered */
 .cal-day.res .day-num {
@@ -1073,9 +1074,10 @@ border-radius: 50%;
 font-weight: 700; font-size: 13px;
 top: 50%; left: 50%; transform: translate(-50%, -50%);
 }
-.cal-day.res-ical:not(.res-left)   .day-num { background: #1a3a6b; color: #fff; }
-.cal-day.res-manual:not(.res-left) .day-num { background: #1a1a1a; color: #fff; }
-.cal-day.res-active:not(.res-left) .day-num { background: #16a34a !important; color: #fff !important; }
+.cal-day.res-ical:not(.res-left)    .day-num { background: #1a3a6b; color: #fff; }
+.cal-day.res-airbnb:not(.res-left)  .day-num { background: #FF5A5F; color: #fff; }
+.cal-day.res-manual:not(.res-left)  .day-num { background: #1a1a1a; color: #fff; }
+.cal-day.res-active:not(.res-left)  .day-num { background: #16a34a !important; color: #fff !important; }
 .cal-day.res-left .day-num { background: transparent; color: #1a1a1a; font-weight: 500; }
 
 /* Free day number — plain text, no circle */
@@ -1121,6 +1123,7 @@ flex-shrink: 0;
 }
 .legend-dot.occupied { background: #1a1a1a; }
 .legend-dot.ical { background: #1a3a6b; }
+.legend-dot.airbnb { background: #FF5A5F; }
 .legend-dot.active-res { background: #16a34a; }
 .legend-dot.free { background: var(–card); border: 1px solid var(–border); }
 
@@ -1412,6 +1415,7 @@ color: #1a1a1a;
 <div class="cal-legend">
   <span class="legend-dot occupied"></span> Zajęty (ręcznie)
   <span class="legend-dot ical"></span> Booking.com
+  <span class="legend-dot airbnb"></span> Airbnb
   <span class="legend-dot active-res"></span> Trwa teraz
   <span class="legend-dot free"></span> Wolny
 </div>
@@ -1537,23 +1541,34 @@ function renderIcalSection() {
           <span class="apt-ical-icon"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></span>
           <input class="apt-ical-input" type="url" placeholder="Link iCal z Booking.com..." value="${apt.icalUrl || ''}">
         </div>
-        <button class="btn-ical-fetch"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg></button>
+        <button class="btn-ical-fetch btn-ical-booking"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg></button>
+      </div>
+      <div class="apt-ical-row" style="margin-top:6px">
+        <div class="apt-ical-wrap">
+          <span class="apt-ical-icon" style="color:#FF5A5F">✦</span>
+          <input class="apt-ical-input apt-ical-airbnb" type="url" placeholder="Link iCal z Airbnb..." value="${apt.icalUrlAirbnb || ''}">
+        </div>
+        <button class="btn-ical-fetch btn-ical-airbnb" style="background:#FF5A5F"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg></button>
       </div>
     `;
     // Attach click directly in JS — no inline onclick
-    const btn = div.querySelector('.btn-ical-fetch');
-    const input = div.querySelector('.apt-ical-input');
-    btn.addEventListener('click', () => doFetchIcal(apt.id, input, btn));
+    const btn = div.querySelector('.btn-ical-booking');
+    const input = div.querySelector('.apt-ical-input:not(.apt-ical-airbnb)');
+    const btnAirbnb = div.querySelector('.btn-ical-airbnb');
+    const inputAirbnb = div.querySelector('.apt-ical-airbnb');
+    btn.addEventListener('click', () => doFetchIcal(apt.id, input, btn, 'booking'));
+    btnAirbnb.addEventListener('click', () => doFetchIcal(apt.id, inputAirbnb, btnAirbnb, 'airbnb'));
     container.appendChild(div);
   });
 }
 
-async function doFetchIcal(id, inputEl, btn) {
+async function doFetchIcal(id, inputEl, btn, source) {
   const apt = getApt(id);
   const url = inputEl.value.trim();
   if (!url) { showToast('Wklej link iCal'); return; }
 
-  apt.icalUrl = url;
+  if (source === 'airbnb') apt.icalUrlAirbnb = url;
+  else apt.icalUrl = url;
   localStorage.setItem('apts', JSON.stringify(apartments));
 
   btn.textContent = '⏳';
@@ -1567,13 +1582,18 @@ async function doFetchIcal(id, inputEl, btn) {
     const t = await res.text();
     if (!t.includes('BEGIN:VCALENDAR')) throw new Error('Brak VCALENDAR w odpowiedzi');
     const events = parseIcal(t);
-    apt.icalEvents = events;
-    apt.icalSynced = new Date().toLocaleString('pl-PL', {day:'2-digit',month:'2-digit',year:'numeric',hour:'2-digit',minute:'2-digit'});
+    if (source === 'airbnb') {
+      apt.icalEventsAirbnb = events;
+      apt.icalSyncedAirbnb = new Date().toLocaleString('pl-PL', {day:'2-digit',month:'2-digit',year:'numeric',hour:'2-digit',minute:'2-digit'});
+    } else {
+      apt.icalEvents = events;
+      apt.icalSynced = new Date().toLocaleString('pl-PL', {day:'2-digit',month:'2-digit',year:'numeric',hour:'2-digit',minute:'2-digit'});
+    }
     localStorage.setItem('apts', JSON.stringify(apartments));
     renderApts();
     showToast(apt.emoji + ' Pobrano ' + events.length + ' rezerwacji ✓');
   } catch(e) {
-    btn.textContent = '↻';
+    btn.innerHTML = '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg>';
     btn.disabled = false;
     showToast('Błąd: ' + e.message);
   }
@@ -2230,9 +2250,13 @@ function renderCalendar() {
     (apt && apt.bookings || []).forEach(b => {
       reservations.push({ from: b.from, to: b.to, color: 'manual' });
     });
-    // iCal bookings — merge consecutive events into blocks
+    // iCal bookings (Booking.com)
     (apt && apt.icalEvents || []).forEach(e => {
       reservations.push({ from: e.from, to: e.to, color: 'ical' });
+    });
+    // iCal bookings (Airbnb)
+    (apt && apt.icalEventsAirbnb || []).forEach(e => {
+      reservations.push({ from: e.from, to: e.to, color: 'airbnb' });
     });
   }
 
@@ -2267,8 +2291,9 @@ function renderCalendar() {
     if (chkRes && occRes) {
       const occActive = isActiveRes(occRes);
       const chkActive = isActiveRes(chkRes);
-      const occBg = occActive ? '#16a34a' : (occRes.color==='ical' ? '#1a3a6b' : '#1a1a1a');
-      const chkBg = chkActive ? '#16a34a' : (chkRes.color==='ical' ? '#1a3a6b' : '#1a1a1a');
+      const resColor = (res) => res.color==='ical' ? '#1a3a6b' : res.color==='airbnb' ? '#FF5A5F' : '#1a1a1a';
+      const occBg = occActive ? '#16a34a' : resColor(occRes);
+      const chkBg = chkActive ? '#16a34a' : resColor(chkRes);
       el.className = `cal-day${isToday ? ' today' : ''}`;
       el.innerHTML = `
         <div class="res-bar" style="left:0;right:88%;background:${chkBg};border-radius:0 6px 6px 0;top:20%;bottom:20%;position:absolute;"></div>
@@ -2277,7 +2302,7 @@ function renderCalendar() {
     } else if (chkRes || occRes) {
       const res = chkRes || occRes;
       const active = isActiveRes(res);
-      const colorClass = active ? 'res-active' : (res.color === 'ical' ? 'res-ical' : 'res-manual');
+      const colorClass = active ? 'res-active' : (res.color === 'ical' ? 'res-ical' : res.color === 'airbnb' ? 'res-airbnb' : 'res-manual');
       let shapeClass = '';
       if (chkRes) {
         shapeClass = 'res-left';
