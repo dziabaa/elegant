@@ -1132,6 +1132,55 @@ flex-shrink: 0;
 
 .booking-form { margin-bottom: 16px; }
 
+.booking-popup {
+position: fixed;
+inset: 0;
+background: rgba(0,0,0,0.6);
+z-index: 200;
+display: flex;
+align-items: center;
+justify-content: center;
+padding: 20px;
+}
+.booking-popup-box {
+background: #f0ede8;
+border-radius: 20px;
+padding: 24px;
+width: 100%;
+max-width: 360px;
+font-family: ‘DM Sans’, sans-serif;
+color: #1a1a1a;
+}
+.booking-popup-title {
+font-size: 16px;
+font-weight: 700;
+margin-bottom: 16px;
+display: flex;
+justify-content: space-between;
+align-items: center;
+}
+.booking-popup-close {
+background: none;
+border: none;
+font-size: 22px;
+color: #666660;
+cursor: pointer;
+line-height: 1;
+padding: 0;
+}
+.booking-popup-row {
+display: flex;
+gap: 8px;
+align-items: flex-start;
+padding: 8px 0;
+border-bottom: 1px solid #e0dbd4;
+font-size: 14px;
+}
+.booking-popup-row:last-child { border-bottom: none; }
+.booking-popup-icon { font-size: 16px; flex-shrink: 0; width: 22px; }
+.booking-popup-label { color: #666660; font-size: 11px; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 2px; }
+.booking-popup-val { font-weight: 500; }
+
 .booking-dates {
 display: flex;
 flex-direction: column;
@@ -2289,7 +2338,7 @@ function renderCalendar() {
     const apt = getApt(parseInt(aptId));
     // Manual bookings
     (apt && apt.bookings || []).forEach(b => {
-      reservations.push({ from: b.from, to: b.to, color: 'manual' });
+      reservations.push({ from: b.from, to: b.to, color: 'manual', booking: b });
     });
     // iCal bookings (Booking.com)
     (apt && apt.icalEvents || []).forEach(e => {
@@ -2358,10 +2407,45 @@ function renderCalendar() {
       el.className = `cal-day${isToday ? ' today' : ''}`;
       el.innerHTML = `<span class="day-num">${d}</span>`;
     }
+    // Click handler for manual reservations
+    if (occRes && occRes.color === 'manual' && occRes.booking) {
+      el.style.cursor = 'pointer';
+      el.addEventListener('click', () => showBookingPopup(occRes.booking));
+    } else if (chkRes && chkRes.color === 'manual' && chkRes.booking) {
+      el.style.cursor = 'pointer';
+      el.addEventListener('click', () => showBookingPopup(chkRes.booking));
+    }
+
     grid.appendChild(el);
   }
 
   renderBookingsList(aptId);
+}
+
+function showBookingPopup(b) {
+  const nights = b.nights || Math.round((new Date(b.to) - new Date(b.from)) / 86400000);
+  const rows = [
+    { icon: '📅', label: 'Termin', val: formatDate(b.from) + ' — ' + formatDate(b.to) + ' (' + nights + ' ' + (nights===1?'noc':nights<5?'noce':'nocy') + ')' },
+    b.guest  ? { icon: '👤', label: 'Gość', val: b.guest } : null,
+    b.phone  ? { icon: '📞', label: 'Telefon', val: b.phone } : null,
+    b.people ? { icon: '👥', label: 'Liczba gości', val: b.people } : null,
+    b.price  ? { icon: '💰', label: 'Cena', val: b.price + ' PLN' } : null,
+    b.note   ? { icon: '📝', label: 'Notatka', val: b.note } : null,
+  ].filter(Boolean);
+
+  document.getElementById('booking-popup-content').innerHTML = rows.map(r => `
+    <div class="booking-popup-row">
+      <div class="booking-popup-icon">${r.icon}</div>
+      <div>
+        <div class="booking-popup-label">${r.label}</div>
+        <div class="booking-popup-val">${r.val}</div>
+      </div>
+    </div>`).join('');
+  document.getElementById('booking-popup').style.display = 'flex';
+}
+
+function closeBookingPopup() {
+  document.getElementById('booking-popup').style.display = 'none';
 }
 
 function renderBookingsList(aptId) {
@@ -2468,6 +2552,16 @@ setTimeout(() => {
 }, 50);
 syncFromKV();
 </script>
+
+<div class="booking-popup" id="booking-popup" style="display:none">
+  <div class="booking-popup-box">
+    <div class="booking-popup-title">
+      <span>Rezerwacja</span>
+      <button class="booking-popup-close" onclick="closeBookingPopup()">×</button>
+    </div>
+    <div id="booking-popup-content"></div>
+  </div>
+</div>
 
 </body>
 </html>
