@@ -411,7 +411,8 @@ color: #1a1a1a;
 .apt-row {
 display: flex;
 align-items: center;
-gap: 10px;
+gap: 8px;
+overflow: hidden;
 }
 
 .apt-ical-row {
@@ -475,12 +476,13 @@ transition: opacity 0.2s;
 
 .apt-name {
 flex: 1;
+min-width: 0;
 font-size: 15px;
 font-weight: 500;
 outline: none;
 background: none;
 border: none;
-color: var(–text);
+color: #1a1a1a;
 font-family: ‘DM Sans’, sans-serif;
 }
 
@@ -502,17 +504,19 @@ transition: all 0.2s;
 .btn-template:hover { background: #e8e4dd; }
 
 .btn-remove {
-background: none;
-border: none;
-color: #aaa;
+background: #f0ede8;
+border: 1px solid #d0cbc3;
+border-radius: 8px;
+padding: 7px 10px;
+color: #1a1a1a;
 cursor: pointer;
-padding: 4px;
 display: flex;
 align-items: center;
 justify-content: center;
-transition: color 0.2s;
+transition: all 0.2s;
+flex-shrink: 0;
 }
-.btn-remove:hover { color: #e55; }
+.btn-remove:hover { background: #fde8e8; border-color: #e55; color: #e55; }
 
 .btn-add {
 width: 100%;
@@ -656,16 +660,16 @@ transition: opacity 0.2s;
 
 .btn-cancel {
 padding: 13px 20px;
-background: var(–card2);
-border: 1px solid var(–border);
+background: #e8e4dd;
+border: 1px solid #d0cbc3;
 border-radius: 12px;
-color: var(–text);
+color: #1a1a1a;
 font-size: 14px;
 cursor: pointer;
 font-family: ‘DM Sans’, sans-serif;
 transition: all 0.2s;
 }
-.btn-cancel:hover { background: #e8e4dd; }
+.btn-cancel:hover { background: #d0cbc3; }
 
 /* Toast */
 .toast {
@@ -736,6 +740,9 @@ font-size: 13px;
 font-weight: 600;
 color: #1a1a1a;
 margin-bottom: 8px;
+display: flex;
+align-items: center;
+gap: 8px;
 }
 
 /* iCal sync box */
@@ -1181,10 +1188,10 @@ color: #1a1a1a;
   </div>
 
   <div class="tabs">
-    <button class="tab active" id="tab-welcome" onclick="switchTab('welcome')">♡ Powitanie</button>
-    <button class="tab" id="tab-pin" onclick="switchTab('pin')">✈️ Wyślij PIN</button>
-    <button class="tab" id="tab-cal" onclick="switchTab('cal')">📅 Kalendarz</button>
-    <button class="tab" id="tab-apts" onclick="switchTab('apts')">⚙️ Ustawienia</button>
+    <button class="tab active" id="tab-welcome" onclick="switchTab('welcome')"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg> Powitanie</button>
+    <button class="tab" id="tab-pin" onclick="switchTab('pin')"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg> PIN</button>
+    <button class="tab" id="tab-cal" onclick="switchTab('cal')"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg> Kalendarz</button>
+    <button class="tab" id="tab-apts" onclick="switchTab('apts')"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg> Ustawienia</button>
   </div>
 
   <!-- WYŚLIJ PIN -->
@@ -1375,18 +1382,30 @@ color: #1a1a1a;
   </div>
 </div>
 
+<div class="modal-overlay" id="modal-confirm">
+  <div class="modal" style="max-width:320px;text-align:center">
+    <h3 style="margin-bottom:10px">Usuń apartament</h3>
+    <p id="confirm-apt-name" style="margin-bottom:20px;font-size:15px;color:#1a1a1a"></p>
+    <p style="margin-bottom:24px;font-size:13px">Tej operacji nie można cofnąć.</p>
+    <div class="modal-actions">
+      <button class="btn-cancel" onclick="closeConfirm()">Anuluj</button>
+      <button class="btn-save" style="background:#e55" onclick="confirmRemove()">Usuń</button>
+    </div>
+  </div>
+</div>
+
 <div class="toast" id="toast"></div>
 
 <script>
-const EMOJIS = ['☀️','🏔️','🌊','🌸','🏡','🌿','⭐','🌙','🔥','🎯'];
+const EMOJIS = ['🏠','🏡','🏢','🏬','🏨','🏩','🏪','🏰','🏯','🛖'];
 
 let apartments = JSON.parse(localStorage.getItem('apts') || 'null') || [
-  { id:1, name:'Elegant 1', emoji:'☀️',
+  { id:1, name:'Elegant 1', emoji:'🏠',
     welcomeTemplate: '☀️ Dzień dobry!\n\nSerdecznie witamy w Elegant 1! Cieszymy się, że do nas trafiłeś.\n\nJesteśmy do Twojej dyspozycji przez cały czas pobytu. Gdybyś potrzebował pomocy, skontaktuj się z nami.\n\nMiłego pobytu! 🏡',
     pinTemplate: 'Kod PIN do apartamentu: {PIN}\n\nProsimy wpisać kod na klawiaturze przy drzwiach wejściowych.\n\nW razie pytań jesteśmy do dyspozycji. Miłego pobytu! 🏡',
     pin: '1234'
   },
-  { id:2, name:'Elegant 2', emoji:'🏔️',
+  { id:2, name:'Elegant 2', emoji:'🏡',
     welcomeTemplate: '🏔️ Dzień dobry!\n\nSerdecznie witamy w Elegant 2! Cieszymy się, że do nas trafiłeś.\n\nJesteśmy do Twojej dyspozycji przez cały czas pobytu. Gdybyś potrzebował pomocy, skontaktuj się z nami.\n\nMiłego pobytu! 🏡',
     pinTemplate: 'Kod PIN do apartamentu: {PIN}\n\nProsimy wpisać kod na klawiaturze przy drzwiach wejściowych.\n\nW razie pytań jesteśmy do dyspozycji. Miłego pobytu! 🏡',
     pin: '5678'
@@ -1411,12 +1430,16 @@ function renderApts() {
     div.className = 'apt-item';
     div.innerHTML = `
       <div class="apt-row">
-        <span class="apt-emoji" onclick="cycleEmoji(${apt.id})" style="cursor:pointer" title="Zmień emoji">${apt.emoji}</span>
-        <input class="apt-name" value="${apt.name}" onchange="renameApt(${apt.id}, this.value)">
-        <button class="btn-template" onclick="openModal(${apt.id})"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg> Szablon</button>
-        <button class="btn-remove" onclick="removeApt(${apt.id})"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/><path d="M9 6V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/></svg></button>
+        <span class="apt-emoji" style="cursor:pointer" title="Zmień ikonę">${apt.emoji}</span>
+        <input class="apt-name" value="${apt.name}">
+        <button class="btn-template"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg> Szablon</button>
+        <button class="btn-remove"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/><path d="M9 6V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/></svg></button>
       </div>
     `;
+    div.querySelector('.apt-emoji').addEventListener('click', () => cycleEmoji(apt.id));
+    div.querySelector('.apt-name').addEventListener('change', e => renameApt(apt.id, e.target.value));
+    div.querySelector('.btn-template').addEventListener('click', () => openModal(apt.id));
+    div.querySelector('.btn-remove').addEventListener('click', () => removeApt(apt.id));
     list.appendChild(div);
   });
   renderIcalSection();
@@ -1532,9 +1555,24 @@ function renameApt(id, name) {
   save();
 }
 
+let _removeId = null;
 function removeApt(id) {
-  apartments = apartments.filter(a => a.id !== id);
+  const apt = getApt(id);
+  if (!apt) return;
+  _removeId = id;
+  document.getElementById('confirm-apt-name').textContent = apt.emoji + ' ' + apt.name;
+  document.getElementById('modal-confirm').classList.add('open');
+}
+function closeConfirm() {
+  document.getElementById('modal-confirm').classList.remove('open');
+  _removeId = null;
+}
+function confirmRemove() {
+  if (!_removeId) return;
+  apartments = apartments.filter(a => a.id !== _removeId);
+  closeConfirm();
   save();
+  showToast('Apartament usunięty');
 }
 
 function addApartment() {
