@@ -601,14 +601,16 @@ z-index: 101;
 }
 
 .modal h3 {
-font-family: ‘Playfair Display’, serif;
+font-family: ‘DM Sans’, sans-serif;
 font-size: 18px;
+font-weight: 700;
+color: #1a1a1a;
 margin-bottom: 6px;
 }
 
-.modal p { font-size: 13px; color: var(–muted); margin-bottom: 16px; }
+.modal p { font-family: ‘DM Sans’, sans-serif; font-size: 13px; color: #666660; margin-bottom: 16px; }
 
-.modal label { font-size: 11px; font-weight: 600; letter-spacing: 1px; color: var(–muted); text-transform: uppercase; display: block; margin-bottom: 6px; }
+.modal label { font-family: ‘DM Sans’, sans-serif; font-size: 11px; font-weight: 600; letter-spacing: 1px; color: #666660; text-transform: uppercase; display: block; margin-bottom: 6px; }
 
 #modal-welcome, #modal-welcome-en, #modal-welcome-uk, #modal-pin {
 width: 100%;
@@ -620,12 +622,12 @@ color: #1a1a1a;
 font-size: 13px;
 line-height: 1.65;
 font-family: ‘DM Sans’, sans-serif;
-resize: vertical;
+resize: none;
 outline: none;
-height: 100px;
-max-height: 150px;
+min-height: 80px;
+height: auto;
 margin-bottom: 14px;
-overflow-y: auto;
+overflow: hidden;
 box-sizing: border-box;
 }
 #modal-welcome:focus, #modal-welcome-en:focus, #modal-welcome-uk:focus, #modal-pin:focus {
@@ -1829,6 +1831,13 @@ function openModal(id) {
   document.getElementById('modal-welcome-uk').value = apt.welcomeTemplateUk || '';
   document.getElementById('modal-pin').value = apt.pinTemplate;
   document.getElementById('modal').classList.add('open');
+  setTimeout(() => {
+    ['modal-welcome','modal-welcome-en','modal-welcome-uk','modal-pin'].forEach(fid => {
+      const el = document.getElementById(fid);
+      autoResize(el);
+      el.oninput = () => autoResize(el);
+    });
+  }, 50);
 }
 
 function closeModal() {
