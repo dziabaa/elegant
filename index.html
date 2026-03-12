@@ -2090,8 +2090,8 @@ function renderCalendar() {
       el.style.borderTop = '0.5px solid rgba(255,255,255,0.15)';
       el.style.borderBottom = '0.5px solid rgba(255,255,255,0.15)';
       el.innerHTML = `
-        <div class="res-bar" style="left:0;right:88%;background:${chkRes.color==='ical'?'#1a3a6b':'#1a1a1a'};border-radius:0 6px 6px 0;top:25%;bottom:25%;position:absolute;"></div>
-        <div class="res-bar" style="left:30%;right:0;background:${occRes.color==='ical'?'#1a3a6b':'#1a1a1a'};border-radius:6px 0 0 6px;top:25%;bottom:25%;position:absolute;"></div>
+        <div class="res-bar" style="left:0;right:88%;background:${chkRes.color==='ical'?'#1a3a6b':'#1a1a1a'};border-radius:0 6px 6px 0;top:20%;bottom:20%;position:absolute;"></div>
+        <div class="res-bar" style="left:30%;right:0;background:${occRes.color==='ical'?'#1a3a6b':'#1a1a1a'};border-radius:6px 0 0 6px;top:20%;bottom:20%;position:absolute;"></div>
         <span class="day-num" style="position:absolute;left:50%;transform:translate(-50%,-50%);top:50%;z-index:2;color:#fff;font-weight:700;font-size:13px;">${d}</span>`;
     } else if (chkRes || occRes) {
       const res = chkRes || occRes;
