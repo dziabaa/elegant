@@ -1682,7 +1682,7 @@ function save() {
   syncToKV();
 }
 
-function getApt(id) { return apartments.find(a => a.id === id); }
+function getApt(id) { return apartments.find(a => a.id == id); }
 
 function renderApts() {
   const list = document.getElementById('apt-list');
