@@ -1334,14 +1334,17 @@ flex-shrink: 0;
 .booking-del {
 background: none;
 border: none;
-color: var(–muted);
-font-size: 18px;
+color: #aaa;
 cursor: pointer;
-padding: 2px 6px;
-transition: color 0.2s;
-line-height: 1;
+padding: 4px;
+border-radius: 8px;
+display: flex;
+align-items: center;
+justify-content: center;
+flex-shrink: 0;
+transition: color 0.2s, background 0.2s;
 }
-.booking-del:hover { color: #e55; }
+.booking-del:hover { color: #dc2626; background: #fee2e2; }
 
 .panel { display: none; }
 .panel.active {
@@ -2573,7 +2576,7 @@ function bookingCardHtml(b, deleteCall) {
     <div class="bcard-top">
       <div class="bcard-dates">${formatDate(b.from)} — ${formatDate(b.to)}</div>
       <div class="bcard-nights">${nights} ${noc}</div>
-      <button class="booking-del" onclick="${deleteCall}">×</button>
+      <button class="booking-del" onclick="confirmDeleteBooking(()=>{${deleteCall}})"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/><path d="M9 6V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/></svg></button>
     </div>
     ${b.guest || b.phone ? `<div class="bcard-person">
       ${b.guest ? `<span class="bcard-name">👤 ${b.guest}</span>` : ''}
@@ -2604,6 +2607,21 @@ function renderResList() {
     html = '<div style="font-size:13px;color:#999;text-align:center;padding:16px 0">Brak rezerwacji ręcznych</div>';
   }
   list.innerHTML = html;
+}
+
+let _pendingDeleteBooking = null;
+function confirmDeleteBooking(fn) {
+  _pendingDeleteBooking = fn;
+  const overlay = document.getElementById('modal-confirm-booking');
+  overlay.classList.add('open');
+}
+function closeConfirmBooking() {
+  document.getElementById('modal-confirm-booking').classList.remove('open');
+  _pendingDeleteBooking = null;
+}
+function doDeleteBooking() {
+  if (_pendingDeleteBooking) _pendingDeleteBooking();
+  closeConfirmBooking();
 }
 
 function deleteBookingRes(aptId, index) {
@@ -2730,6 +2748,18 @@ syncFromKV();
     <div class="modal-actions">
       <button class="btn-cancel" onclick="closeBookingModal()">Anuluj</button>
       <button class="btn-save" onclick="addBooking()">Dodaj</button>
+    </div>
+  </div>
+</div>
+
+<div class="modal-overlay" id="modal-confirm-booking">
+  <div class="modal" style="text-align:center;padding:28px 24px">
+    <div style="font-size:36px;margin-bottom:12px">🗑️</div>
+    <h3 style="margin-bottom:8px">Usunąć rezerwację?</h3>
+    <p style="font-size:14px;color:#666660;margin-bottom:20px">Tej operacji nie można cofnąć.</p>
+    <div class="modal-actions">
+      <button class="btn-cancel" onclick="closeConfirmBooking()">Anuluj</button>
+      <button class="btn-save" style="background:#dc2626;border:none;font-family:'DM Sans',sans-serif" onclick="doDeleteBooking()">Usuń</button>
     </div>
   </div>
 </div>
