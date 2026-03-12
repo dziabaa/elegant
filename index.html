@@ -2693,7 +2693,7 @@ function openEditBooking(aptId, index) {
 
   const sel = document.getElementById('modal-booking-apt-select');
   sel.innerHTML = apartments.map(a => `<option value="${a.id}" ${a.id == aptId ? 'selected' : ''}>${a.emoji} ${a.name}</option>`).join('');
-  sel.disabled = true;
+  sel.disabled = false;
 
   document.getElementById('book-from').value = b.from || '';
   document.getElementById('book-to').value = b.to || '';
@@ -2715,10 +2715,11 @@ function saveEditBooking() {
   const to = document.getElementById('book-to').value;
   if (!from || !to) { showToast('Wybierz daty'); return; }
   if (from >= to) { showToast('Data "od" musi być przed "do"'); return; }
-  const apt = getApt(_editAptId);
-  if (!apt) return;
+  const newAptId = document.getElementById('modal-booking-apt-select').value;
+  const oldApt = getApt(_editAptId);
+  if (!oldApt) return;
   const nights = Math.round((new Date(to) - new Date(from)) / 86400000);
-  apt.bookings[_editIndex] = {
+  const updated = {
     from, to, nights,
     guest:  document.getElementById('book-guest').value.trim(),
     phone:  document.getElementById('book-phone').value.trim(),
@@ -2726,6 +2727,12 @@ function saveEditBooking() {
     price:  document.getElementById('book-price').value ? parseFloat(document.getElementById('book-price').value) : null,
     note:   document.getElementById('book-note').value.trim(),
   };
+  // Remove from old apt
+  oldApt.bookings.splice(_editIndex, 1);
+  // Add to new apt (may be same)
+  const newApt = getApt(newAptId);
+  if (!newApt.bookings) newApt.bookings = [];
+  newApt.bookings.push(updated);
   save();
   closeBookingModal();
   renderResList();
