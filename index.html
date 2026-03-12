@@ -955,9 +955,9 @@ justify-content: center;
 font-size: 13px;
 font-weight: 500;
 cursor: default;
-color: var(–text);
-border: 0.5px solid rgba(255,255,255,0.15);
-background: var(–bg);
+color: #1a1a1a;
+border: 0.5px solid rgba(0,0,0,0.12);
+background: #f0ede8;
 position: relative;
 margin-bottom: -0.5px;
 }
@@ -971,26 +971,24 @@ border-color: transparent;
 position: relative;
 z-index: 2;
 line-height: 1;
-width: 28px; height: 28px;
-display: flex; align-items: center; justify-content: center;
 }
 
 /* Reservation cells - all borders gray */
 .cal-day.res {
 background: transparent;
-border-color: rgba(255,255,255,0.15);
+border-color: rgba(0,0,0,0.12);
 }
 .cal-day.res-ical  { border-left-color: #1a3a6b; border-right-color: #1a3a6b; }
 .cal-day.res-manual{ border-left-color: #1a1a1a; border-right-color: #1a1a1a; }
 .cal-day.res-left.res-ical,
-.cal-day.res-left.res-manual  { border-left-color: rgba(255,255,255,0.15); border-right-color: rgba(255,255,255,0.15); }
+.cal-day.res-left.res-manual  { border-left-color: rgba(0,0,0,0.12); border-right-color: rgba(0,0,0,0.12); }
 .cal-day.res-right.res-ical,
-.cal-day.res-right.res-manual { border-left-color: rgba(255,255,255,0.15); border-right-color: rgba(255,255,255,0.15); }
+.cal-day.res-right.res-manual { border-left-color: rgba(0,0,0,0.12); border-right-color: rgba(0,0,0,0.12); }
 
 /* Bar */
 .res-bar {
 position: absolute;
-top: 25%; bottom: 25%;
+top: 20%; bottom: 20%;
 z-index: 0;
 pointer-events: none;
 }
@@ -1002,40 +1000,37 @@ pointer-events: none;
 .cal-day.res-ical   .res-bar { background: #1a3a6b; }
 .cal-day.res-manual .res-bar { background: #1a1a1a; }
 
-/* Number circle — only on reservation days */
+/* Number on reservation days — circle, absolutely centered */
 .cal-day.res .day-num {
 position: absolute;
 z-index: 2;
-width: 30px; height: 30px;
+width: 26px; height: 26px;
 display: flex; align-items: center; justify-content: center;
 border-radius: 50%;
 font-weight: 700; font-size: 13px;
 top: 50%; left: 50%; transform: translate(-50%, -50%);
 }
-
-/* Occupied days: colored circle, white text */
 .cal-day.res-ical:not(.res-left)   .day-num { background: #1a3a6b; color: #fff; }
 .cal-day.res-manual:not(.res-left) .day-num { background: #1a1a1a; color: #fff; }
-
-/* Checkout: no circle, normal text */
 .cal-day.res-left .day-num { background: transparent; color: #1a1a1a; font-weight: 500; }
 
-/* Free day number — no circle, no background */
+/* Free day number — plain text, no circle */
 .cal-day:not(.res) .day-num {
 color: #1a1a1a;
 background: transparent;
-border-radius: 0;
 width: auto; height: auto;
+border-radius: 0;
 }
+
+/* Today */
 .cal-day.today:not(.res) .day-num {
 background: #D23249; color: #fff; border-radius: 50%;
-width: 28px; height: 28px;
+width: 26px; height: 26px;
 display: flex; align-items: center; justify-content: center;
 font-weight: 700;
 }
 .cal-day.today.res .day-num {
 background: #D23249 !important; color: #fff !important;
-}
 }
 
 .cal-day.res::before { content: none; }
