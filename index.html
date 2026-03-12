@@ -1053,6 +1053,7 @@ pointer-events: none;
 
 .cal-day.res-ical   .res-bar { background: #1a3a6b; }
 .cal-day.res-manual .res-bar { background: #1a1a1a; }
+.cal-day.res-active .res-bar { background: #16a34a !important; }
 
 /* Number on reservation days — circle, absolutely centered */
 .cal-day.res .day-num {
@@ -1066,6 +1067,7 @@ top: 50%; left: 50%; transform: translate(-50%, -50%);
 }
 .cal-day.res-ical:not(.res-left)   .day-num { background: #1a3a6b; color: #fff; }
 .cal-day.res-manual:not(.res-left) .day-num { background: #1a1a1a; color: #fff; }
+.cal-day.res-active:not(.res-left) .day-num { background: #16a34a !important; color: #fff !important; }
 .cal-day.res-left .day-num { background: transparent; color: #1a1a1a; font-weight: 500; }
 
 /* Free day number — plain text, no circle */
@@ -1111,6 +1113,7 @@ flex-shrink: 0;
 }
 .legend-dot.occupied { background: #1a1a1a; }
 .legend-dot.ical { background: #1a3a6b; }
+.legend-dot.active-res { background: #16a34a; }
 .legend-dot.free { background: var(–card); border: 1px solid var(–border); }
 
 .booking-form { margin-bottom: 16px; }
@@ -1390,6 +1393,7 @@ color: #1a1a1a;
 <div class="cal-legend">
   <span class="legend-dot occupied"></span> Zajęty (ręcznie)
   <span class="legend-dot ical"></span> Booking.com
+  <span class="legend-dot active-res"></span> Trwa teraz
   <span class="legend-dot free"></span> Wolny
 </div>
 
@@ -2193,17 +2197,23 @@ function renderCalendar() {
     const chkRes = reservations.find(r => ds === r.to);
     const occRes = reservations.find(r => ds >= r.from && ds < r.to);
 
+    // A reservation is "active" (ongoing today) if today falls within it
+    const isActiveRes = (res) => res && todayStr >= res.from && todayStr < res.to;
+
     if (chkRes && occRes) {
-      const chkColor = chkRes.color === 'ical' ? 'res-ical' : 'res-manual';
-      const occColor = occRes.color === 'ical' ? 'res-ical' : 'res-manual';
+      const occActive = isActiveRes(occRes);
+      const chkActive = isActiveRes(chkRes);
+      const occBg = occActive ? '#16a34a' : (occRes.color==='ical' ? '#1a3a6b' : '#1a1a1a');
+      const chkBg = chkActive ? '#16a34a' : (chkRes.color==='ical' ? '#1a3a6b' : '#1a1a1a');
       el.className = `cal-day${isToday ? ' today' : ''}`;
       el.innerHTML = `
-        <div class="res-bar" style="left:0;right:88%;background:${chkRes.color==='ical'?'#1a3a6b':'#1a1a1a'};border-radius:0 6px 6px 0;top:20%;bottom:20%;position:absolute;"></div>
-        <div class="res-bar" style="left:30%;right:0;background:${occRes.color==='ical'?'#1a3a6b':'#1a1a1a'};border-radius:6px 0 0 6px;top:20%;bottom:20%;position:absolute;"></div>
+        <div class="res-bar" style="left:0;right:88%;background:${chkBg};border-radius:0 6px 6px 0;top:20%;bottom:20%;position:absolute;"></div>
+        <div class="res-bar" style="left:30%;right:0;background:${occBg};border-radius:6px 0 0 6px;top:20%;bottom:20%;position:absolute;"></div>
         <span class="day-num" style="position:absolute;left:50%;transform:translate(-50%,-50%);top:50%;z-index:2;color:#fff;font-weight:700;font-size:13px;">${d}</span>`;
     } else if (chkRes || occRes) {
       const res = chkRes || occRes;
-      const colorClass = res.color === 'ical' ? 'res-ical' : 'res-manual';
+      const active = isActiveRes(res);
+      const colorClass = active ? 'res-active' : (res.color === 'ical' ? 'res-ical' : 'res-manual');
       let shapeClass = '';
       if (chkRes) {
         shapeClass = 'res-left';
