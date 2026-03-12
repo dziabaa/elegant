@@ -978,12 +978,10 @@ line-height: 1;
 background: transparent;
 border-color: rgba(0,0,0,0.12);
 }
-.cal-day.res-ical  { border-left-color: #1a3a6b; border-right-color: #1a3a6b; }
-.cal-day.res-manual{ border-left-color: #1a1a1a; border-right-color: #1a1a1a; }
-.cal-day.res-left.res-ical,
-.cal-day.res-left.res-manual  { border-left-color: rgba(0,0,0,0.12); border-right-color: rgba(0,0,0,0.12); }
-.cal-day.res-right.res-ical,
-.cal-day.res-right.res-manual { border-left-color: rgba(0,0,0,0.12); border-right-color: rgba(0,0,0,0.12); }
+.cal-day.res-ical  { border-left-color: rgba(0,0,0,0.12); border-right-color: rgba(0,0,0,0.12); }
+.cal-day.res-manual{ border-left-color: rgba(0,0,0,0.12); border-right-color: rgba(0,0,0,0.12); }
+.cal-day.res-mid.res-ical   { border-left-color: #1a3a6b; border-right-color: #1a3a6b; }
+.cal-day.res-mid.res-manual { border-left-color: #1a1a1a; border-right-color: #1a1a1a; }
 
 /* Bar */
 .res-bar {
@@ -1714,7 +1712,6 @@ function switchTab(tab) {
 
 async function syncAllIcal() {
   const apts = apartments.filter(a => a.icalUrl);
-  alert('syncAllIcal: ' + apts.length + ' apt(s) z iCal URL');
   if (apts.length === 0) return;
   showToast('🔄 Synchronizuję kalendarze...');
   let updated = 0;
