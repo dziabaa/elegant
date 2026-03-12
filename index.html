@@ -2519,9 +2519,8 @@ function renderCalendar() {
 
 function openBookingModal(aptIdOverride) {
   const aptId = aptIdOverride || getCalAptId() || (apartments[0] ? apartments[0].id : '');
-  const apt = getApt(aptId);
-  document.getElementById('modal-booking-apt').textContent = apt ? apt.emoji + ' ' + apt.name : '';
-  document.getElementById('modal-booking').dataset.aptId = aptId;
+  const sel = document.getElementById('modal-booking-apt-select');
+  sel.innerHTML = apartments.map(a => `<option value="${a.id}" ${a.id == aptId ? 'selected' : ''}>${a.emoji} ${a.name}</option>`).join('');
   document.getElementById('book-from').value = '';
   document.getElementById('book-to').value = '';
   document.getElementById('book-guest').value = '';
@@ -2675,8 +2674,7 @@ function updateNights() {
 }
 
 function addBooking() {
-  const modal = document.getElementById('modal-booking');
-  const aptId = modal.dataset.aptId || getCalAptId();
+  const aptId = document.getElementById('modal-booking-apt-select').value;
   const from = document.getElementById('book-from').value;
   const to = document.getElementById('book-to').value;
   const guest = document.getElementById('book-guest').value.trim();
@@ -2859,7 +2857,11 @@ syncFromKV();
 <div class="modal-overlay" id="modal-booking">
   <div class="modal" style="width:calc(100% - 32px);max-width:400px;max-height:90vh;overflow-y:auto">
     <h3>Nowa rezerwacja</h3>
-    <p id="modal-booking-apt" style="font-weight:600;margin-bottom:16px;font-family:'DM Sans',sans-serif;color:#1a1a1a;font-size:14px;margin-top:-2px"></p>
+    <div style="position:relative;margin-bottom:16px">
+      <select id="modal-booking-apt-select" style="width:100%;background:#e8e4de;border:1px solid #d0cbc3;border-radius:12px;padding:0 14px;height:48px;color:#1a1a1a;font-size:14px;font-family:'DM Sans',sans-serif;outline:none;-webkit-appearance:none;appearance:none;box-sizing:border-box">
+      </select>
+      <svg style="position:absolute;right:12px;top:50%;transform:translateY(-50%);pointer-events:none" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#666660" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+    </div>
     <div style="display:flex;gap:10px;margin-bottom:4px">
       <div class="bm-field" style="flex:1;position:relative">
         <input type="date" id="book-from" onchange="updateNights()" style="width:100%;box-sizing:border-box;padding:20px 12px 6px;height:48px;background:#e8e4de;border:1px solid #d0cbc3;border-radius:12px;font-size:14px;font-family:'DM Sans',sans-serif;color:#1a1a1a;outline:none;appearance:none;-webkit-appearance:none">
