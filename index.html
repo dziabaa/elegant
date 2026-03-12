@@ -1115,6 +1115,77 @@ border-radius: 12px;
 padding: 10px 14px;
 }
 
+.view-toggle {
+flex: 1;
+padding: 10px;
+border: 1.5px solid #d0cbc3;
+border-radius: 12px;
+background: #f0ede8;
+color: #666660;
+font-size: 13px;
+font-family: ‘DM Sans’, sans-serif;
+font-weight: 500;
+cursor: pointer;
+transition: all 0.15s;
+}
+.view-toggle.active {
+background: #242424;
+color: #fff;
+border-color: #242424;
+font-weight: 600;
+}
+
+/* Gantt */
+.gantt-wrap { min-width: 600px; }
+.gantt-header-row {
+display: grid;
+align-items: center;
+border-bottom: 2px solid #d0cbc3;
+margin-bottom: 4px;
+}
+.gantt-day-label {
+text-align: center;
+font-size: 10px;
+font-weight: 700;
+color: #888;
+padding: 4px 0;
+border-left: 1px solid #e0dbd4;
+}
+.gantt-day-label.today { color: #fff; background: #242424; border-radius: 6px; }
+.gantt-row {
+display: grid;
+align-items: center;
+margin-bottom: 6px;
+}
+.gantt-apt-label {
+font-size: 12px;
+font-weight: 600;
+color: #1a1a1a;
+white-space: nowrap;
+overflow: hidden;
+text-overflow: ellipsis;
+padding-right: 8px;
+}
+.gantt-cell {
+height: 32px;
+border-left: 1px solid #e8e4de;
+position: relative;
+}
+.gantt-bar {
+position: absolute;
+top: 4px; bottom: 4px;
+border-radius: 6px;
+z-index: 1;
+}
+.gantt-today-line {
+position: absolute;
+top: 0; bottom: 0;
+width: 2px;
+background: #242424;
+z-index: 5;
+pointer-events: none;
+}
+
 .legend-dot {
 display: inline-block;
 width: 10px; height: 10px;
@@ -1279,7 +1350,7 @@ gap: 6px 12px;
 margin-top: 6px;
 }
 .bcard-name { font-size: 13px; color: #1a1a1a; font-weight: 500; }
-.bcard-phone { font-size: 13px; color: #444; }
+.bcard-phone { font-size: 13px; color: #444; text-decoration: none; }
 .bcard-chips {
 display: flex;
 flex-wrap: wrap;
@@ -1578,18 +1649,36 @@ color: #1a1a1a;
     </div>
 
 ```
-<div class="cal-header">
-  <button class="cal-nav" onclick="changeMonth(-1)">‹</button>
-  <div class="cal-title" id="cal-title"></div>
-  <button class="cal-nav" onclick="changeMonth(1)">›</button>
+<div style="display:flex;gap:8px;margin-bottom:12px">
+  <button id="btn-view-month" class="view-toggle active" onclick="setCalView('month')">📅 Miesięczny</button>
+  <button id="btn-view-gantt" class="view-toggle" onclick="setCalView('gantt')">📊 Gantt</button>
 </div>
-<div class="cal-grid" id="cal-grid"></div>
-<div class="cal-legend">
-  <span class="legend-dot occupied"></span> Zajęty (ręcznie)
-  <span class="legend-dot ical"></span> Booking.com
-  <span class="legend-dot airbnb"></span> Airbnb
-  <span class="legend-dot active-res"></span> Trwa teraz
-  <span class="legend-dot free"></span> Wolny
+
+<!-- MONTHLY VIEW -->
+<div id="cal-monthly-view">
+  <div class="cal-header">
+    <button class="cal-nav" onclick="changeMonth(-1)">‹</button>
+    <div class="cal-title" id="cal-title"></div>
+    <button class="cal-nav" onclick="changeMonth(1)">›</button>
+  </div>
+  <div class="cal-grid" id="cal-grid"></div>
+  <div class="cal-legend">
+    <span class="legend-dot occupied"></span> Zajęty (ręcznie)
+    <span class="legend-dot ical"></span> Booking.com
+    <span class="legend-dot airbnb"></span> Airbnb
+    <span class="legend-dot active-res"></span> Trwa teraz
+    <span class="legend-dot free"></span> Wolny
+  </div>
+</div>
+
+<!-- GANTT VIEW -->
+<div id="cal-gantt-view" style="display:none">
+  <div class="cal-header">
+    <button class="cal-nav" onclick="changeGanttMonth(-1)">‹</button>
+    <div class="cal-title" id="gantt-title"></div>
+    <button class="cal-nav" onclick="changeGanttMonth(1)">›</button>
+  </div>
+  <div id="gantt-container" style="overflow-x:auto;-webkit-overflow-scrolling:touch"></div>
 </div>
 ```
 
@@ -2092,7 +2181,8 @@ function switchTab(tab) {
   if (tab === 'cal') {
     if (!getCalAptId() && apartments.length > 0) setCalAptId(apartments[0].id);
     renderCalAptPills();
-    renderCalendar();
+    if (calView === 'gantt') renderGantt();
+    else renderCalendar();
     syncAllIcal();
   }
   if (tab === 'clean') {
@@ -2790,6 +2880,121 @@ function deleteBooking(aptId, index) {
   renderCalendar();
   showToast('Usunięto ✓');
 }
+// ─── GANTT VIEW ──────────────────────────────────────
+let ganttOffset = -2; // days from today (negative = past)
+let calView    = 'month';
+
+function setCalView(view) {
+  calView = view;
+  document.getElementById('btn-view-month').classList.toggle('active', view === 'month');
+  document.getElementById('btn-view-gantt').classList.toggle('active', view === 'gantt');
+  document.getElementById('cal-monthly-view').style.display = view === 'month' ? '' : 'none';
+  document.getElementById('cal-gantt-view').style.display   = view === 'gantt'  ? '' : 'none';
+  if (view === 'gantt') renderGantt();
+  else renderCalendar();
+}
+
+function changeGanttMonth(dir) {
+  ganttOffset += dir * 30;
+  renderGantt();
+}
+
+function renderGantt() {
+  const container = document.getElementById('gantt-container');
+  if (!container) return;
+
+  const today = new Date();
+  const todayStr = dateStr(today.getFullYear(), today.getMonth(), today.getDate());
+
+  // Start from today + ganttOffset days, show 30 days
+  const DAYS_SHOWN = 30;
+  const startDate = new Date(today.getFullYear(), today.getMonth(), today.getDate() + ganttOffset);
+  const startStr = dateStr(startDate.getFullYear(), startDate.getMonth(), startDate.getDate());
+
+  // End date
+  const endDate = new Date(startDate);
+  endDate.setDate(endDate.getDate() + DAYS_SHOWN - 1);
+  const endStr = dateStr(endDate.getFullYear(), endDate.getMonth(), endDate.getDate());
+
+  // Update title
+  const titleEl = document.getElementById('gantt-title');
+  if (titleEl) titleEl.textContent = `${formatDate(startStr)} — ${formatDate(endStr)}`;
+
+  const APT_COL = 80;
+  const gridCols = `${APT_COL}px repeat(${DAYS_SHOWN}, 1fr)`;
+
+  // Build day list
+  const days = [];
+  for (let i = 0; i < DAYS_SHOWN; i++) {
+    const d = new Date(startDate);
+    d.setDate(d.getDate() + i);
+    days.push(dateStr(d.getFullYear(), d.getMonth(), d.getDate()));
+  }
+
+  // Header
+  let headerCells = `<div style="font-size:10px;color:#aaa"></div>`;
+  days.forEach(ds => {
+    const isToday = ds === todayStr;
+    const d = new Date(ds);
+    const day = d.getDate();
+    const dow = ['Nd','Pn','Wt','Śr','Cz','Pt','So'][d.getDay()];
+    const isSun = d.getDay() === 0;
+    headerCells += `<div class="gantt-day-label${isToday ? ' today' : ''}" style="${isSun ? 'color:#ef4444' : ''}">${day}<br><span style="font-weight:400;font-size:9px">${dow}</span></div>`;
+  });
+
+  const resColor = (res) => res.color === 'ical' ? '#1a3a6b' : res.color === 'airbnb' ? '#FF5A5F' : '#1a1a1a';
+
+  let rows = '';
+  apartments.forEach(apt => {
+    const reservations = [
+      ...(apt.bookings || []).map(b => ({ from: b.from, to: b.to, color: 'manual' })),
+      ...(apt.icalEvents || []).map(e => ({ from: e.from, to: e.to, color: 'ical' })),
+      ...(apt.icalEventsAirbnb || []).map(e => ({ from: e.from, to: e.to, color: 'airbnb' })),
+    ];
+
+    let cells = `<div class="gantt-apt-label">${apt.emoji} ${apt.name}</div>`;
+    days.forEach(ds => {
+      const isToday = ds === todayStr;
+      const d = new Date(ds);
+      const isSun = d.getDay() === 0;
+      cells += `<div class="gantt-cell" style="${isToday ? 'background:rgba(0,0,0,0.05);' : ''}${isSun ? 'background:#fef2f2;' : ''}"></div>`;
+    });
+
+    const bars = reservations.map(res => {
+      const barFrom = res.from < startStr ? startStr : res.from;
+      const barTo   = res.to   > endStr   ? endStr   : res.to;
+      if (barFrom > endStr || barTo < startStr) return '';
+      const fi = Math.round((new Date(barFrom) - startDate) / 86400000);
+      const ti = Math.round((new Date(barTo)   - startDate) / 86400000);
+      if (fi >= DAYS_SHOWN || ti < 0) return '';
+      const fiC = Math.max(0, fi);
+      const tiC = Math.min(DAYS_SHOWN - 1, ti);
+      const left  = (fiC / DAYS_SHOWN * 100).toFixed(2);
+      const width = ((tiC - fiC + 1) / DAYS_SHOWN * 100).toFixed(2);
+      const isActive = todayStr >= res.from && todayStr < res.to;
+      const bg = isActive ? '#16a34a' : resColor(res);
+      return `<div class="gantt-bar" style="left:${left}%;width:${width}%;background:${bg};opacity:0.9"></div>`;
+    }).join('');
+
+    rows += `<div class="gantt-row" style="grid-template-columns:${gridCols};position:relative">
+      ${cells}
+      <div style="position:absolute;left:${APT_COL}px;right:0;top:0;bottom:0;pointer-events:none">${bars}</div>
+    </div>`;
+  });
+
+  // Today line
+  const todayIdx = days.indexOf(todayStr);
+  const todayLine = todayIdx >= 0
+    ? `<div class="gantt-today-line" style="left:calc(${APT_COL}px + ${((todayIdx + 0.5) / DAYS_SHOWN * 100).toFixed(2)}%)"></div>`
+    : '';
+
+  container.innerHTML = `<div class="gantt-wrap" style="position:relative">
+    <div class="gantt-header-row" style="grid-template-columns:${gridCols}">${headerCells}</div>
+    ${rows}
+    ${todayLine}
+  </div>`;
+}
+
 // ─── CLEANING CALENDAR ───────────────────────────────
 let cleanYear  = new Date().getFullYear();
 let cleanMonth = new Date().getMonth();
