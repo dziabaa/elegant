@@ -578,9 +578,11 @@ display: none;
 position: fixed; inset: 0;
 background: rgba(0,0,0,0.75);
 z-index: 100;
-align-items: center;
+align-items: flex-start;
 justify-content: center;
 padding: 16px;
+overflow-y: auto;
+-webkit-overflow-scrolling: touch;
 }
 .modal-overlay.open { display: flex; }
 
@@ -591,9 +593,8 @@ border-radius: 20px;
 padding: 24px;
 width: 100%;
 max-width: 400px;
-max-height: 85vh;
-overflow-y: auto;
--webkit-overflow-scrolling: touch;
+margin: auto;
+flex-shrink: 0;
 }
 
 .modal h3 {
