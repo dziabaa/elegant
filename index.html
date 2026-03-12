@@ -578,23 +578,26 @@ display: none;
 position: fixed; inset: 0;
 background: rgba(0,0,0,0.75);
 z-index: 100;
-align-items: flex-start;
 justify-content: center;
-padding: 16px;
+align-items: center;
+padding: 20px 16px;
 overflow-y: auto;
 -webkit-overflow-scrolling: touch;
+box-sizing: border-box;
 }
 .modal-overlay.open { display: flex; }
 
 .modal {
-background: var(–card);
-border: 1px solid var(–border);
+background: #f0ede8;
+border: 1px solid #d0cbc3;
 border-radius: 20px;
 padding: 24px;
 width: 100%;
 max-width: 400px;
-margin: auto;
-flex-shrink: 0;
+max-height: 80vh;
+overflow-y: auto;
+position: relative;
+z-index: 101;
 }
 
 .modal h3 {
