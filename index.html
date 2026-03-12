@@ -182,6 +182,8 @@ background: var(–card2);
 border: 1px solid var(–border);
 border-radius: 14px;
 overflow: hidden;
+height: 52px;
+box-sizing: border-box;
 }
 
 .input-wrap input {
@@ -217,7 +219,8 @@ width: 100%;
 background: var(–card2);
 border: 1px solid var(–border);
 border-radius: 14px;
-padding: 14px 16px;
+padding: 0 16px;
+height: 52px;
 color: var(–text);
 font-family: ‘DM Sans’, sans-serif;
 font-size: 15px;
@@ -227,6 +230,7 @@ appearance: none;
 background-image: url(“data:image/svg+xml,%3Csvg xmlns=‘http://www.w3.org/2000/svg’ width=‘12’ height=‘8’ viewBox=‘0 0 12 8’%3E%3Cpath d=‘M1 1l5 5 5-5’ stroke=’%23666’ stroke-width=‘1.5’ fill=‘none’ stroke-linecap=‘round’/%3E%3C/svg%3E”);
 background-repeat: no-repeat;
 background-position: right 16px center;
+box-sizing: border-box;
 }
 
 select option { background: var(–card); color: var(–text); }
@@ -920,36 +924,39 @@ white-space: nowrap;
 display: flex;
 gap: 4px;
 margin-bottom: 12px;
-background: #242424;
+background: #e8e4dd;
 border-radius: 14px;
-padding: 6px;
+padding: 5px;
 flex-wrap: wrap;
 }
 .cal-apt-pill {
 flex: 1;
-padding: 10px;
-background: rgba(255,255,255,0.06);
-border: 1px solid rgba(255,255,255,0.1);
+padding: 10px 8px;
+background: transparent;
+border: none;
 border-radius: 10px;
-color: rgba(255,255,255,0.65);
+color: #666660;
 font-size: 13px;
 font-weight: 600;
 cursor: pointer;
 font-family: ‘DM Sans’, sans-serif;
 transition: all 0.2s;
-min-height: 40px;
 display: flex;
 align-items: center;
 justify-content: center;
 white-space: nowrap;
+gap: 6px;
 }
 .cal-apt-pill.active {
-background: var(–card);
+background: #ffffff;
 border-color: transparent;
 color: #1a1a1a;
-box-shadow: 0 2px 10px rgba(0,0,0,0.25);
+box-shadow: 0 2px 8px rgba(0,0,0,0.1);
 }
 .cal-apt-pill:hover:not(.active) {
+background: rgba(0,0,0,0.05);
+color: #1a1a1a;
+}
 background: rgba(255,255,255,0.12);
 color: #ffffff;
 }
@@ -1203,9 +1210,6 @@ color: #1a1a1a;
 .panel.active .lang-tab { color: #666660; }
 .panel.active .lang-tab.active { background: #ffffff; color: #1a1a1a; }
 .panel.active .cal-apt-pills { background: #e8e4dd; }
-.panel.active .cal-apt-pill { background: rgba(0,0,0,0.04); border-color: rgba(0,0,0,0.08); color: #666660; }
-.panel.active .cal-apt-pill.active { background: #ffffff; border-color: transparent; color: #1a1a1a; box-shadow: 0 2px 10px rgba(0,0,0,0.12); }
-.panel.active .cal-apt-pill:hover:not(.active) { background: rgba(0,0,0,0.08); color: #1a1a1a; }
 
 </style>
 </head>
