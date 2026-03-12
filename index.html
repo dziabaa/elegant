@@ -1167,13 +1167,13 @@ text-overflow: ellipsis;
 padding-right: 8px;
 }
 .gantt-cell {
-height: 32px;
+height: 42px;
 border-left: 1px solid #e8e4de;
 position: relative;
 }
 .gantt-bar {
 position: absolute;
-top: 4px; bottom: 4px;
+top: 6px; bottom: 6px;
 border-radius: 6px;
 z-index: 1;
 }
@@ -2962,18 +2962,20 @@ function renderGantt() {
 
     const bars = reservations.map(res => {
       const barFrom = res.from < startStr ? startStr : res.from;
-      const barTo   = res.to   > endStr   ? endStr   : res.to;
-      if (barFrom > endStr || barTo < startStr) return '';
-      const fi = Math.round((new Date(barFrom) - startDate) / 86400000);
-      const ti = Math.round((new Date(barTo)   - startDate) / 86400000);
+      // bar ends on last night (to = checkout day = first FREE day)
+      const barToExcl = res.to > endStr ? endStr : res.to;
+      if (barFrom >= barToExcl || barFrom > endStr || barToExcl <= startStr) return '';
+      const fi = Math.round((new Date(barFrom)    - startDate) / 86400000);
+      const ti = Math.round((new Date(barToExcl)  - startDate) / 86400000) - 1; // last occupied night
       if (fi >= DAYS_SHOWN || ti < 0) return '';
       const fiC = Math.max(0, fi);
       const tiC = Math.min(DAYS_SHOWN - 1, ti);
-      const left  = (fiC / DAYS_SHOWN * 100).toFixed(2);
-      const width = ((tiC - fiC + 1) / DAYS_SHOWN * 100).toFixed(2);
+      const left  = (fiC / DAYS_SHOWN * 100).toFixed(3);
+      // subtract a small gap (2px equivalent) on each side to separate adjacent bars
+      const widthPct = ((tiC - fiC + 1) / DAYS_SHOWN * 100).toFixed(3);
       const isActive = todayStr >= res.from && todayStr < res.to;
       const bg = isActive ? '#16a34a' : resColor(res);
-      return `<div class="gantt-bar" style="left:${left}%;width:${width}%;background:${bg};opacity:0.9"></div>`;
+      return `<div class="gantt-bar" style="left:calc(${left}% + 2px);width:calc(${widthPct}% - 4px);background:${bg};opacity:0.9"></div>`;
     }).join('');
 
     rows += `<div class="gantt-row" style="grid-template-columns:${gridCols};position:relative">
