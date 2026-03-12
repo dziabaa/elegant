@@ -2078,9 +2078,6 @@ function renderCalendar() {
       const chkColor = chkRes.color === 'ical' ? 'res-ical' : 'res-manual';
       const occColor = occRes.color === 'ical' ? 'res-ical' : 'res-manual';
       el.className = `cal-day${isToday ? ' today' : ''}`;
-      el.style.outline = 'none';
-      el.style.borderTop = '0.5px solid #1a3a6b';
-      el.style.borderBottom = '0.5px solid #1a3a6b';
       el.innerHTML = `
         <div class="res-bar" style="left:0;right:88%;background:${chkRes.color==='ical'?'#1a3a6b':'#1a1a1a'};border-radius:0 6px 6px 0;top:20%;bottom:20%;position:absolute;"></div>
         <div class="res-bar" style="left:30%;right:0;background:${occRes.color==='ical'?'#1a3a6b':'#1a1a1a'};border-radius:6px 0 0 6px;top:20%;bottom:20%;position:absolute;"></div>
