@@ -2609,22 +2609,26 @@ function renderResList() {
   const list = document.getElementById('res-list');
   if (!list) return;
   const filterApt = document.getElementById('res-apt-select') ? document.getElementById('res-apt-select').value : '';
-  const apts = filterApt ? apartments.filter(a => a.id === filterApt) : apartments;
-  let html = '';
-  let total = 0;
+  const apts = filterApt ? apartments.filter(a => a.id == filterApt) : apartments;
+
+  // Flatten all bookings with apt reference, sort globally by from date
+  const all = [];
   apts.forEach(apt => {
-    const bookings = (apt.bookings || []).sort((a,b) => a.from.localeCompare(b.from));
-    if (bookings.length === 0) return;
-    html += `<div class="bcard-apt-label">${apt.emoji} ${apt.name}</div>`;
-    bookings.forEach((b, i) => {
-      html += bookingCardHtml(b, `deleteBookingRes('${apt.id}',${i})`, `openEditBooking('${apt.id}',${i})`);
-      total++;
+    (apt.bookings || []).forEach((b, i) => {
+      all.push({ b, apt, i });
     });
   });
-  if (total === 0) {
-    html = '<div style="font-size:13px;color:#999;text-align:center;padding:16px 0">Brak rezerwacji ręcznych</div>';
+  all.sort((x, y) => x.b.from.localeCompare(y.b.from));
+
+  if (all.length === 0) {
+    list.innerHTML = '<div style="font-size:13px;color:#999;text-align:center;padding:16px 0">Brak rezerwacji ręcznych</div>';
+    return;
   }
-  list.innerHTML = html;
+
+  list.innerHTML = all.map(({ b, apt, i }) =>
+    `<div class="bcard-apt-label" style="margin-top:8px">${apt.emoji} ${apt.name}</div>` +
+    bookingCardHtml(b, `deleteBookingRes('${apt.id}',${i})`, `openEditBooking('${apt.id}',${i})`)
+  ).join('');
 }
 
 let _pendingDeleteBooking = null;
