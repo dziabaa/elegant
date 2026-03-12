@@ -40,11 +40,13 @@ display: flex;
 justify-content: center;
 align-items: flex-start;
 padding: 20px 16px 60px;
+overflow-x: hidden;
 }
 
 .app {
 width: 100%;
 max-width: 420px;
+overflow-x: hidden;
 }
 
 /* Header */
@@ -1132,14 +1134,16 @@ flex-shrink: 0;
 
 .booking-dates {
 display: flex;
+flex-direction: column;
 gap: 10px;
 margin-bottom: 10px;
-overflow: hidden;
 }
 
 .date-input, .guest-input {
+display: block;
 width: 100%;
 min-width: 0;
+max-width: 100%;
 box-sizing: border-box;
 background: var(–card);
 border: 1px solid var(–border);
@@ -1151,6 +1155,8 @@ font-family: ‘DM Sans’, sans-serif;
 outline: none;
 color-scheme: light;
 transition: border-color 0.2s;
+-webkit-appearance: none;
+appearance: none;
 }
 .date-input:focus, .guest-input:focus { border-color: #1a1a1a; }
 
@@ -1426,16 +1432,21 @@ color: #1a1a1a;
 <div class="booking-form" id="booking-form" style="display:none">
   <div class="label" style="margin-top:4px">Dodaj rezerwację ręcznie</div>
   <div class="booking-dates">
-    <div class="field" style="flex:1;margin:0">
+    <div class="field" style="margin:0">
       <div class="label">Od</div>
-      <input type="date" id="book-from" class="date-input">
+      <input type="date" id="book-from" class="date-input" onchange="updateNights()">
     </div>
-    <div class="field" style="flex:1;margin:0">
+    <div class="field" style="margin:0">
       <div class="label">Do</div>
-      <input type="date" id="book-to" class="date-input">
+      <input type="date" id="book-to" class="date-input" onchange="updateNights()">
     </div>
   </div>
-  <input type="text" id="book-guest" class="guest-input" placeholder="Imię gościa (opcjonalnie)">
+  <div id="book-nights" style="font-size:12px;color:#666660;text-align:right;margin:-4px 0 8px;min-height:16px"></div>
+  <input type="text" id="book-guest" class="guest-input" placeholder="Imię i nazwisko gościa">
+  <input type="tel" id="book-phone" class="guest-input" placeholder="Telefon gościa">
+  <input type="number" id="book-people" class="guest-input" placeholder="Liczba gości" min="1">
+  <input type="number" id="book-price" class="guest-input" placeholder="Cena (PLN)" min="0" step="0.01">
+  <textarea id="book-note" class="guest-input" placeholder="Notatka / uwagi" rows="2" style="height:auto;padding:12px 14px;resize:none"></textarea>
   <button class="btn-book" onclick="addBooking()">+ Dodaj rezerwację</button>
 </div>
 
@@ -1498,10 +1509,38 @@ let apartments = JSON.parse(localStorage.getItem('apts') || 'null') || [
 
 let editingId = null;
 
+const KV_URL = 'https://nameless-base-0f4d.dziabaa.workers.dev/data?key=apts';
+
+async function syncToKV() {
+  try {
+    await fetch(KV_URL, {
+      method: 'PUT',
+      body: JSON.stringify(apartments),
+      headers: { 'Content-Type': 'application/json' }
+    });
+  } catch(e) { /* silent fail */ }
+}
+
+async function syncFromKV() {
+  try {
+    const res = await fetch(KV_URL);
+    const data = await res.json();
+    if (Array.isArray(data) && data.length > 0) {
+      apartments = data;
+      localStorage.setItem('apts', JSON.stringify(apartments));
+      renderApts();
+      updateSelects();
+      updateWelcomePreview();
+      showToast('✓ Zsynchronizowano');
+    }
+  } catch(e) { /* silent fail */ }
+}
+
 function save() {
   localStorage.setItem('apts', JSON.stringify(apartments));
   renderApts();
   updateSelects();
+  syncToKV();
 }
 
 function getApt(id) { return apartments.find(a => a.id === id); }
@@ -2337,11 +2376,16 @@ function renderBookingsList(aptId) {
   bookings.forEach((b, i) => {
     const div = document.createElement('div');
     div.className = 'booking-item';
+    const nights = b.nights || Math.round((new Date(b.to) - new Date(b.from)) / 86400000);
     div.innerHTML = `
       <div class="booking-dot"></div>
       <div class="booking-info">
-        <div class="booking-dates-text">${formatDate(b.from)} — ${formatDate(b.to)}</div>
+        <div class="booking-dates-text">${formatDate(b.from)} — ${formatDate(b.to)} <span style="font-size:11px;color:#666660;font-weight:400">(${nights} ${nights===1?'noc':nights<5?'noce':'nocy'})</span></div>
         ${b.guest ? `<div class="booking-guest">👤 ${b.guest}</div>` : ''}
+        ${b.phone ? `<div class="booking-guest">📞 ${b.phone}</div>` : ''}
+        ${b.people ? `<div class="booking-guest">👥 ${b.people} ${b.people===1?'gość':b.people<5?'gości':'gości'}</div>` : ''}
+        ${b.price ? `<div class="booking-guest">💰 ${b.price} PLN</div>` : ''}
+        ${b.note ? `<div class="booking-guest" style="color:#666660">📝 ${b.note}</div>` : ''}
       </div>
       <button class="booking-del" onclick="deleteBooking('${aptId}',${i})">×</button>
     `;
@@ -2354,20 +2398,42 @@ function formatDate(ds) {
   return `${d}.${m}.${y}`;
 }
 
+function updateNights() {
+  const from = document.getElementById('book-from').value;
+  const to = document.getElementById('book-to').value;
+  const el = document.getElementById('book-nights');
+  if (from && to && to > from) {
+    const nights = Math.round((new Date(to) - new Date(from)) / 86400000);
+    el.textContent = nights + (nights === 1 ? ' noc' : nights < 5 ? ' noce' : ' nocy');
+  } else {
+    el.textContent = '';
+  }
+}
+
 function addBooking() {
   const aptId = getCalAptId();
   const from = document.getElementById('book-from').value;
   const to = document.getElementById('book-to').value;
   const guest = document.getElementById('book-guest').value.trim();
+  const phone = document.getElementById('book-phone').value.trim();
+  const people = document.getElementById('book-people').value.trim();
+  const price = document.getElementById('book-price').value.trim();
+  const note = document.getElementById('book-note').value.trim();
   if (!aptId || !from || !to) { showToast('Wybierz daty rezerwacji'); return; }
-  if (from > to) { showToast('Data "od" musi być przed "do"'); return; }
+  if (from >= to) { showToast('Data "od" musi być przed "do"'); return; }
+  const nights = Math.round((new Date(to) - new Date(from)) / 86400000);
   const apt = getApt(aptId);
   if (!apt.bookings) apt.bookings = [];
-  apt.bookings.push({ from, to, guest });
-  localStorage.setItem('apts', JSON.stringify(apartments));
+  apt.bookings.push({ from, to, guest, phone, people: people ? parseInt(people) : null, price: price ? parseFloat(price) : null, note, nights });
+  save();
   document.getElementById('book-from').value = '';
   document.getElementById('book-to').value = '';
   document.getElementById('book-guest').value = '';
+  document.getElementById('book-phone').value = '';
+  document.getElementById('book-people').value = '';
+  document.getElementById('book-price').value = '';
+  document.getElementById('book-note').value = '';
+  document.getElementById('book-nights').textContent = '';
   renderCalendar();
   showToast('Rezerwacja dodana ✓');
 }
@@ -2375,7 +2441,7 @@ function addBooking() {
 function deleteBooking(aptId, index) {
   const apt = getApt(parseInt(aptId));
   apt.bookings.splice(index, 1);
-  localStorage.setItem('apts', JSON.stringify(apartments));
+  save();
   renderCalendar();
   showToast('Usunięto ✓');
 }
@@ -2400,6 +2466,7 @@ setTimeout(() => {
   if (pinApt.value) updatePinPreview();
   if (welApt.value) updateWelcomePreview();
 }, 50);
+syncFromKV();
 </script>
 
 </body>
