@@ -2923,13 +2923,15 @@ function renderGantt() {
     days.push(dateStr(d.getFullYear(), d.getMonth(), d.getDate()));
   }
   const startStr = days[0];
-  const endStr   = days[days.length - 1];
+  // endStr exclusive = day after last visible day (for correct bar clamping)
+  const lastDay  = new Date(startDate); lastDay.setDate(lastDay.getDate() + DAYS_SHOWN);
+  const endStr   = dateStr(lastDay.getFullYear(), lastDay.getMonth(), lastDay.getDate());
 
   const totalW = APT_W + DAYS_SHOWN * DAY_W;
 
   // Title
   const titleEl = document.getElementById('gantt-title');
-  if (titleEl) titleEl.textContent = `${formatDate(startStr)} — ${formatDate(endStr)}`;
+  if (titleEl) titleEl.textContent = `${formatDate(startStr)} — ${formatDate(days[days.length - 1])}`;
 
   const resColor = (c) => c === 'ical' ? '#1a3a6b' : c === 'airbnb' ? '#FF5A5F' : '#2d2d2d';
 
