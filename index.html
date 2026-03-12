@@ -1563,10 +1563,7 @@ color: #1a1a1a;
       <button class="cal-nav" onclick="changeCleanMonth(1)">›</button>
     </div>
     <div class="cal-grid" id="clean-cal-grid"></div>
-    <div class="cal-legend" style="margin-top:12px">
-      <span style="display:inline-flex;align-items:center;gap:5px"><span style="display:inline-flex;align-items:center;justify-content:center;width:20px;height:20px;border-radius:50%;background:#f59e0b;color:#fff;font-size:10px;font-weight:700">1</span> 1 apt</span>
-      <span style="display:inline-flex;align-items:center;gap:5px"><span style="display:inline-flex;align-items:center;justify-content:center;width:20px;height:20px;border-radius:50%;background:#ef4444;color:#fff;font-size:10px;font-weight:700">2+</span> 2+ apt</span>
-    </div>
+    <div class="cal-legend" id="clean-legend" style="margin-top:12px"></div>
     <div id="clean-day-detail" style="margin-top:12px"></div>
   </div>
 
@@ -2749,6 +2746,25 @@ function getCheckoutsMap() {
   return map;
 }
 
+function getCleanColor(count, max) {
+  if (max <= 1) return '#f59e0b';
+  const colors = ['#f59e0b','#ef4444','#a855f7','#3b82f6','#10b981','#ec4899','#f97316','#6366f1'];
+  return colors[Math.min(count - 1, colors.length - 1)];
+}
+
+function renderCleanLegend() {
+  const legend = document.getElementById('clean-legend');
+  if (!legend) return;
+  const max = apartments.length;
+  if (max === 0) { legend.innerHTML = ''; return; }
+  const apt_forms = (n) => n === 1 ? '1 apartament' : n < 5 ? `${n} apartamenty` : `${n} apartamentów`;
+  legend.innerHTML = Array.from({length: max}, (_, i) => {
+    const n = i + 1;
+    const bg = getCleanColor(n, max);
+    return `<span style="display:inline-flex;align-items:center;gap:5px"><span style="display:inline-flex;align-items:center;justify-content:center;width:20px;height:20px;border-radius:50%;background:${bg};color:#fff;font-size:10px;font-weight:700">${n}</span> ${apt_forms(n)}</span>`;
+  }).join('');
+}
+
 function renderCleanCalendar() {
   const titleEl = document.getElementById('clean-cal-title');
   if (titleEl) titleEl.textContent = `${MONTHS[cleanMonth]} ${cleanYear}`;
@@ -2787,7 +2803,7 @@ function renderCleanCalendar() {
     el.className = `cal-day${isToday ? ' today' : ''}`;
 
     if (count > 0) {
-      const bg = count === 1 ? '#f59e0b' : '#ef4444';
+      const bg = getCleanColor(count, apartments.length);
       el.innerHTML = `
         <span class="day-num" style="background:${bg};color:#fff;border-radius:50%;width:26px;height:26px;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:13px;position:absolute;top:50%;left:50%;transform:translate(-50%,-50%)">${d}</span>
         <span style="position:absolute;bottom:3px;right:4px;font-size:9px;font-weight:800;color:${bg};letter-spacing:0">${count}</span>`;
@@ -2802,6 +2818,7 @@ function renderCleanCalendar() {
   }
 
   document.getElementById('clean-day-detail').innerHTML = '';
+  renderCleanLegend();
 }
 
 function showCleanDetail(ds, apts) {
