@@ -934,9 +934,11 @@ letter-spacing: 0.3px;
 .cal-grid {
 display: grid;
 grid-template-columns: repeat(7, 1fr);
-row-gap: 0;
-column-gap: 0;
+gap: 1px;
 margin-bottom: 16px;
+background: #1a3a6b;
+padding: 1px;
+border-radius: 4px;
 }
 
 .cal-day-name {
@@ -958,14 +960,13 @@ font-size: 13px;
 font-weight: 500;
 cursor: default;
 color: #1a1a1a;
-outline: 0.5px solid #1a3a6b;
 background: #f0ede8;
 position: relative;
 }
 
 .cal-day.empty {
 background: transparent;
-outline-color: transparent;
+visibility: hidden;
 }
 
 .cal-day .day-num {
