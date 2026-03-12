@@ -596,8 +596,6 @@ border-radius: 20px;
 padding: 24px;
 width: 100%;
 max-width: 400px;
-max-height: 80vh;
-overflow-y: auto;
 position: relative;
 z-index: 101;
 }
@@ -1132,6 +1130,22 @@ flex-shrink: 0;
 
 .booking-form { margin-bottom: 16px; }
 
+.btn-add-booking {
+width: 100%;
+padding: 13px;
+background: #f0ede8;
+border: 1.5px dashed #d0cbc3;
+border-radius: 12px;
+color: #1a1a1a;
+font-size: 14px;
+font-family: ‘DM Sans’, sans-serif;
+font-weight: 600;
+cursor: pointer;
+margin-bottom: 12px;
+transition: background 0.2s;
+}
+.btn-add-booking:hover { background: #e8e4dd; }
+
 .booking-popup {
 position: fixed;
 inset: 0;
@@ -1194,11 +1208,12 @@ width: 100%;
 min-width: 0;
 max-width: 100%;
 box-sizing: border-box;
-background: var(–card);
-border: 1px solid var(–border);
+background: #e8e4de;
+border: 1px solid #d0cbc3;
 border-radius: 12px;
-padding: 12px 14px;
-color: var(–text);
+padding: 0 14px;
+height: 48px;
+color: #1a1a1a;
 font-size: 14px;
 font-family: ‘DM Sans’, sans-serif;
 outline: none;
@@ -1206,8 +1221,10 @@ color-scheme: light;
 transition: border-color 0.2s;
 -webkit-appearance: none;
 appearance: none;
+line-height: 48px;
 }
 .date-input:focus, .guest-input:focus { border-color: #1a1a1a; }
+.date-input::placeholder, .guest-input::placeholder { color: #aaa8a0; }
 
 .guest-input { margin-bottom: 10px; }
 
@@ -1302,6 +1319,7 @@ color: #1a1a1a;
   <div class="tabs" style="grid-template-columns:1fr 1fr 1fr">
     <button class="tab active" id="tab-msg" onclick="switchTab('msg')"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg> Wiadomości</button>
     <button class="tab" id="tab-cal" onclick="switchTab('cal')"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg> Kalendarz</button>
+    <button class="tab" id="tab-res" onclick="switchTab('res')"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/><line x1="8" y1="14" x2="16" y2="14"/><line x1="8" y1="18" x2="12" y2="18"/></svg> Rezerwacje</button>
     <button class="tab" id="tab-apts" onclick="switchTab('apts')"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg> Ustawienia</button>
   </div>
 
@@ -1440,6 +1458,19 @@ color: #1a1a1a;
 
   <!-- APARTAMENTY -->
 
+  <div class="panel" id="panel-res">
+    <div class="card" style="margin-bottom:12px">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px">
+        <div class="section-title" style="margin:0">Rezerwacje ręczne</div>
+        <button class="btn-add-booking" style="display:inline-flex;width:auto;padding:10px 16px;margin:0;border-style:solid;font-size:13px" onclick="openBookingModal()">+ Dodaj</button>
+      </div>
+      <select id="res-apt-select" onchange="renderResList()" style="width:100%;background:#e8e4de;border:1px solid #d0cbc3;border-radius:12px;padding:0 14px;height:48px;color:#1a1a1a;font-size:14px;font-family:'DM Sans',sans-serif;outline:none;margin-bottom:14px;-webkit-appearance:none;appearance:none">
+        <option value="">— wszystkie apartamenty —</option>
+      </select>
+      <div id="res-list"></div>
+    </div>
+  </div>
+
   <div class="panel" id="panel-apts">
     <div class="label">Lista apartamentów</div>
     <div class="apt-list" id="apt-list"></div>
@@ -1478,27 +1509,7 @@ color: #1a1a1a;
 </div>
 
 <!-- Add booking -->
-<div class="booking-form" id="booking-form" style="display:none">
-  <div class="label" style="margin-top:4px">Dodaj rezerwację ręcznie</div>
-  <div class="booking-dates">
-    <div class="field" style="margin:0">
-      <div class="label">Od</div>
-      <input type="date" id="book-from" class="date-input" onchange="updateNights()">
-    </div>
-    <div class="field" style="margin:0">
-      <div class="label">Do</div>
-      <input type="date" id="book-to" class="date-input" onchange="updateNights()">
-    </div>
-  </div>
-  <div id="book-nights" style="font-size:12px;color:#666660;text-align:right;margin:-4px 0 8px;min-height:16px"></div>
-  <input type="text" id="book-guest" class="guest-input" placeholder="Imię i nazwisko gościa">
-  <input type="tel" id="book-phone" class="guest-input" placeholder="Telefon gościa">
-  <input type="number" id="book-people" class="guest-input" placeholder="Liczba gości" min="1">
-  <input type="number" id="book-price" class="guest-input" placeholder="Cena (PLN)" min="0" step="0.01">
-  <textarea id="book-note" class="guest-input" placeholder="Notatka / uwagi" rows="2" style="height:auto;padding:12px 14px;resize:none"></textarea>
-  <button class="btn-book" onclick="addBooking()">+ Dodaj rezerwację</button>
-</div>
-
+<button class="btn-add-booking" id="btn-add-booking" style="display:none" onclick="openBookingModal()">+ Dodaj rezerwację ręcznie</button>
 <div class="bookings-list" id="bookings-list"></div>
 ```
 
@@ -1795,6 +1806,7 @@ function updateSelects() {
   updatePinPreview();
   updateWelcomePreview();
   renderCalAptPills();
+  populateResAptSelect();
 }
 
 function renderCalAptPills() {
@@ -1811,7 +1823,7 @@ function renderCalAptPills() {
       renderCalAptPills();
       renderCalendar();
       renderBookingsList(a.id);
-      document.getElementById('booking-form').style.display = '';
+
     });
     container.appendChild(btn);
   });
@@ -1990,10 +2002,14 @@ function switchMsgTab(tab) {
 }
 
 function switchTab(tab) {
-  ['msg','cal','apts'].forEach(t => {
+  ['msg','cal','res','apts'].forEach(t => {
     document.getElementById('tab-'+t).classList.toggle('active', t===tab);
     document.getElementById('panel-'+t).classList.toggle('active', t===tab);
   });
+  if (tab === 'res') {
+    populateResAptSelect();
+    renderResList();
+  }
   if (tab === 'cal') {
     if (!getCalAptId() && apartments.length > 0) setCalAptId(apartments[0].id);
     renderCalAptPills();
@@ -2115,7 +2131,7 @@ function applyAutoResize() {
 
 function onCalAptChange() {
   const aptId = getCalAptId();
-  document.getElementById('booking-form').style.display = aptId ? '' : 'none';
+
   renderCalendar();
 }
 
@@ -2422,6 +2438,26 @@ function renderCalendar() {
   renderBookingsList(aptId);
 }
 
+function openBookingModal(aptIdOverride) {
+  const aptId = aptIdOverride || getCalAptId() || (apartments[0] ? apartments[0].id : '');
+  const apt = getApt(aptId);
+  document.getElementById('modal-booking-apt').textContent = apt ? apt.emoji + ' ' + apt.name : '';
+  document.getElementById('modal-booking').dataset.aptId = aptId;
+  document.getElementById('book-from').value = '';
+  document.getElementById('book-to').value = '';
+  document.getElementById('book-guest').value = '';
+  document.getElementById('book-phone').value = '';
+  document.getElementById('book-people').value = '';
+  document.getElementById('book-price').value = '';
+  document.getElementById('book-note').value = '';
+  document.getElementById('book-nights').textContent = '';
+  document.getElementById('modal-booking').classList.add('open');
+}
+
+function closeBookingModal() {
+  document.getElementById('modal-booking').classList.remove('open');
+}
+
 function showBookingPopup(b) {
   const nights = b.nights || Math.round((new Date(b.to) - new Date(b.from)) / 86400000);
   const rows = [
@@ -2446,6 +2482,62 @@ function showBookingPopup(b) {
 
 function closeBookingPopup() {
   document.getElementById('booking-popup').style.display = 'none';
+}
+
+function populateResAptSelect() {
+  const sel = document.getElementById('res-apt-select');
+  const cur = sel.value;
+  sel.innerHTML = '<option value="">— wszystkie apartamenty —</option>';
+  apartments.forEach(a => {
+    const opt = document.createElement('option');
+    opt.value = a.id;
+    opt.textContent = a.emoji + ' ' + a.name;
+    sel.appendChild(opt);
+  });
+  if (cur) sel.value = cur;
+}
+
+function renderResList() {
+  const list = document.getElementById('res-list');
+  if (!list) return;
+  const filterApt = document.getElementById('res-apt-select') ? document.getElementById('res-apt-select').value : '';
+  const apts = filterApt ? apartments.filter(a => a.id === filterApt) : apartments;
+  let html = '';
+  let total = 0;
+  apts.forEach(apt => {
+    const bookings = (apt.bookings || []).sort((a,b) => a.from.localeCompare(b.from));
+    if (bookings.length === 0) return;
+    html += `<div style="font-size:12px;font-weight:700;letter-spacing:0.5px;color:#666660;text-transform:uppercase;margin:12px 0 6px;padding-left:2px">${apt.emoji} ${apt.name}</div>`;
+    bookings.forEach((b, i) => {
+      const nights = b.nights || Math.round((new Date(b.to) - new Date(b.from)) / 86400000);
+      html += `<div class="booking-item" style="margin-bottom:8px">
+        <div class="booking-dot"></div>
+        <div class="booking-info">
+          <div class="booking-dates-text">${formatDate(b.from)} — ${formatDate(b.to)} <span style="font-size:11px;color:#666660;font-weight:400">(${nights} ${nights===1?'noc':nights<5?'noce':'nocy'})</span></div>
+          ${b.guest  ? `<div class="booking-guest">👤 ${b.guest}</div>` : ''}
+          ${b.phone  ? `<div class="booking-guest">📞 ${b.phone}</div>` : ''}
+          ${b.people ? `<div class="booking-guest">👥 ${b.people} gości</div>` : ''}
+          ${b.price  ? `<div class="booking-guest">💰 ${b.price} PLN</div>` : ''}
+          ${b.note   ? `<div class="booking-guest" style="color:#666660">📝 ${b.note}</div>` : ''}
+        </div>
+        <button class="booking-del" onclick="deleteBookingRes('${apt.id}',${i})">×</button>
+      </div>`;
+      total++;
+    });
+  });
+  if (total === 0) {
+    html = '<div style="font-size:13px;color:#999;text-align:center;padding:16px 0">Brak rezerwacji ręcznych</div>';
+  }
+  list.innerHTML = html;
+}
+
+function deleteBookingRes(aptId, index) {
+  const apt = getApt(aptId);
+  if (!apt) return;
+  apt.bookings.splice(index, 1);
+  save();
+  renderResList();
+  renderCalendar();
 }
 
 function renderBookingsList(aptId) {
@@ -2495,7 +2587,8 @@ function updateNights() {
 }
 
 function addBooking() {
-  const aptId = getCalAptId();
+  const modal = document.getElementById('modal-booking');
+  const aptId = modal.dataset.aptId || getCalAptId();
   const from = document.getElementById('book-from').value;
   const to = document.getElementById('book-to').value;
   const guest = document.getElementById('book-guest').value.trim();
@@ -2518,7 +2611,9 @@ function addBooking() {
   document.getElementById('book-price').value = '';
   document.getElementById('book-note').value = '';
   document.getElementById('book-nights').textContent = '';
+  closeBookingModal();
   renderCalendar();
+  renderResList();
   showToast('Rezerwacja dodana ✓');
 }
 
@@ -2552,6 +2647,33 @@ setTimeout(() => {
 }, 50);
 syncFromKV();
 </script>
+
+<div class="modal-overlay" id="modal-booking">
+  <div class="modal" style="width:calc(100% - 32px);max-width:400px;max-height:90vh;overflow-y:auto">
+    <h3>Nowa rezerwacja</h3>
+    <p id="modal-booking-apt" style="font-weight:600;margin-bottom:16px;font-family:'DM Sans',sans-serif;color:#1a1a1a;font-size:14px;margin-top:-2px"></p>
+    <div style="display:flex;gap:10px;margin-bottom:4px">
+      <div class="bm-field" style="flex:1;position:relative">
+        <input type="date" id="book-from" onchange="updateNights()" style="width:100%;box-sizing:border-box;padding:20px 12px 6px;height:48px;background:#e8e4de;border:1px solid #d0cbc3;border-radius:12px;font-size:14px;font-family:'DM Sans',sans-serif;color:#1a1a1a;outline:none;appearance:none;-webkit-appearance:none">
+        <label for="book-from" style="position:absolute;top:7px;left:12px;font-size:10px;font-weight:600;letter-spacing:0.5px;color:#666660;text-transform:uppercase;pointer-events:none">Od</label>
+      </div>
+      <div class="bm-field" style="flex:1;position:relative">
+        <input type="date" id="book-to" onchange="updateNights()" style="width:100%;box-sizing:border-box;padding:20px 12px 6px;height:48px;background:#e8e4de;border:1px solid #d0cbc3;border-radius:12px;font-size:14px;font-family:'DM Sans',sans-serif;color:#1a1a1a;outline:none;appearance:none;-webkit-appearance:none">
+        <label for="book-to" style="position:absolute;top:7px;left:12px;font-size:10px;font-weight:600;letter-spacing:0.5px;color:#666660;text-transform:uppercase;pointer-events:none">Do</label>
+      </div>
+    </div>
+    <div id="book-nights" style="font-size:12px;color:#666660;text-align:right;margin-bottom:10px;min-height:16px;margin-top:4px"></div>
+    <input type="text" id="book-guest" class="date-input" placeholder="Imię i nazwisko gościa" style="margin-bottom:10px">
+    <input type="tel" id="book-phone" class="date-input" placeholder="Telefon gościa" style="margin-bottom:10px">
+    <input type="number" id="book-people" class="date-input" placeholder="Liczba gości" min="1" style="margin-bottom:10px">
+    <input type="number" id="book-price" class="date-input" placeholder="Cena (PLN)" min="0" step="0.01" style="margin-bottom:10px">
+    <textarea id="book-note" class="date-input" placeholder="Notatka / uwagi" style="height:auto;min-height:70px;line-height:1.5;resize:none;padding:12px 14px;margin-bottom:16px"></textarea>
+    <div class="modal-actions">
+      <button class="btn-cancel" onclick="closeBookingModal()">Anuluj</button>
+      <button class="btn-save" onclick="addBooking()">Dodaj</button>
+    </div>
+  </div>
+</div>
 
 <div class="booking-popup" id="booking-popup" style="display:none">
   <div class="booking-popup-box">
