@@ -2037,8 +2037,14 @@ function updatePinPreview() {
     if (!el) return;
     if (apt) {
       const tplKey = l === 'pl' ? 'pinTemplate' : l === 'en' ? 'pinTemplateEn' : 'pinTemplateUk';
-      const tpl = apt[tplKey] || (l === 'pl' ? '' : null) || PIN_TEMPLATES[l](pin);
-      el.value = tpl.replace(/\{PIN\}/g, pinToEmoji(pin) + '#️⃣').replace(/\{pin\}/g, pin);
+      const userTpl = apt[tplKey];
+      if (userTpl) {
+        // szablon użytkownika — zastąp {PIN}
+        el.value = userTpl.replace(/\{PIN\}/g, pinToEmoji(pin) + '#️⃣').replace(/\{pin\}/g, pin);
+      } else {
+        // domyślny szablon — już zawiera gotowy tekst z emoji
+        el.value = PIN_TEMPLATES[l](pin);
+      }
     } else {
       el.value = '';
     }
@@ -2067,8 +2073,12 @@ function onPinInput() {
       const el = document.getElementById('pin-msg-' + l);
       if (!el) return;
       const tplKey = l === 'pl' ? 'pinTemplate' : l === 'en' ? 'pinTemplateEn' : 'pinTemplateUk';
-      const tpl = apt[tplKey] || (l === 'pl' ? '' : null) || PIN_TEMPLATES[l](pin);
-      el.value = tpl.replace(/\{PIN\}/g, pinToEmoji(pin) + '#️⃣').replace(/\{pin\}/g, pin);
+      const userTpl = apt[tplKey];
+      if (userTpl) {
+        el.value = userTpl.replace(/\{PIN\}/g, pinToEmoji(pin) + '#️⃣').replace(/\{pin\}/g, pin);
+      } else {
+        el.value = PIN_TEMPLATES[l](pin);
+      }
     });
     requestAnimationFrame(() => {
       const el = document.getElementById('pin-msg-' + activePinLang);
