@@ -129,6 +129,12 @@ font-size: 10px; font-weight: 600;
 letter-spacing: 1.5px; color: var(–muted);
 text-transform: uppercase; margin-bottom: 10px;
 }
+.section-title {
+font-size: 10px; font-weight: 600;
+letter-spacing: 1.5px; color: var(–muted);
+text-transform: uppercase; margin-bottom: 10px;
+font-family: ‘DM Sans’, sans-serif;
+}
 
 /* Inputs */
 .field { margin-bottom: 20px; }
@@ -560,6 +566,7 @@ display: block; background: #f0ede8;
 border-radius: 20px; padding: 20px 16px; color: #1a1a1a;
 }
 .panel.active .label { color: #666660; }
+.panel.active .section-title { color: #666660; }
 .panel.active .input-wrap { background: #ffffff; border: 1px solid #d0cbc3; }
 .panel.active .input-wrap input { color: #1a1a1a; }
 .panel.active select { background: #ffffff; border-color: #d0cbc3; color: #1a1a1a; }
@@ -886,7 +893,7 @@ text-transform: uppercase; padding: 3px 9px; border-radius: 20px;
 
   <div class="panel" id="panel-res">
     <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px">
-      <div style="font-size:13px;font-weight:700;color:#1a1a1a">Rezerwacje ręczne</div>
+      <div class="section-title" style="margin:0">Rezerwacje ręczne</div>
       <button class="btn-add-booking" style="display:inline-flex;width:auto;padding:10px 16px;margin:0;border-style:solid;font-size:13px" onclick="openBookingModal()">+ Dodaj</button>
     </div>
     <select id="res-apt-select" onchange="renderResList()" style="width:100%;background:#e8e4de;border:1px solid #d0cbc3;border-radius:12px;padding:0 14px;height:48px;color:#1a1a1a;font-size:14px;font-family:'DM Sans',sans-serif;outline:none;margin-bottom:14px;-webkit-appearance:none;appearance:none">
@@ -970,7 +977,7 @@ text-transform: uppercase; padding: 3px 9px; border-radius: 20px;
 
   <div class="panel" id="panel-users">
     <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px">
-      <div style="font-size:13px;font-weight:700;color:#1a1a1a">Użytkownicy systemu</div>
+      <div class="section-title" style="margin:0">Użytkownicy systemu</div>
       <button onclick="openAddUser()" style="background:#1a1a1a;color:#fff;border:none;border-radius:10px;padding:8px 14px;font-size:13px;font-weight:600;font-family:'DM Sans',sans-serif;cursor:pointer">+ Dodaj</button>
     </div>
     <div id="users-list"></div>
