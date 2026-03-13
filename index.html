@@ -2632,10 +2632,10 @@ function renderCalendar() {
       if (occRes.color === 'manual' && occRes.booking) clickAreas.push({ x: cx+CELL*0.5, y: cy, w: CELL*0.5, h: CELL_H, booking: occRes.booking });
 
     } else if (chkRes) {
-      // Checkout: right half of previous bar — flat left, rounded right
+      // Checkout morning: bar fills left half, rounded on LEFT (end of stay)
       const col2 = isActiveRes(chkRes) ? '#16a34a' : resColorHex(chkRes.color);
       const w = CELL * 0.5;
-      bars += `<path d="${roundedRect(cx, barTop, w, barHeight, 0, R, R, 0)}" fill="${col2}"/>`;
+      bars += `<path d="${roundedRect(cx, barTop, w, barHeight, R, 0, 0, R)}" fill="${col2}"/>`;
       if (chkRes.color === 'manual' && chkRes.booking) clickAreas.push({ x: cx, y: cy, w: CELL, h: CELL_H, booking: chkRes.booking });
 
     } else if (occRes) {
@@ -2650,12 +2650,12 @@ function renderCalendar() {
         const bw = CELL * 0.7;
         bars += `<path d="${roundedRect(bx, barTop, bw, barHeight, R, R, R, R)}" fill="${col2}"/>`;
       } else if (isStart) {
-        // Start: rounded left, flat right
+        // Checkin: starts mid-cell, rounded on RIGHT, flat on left (continues right)
         const bx = cx + CELL * 0.2;
         const bw = CELL * 0.8;
-        bars += `<path d="${roundedRect(bx, barTop, bw, barHeight, R, 0, 0, R)}" fill="${col2}"/>`;
+        bars += `<path d="${roundedRect(bx, barTop, bw, barHeight, 0, R, R, 0)}" fill="${col2}"/>`;
       } else if (isEnd) {
-        // Last night before checkout: flat left, flat right (checkout day shows the rounded end)
+        // Last night before checkout: full width, flat both sides (checkout day has the rounded end)
         bars += `<path d="${roundedRect(cx, barTop, CELL, barHeight, 0, 0, 0, 0)}" fill="${col2}"/>`;
       } else {
         // Middle: full width, no rounding
