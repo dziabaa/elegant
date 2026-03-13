@@ -2956,8 +2956,8 @@ function renderGantt() {
     const isSun = d.getDay() === 0;
     const isSat = d.getDay() === 6;
     const isToday = ds === todayStr;
-    const fill = isToday ? 'rgba(0,0,0,0.06)' : (isSun || isSat) ? '#f9f6f2' : 'none';
-    if (fill !== 'none') bg += `<rect x="${x}" y="0" width="${DAY_W}" height="${svgH}" fill="${fill}"/>`;
+    const fill = isToday ? 'rgba(0,0,0,0.06)' : (isSun || isSat) ? '#f1eeea' : '#f5f3ef';
+    bg += `<rect x="${x}" y="0" width="${DAY_W}" height="${svgH}" fill="${fill}"/>`;
     // vertical grid line
     bg += `<line x1="${x}" y1="${HDR_H}" x2="${x}" y2="${svgH}" stroke="#e0dbd4" stroke-width="1"/>`;
   });
