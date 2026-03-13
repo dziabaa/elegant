@@ -3881,6 +3881,7 @@ switchTab = function(tab) {
       if (btn) btn.classList.toggle('active', t === tab);
       if (panel) panel.classList.toggle('active', t === tab);
     });
+    document.getElementById('modal-user').classList.remove('open');
     renderUsersList();
   } else {
     _origSwitchTab(tab);
@@ -3958,32 +3959,32 @@ if (authToken && authRole) {
     <div id="users-list"></div>
   </div>
 
-  <!-- MODAL DODAJ/EDYTUJ UŻYTKOWNIKA -->
+</div><!-- /main-app -->
 
-  <div class="modal-overlay" id="modal-user">
-    <div class="modal">
-      <h3 id="modal-user-title">Nowy użytkownik</h3>
-      <label>Imię / Nazwa</label>
-      <input type="text" id="user-name" class="date-input" placeholder="np. Anna Kowalska" style="margin-bottom:12px">
-      <label>Login</label>
-      <input type="text" id="user-login" class="date-input" placeholder="np. anna" autocomplete="off" style="margin-bottom:12px">
-      <label>Hasło <span id="user-pass-hint" style="font-weight:400;color:#aaa">(zostaw puste aby nie zmieniać)</span></label>
-      <input type="password" id="user-pass" class="date-input" placeholder="••••••••" autocomplete="new-password" style="margin-bottom:12px">
-      <label>Rola</label>
-      <select id="user-role" class="date-input" style="margin-bottom:16px">
-        <option value="admin">👑 Admin — pełny dostęp</option>
-        <option value="reception">🛎️ Recepcja — rezerwacje + PIN</option>
-        <option value="cleaner">🧹 Sprzątacz — sprzątanie + kalendarz</option>
-        <option value="viewer">👁️ Podgląd — tylko odczyt</option>
-      </select>
-      <div class="modal-actions">
-        <button class="btn-cancel" onclick="closeUserModal()">Anuluj</button>
-        <button class="btn-save" onclick="saveUser()">Zapisz</button>
-      </div>
+<!-- MODAL DODAJ/EDYTUJ UŻYTKOWNIKA (poza main-app żeby fixed działał na iOS) -->
+
+<div class="modal-overlay" id="modal-user" onclick="if(event.target===this)closeUserModal()">
+  <div class="modal">
+    <h3 id="modal-user-title">Nowy użytkownik</h3>
+    <label>Imię / Nazwa</label>
+    <input type="text" id="user-name" class="date-input" placeholder="np. Anna Kowalska" style="margin-bottom:12px">
+    <label>Login</label>
+    <input type="text" id="user-login" class="date-input" placeholder="np. anna" autocomplete="off" style="margin-bottom:12px">
+    <label>Hasło <span id="user-pass-hint" style="font-weight:400;color:#aaa">(zostaw puste aby nie zmieniać)</span></label>
+    <input type="password" id="user-pass" class="date-input" placeholder="••••••••" autocomplete="new-password" style="margin-bottom:12px">
+    <label>Rola</label>
+    <select id="user-role" class="date-input" style="margin-bottom:16px">
+      <option value="admin">👑 Admin — pełny dostęp</option>
+      <option value="reception">🛎️ Recepcja — rezerwacje + PIN</option>
+      <option value="cleaner">🧹 Sprzątacz — sprzątanie + kalendarz</option>
+      <option value="viewer">👁️ Podgląd — tylko odczyt</option>
+    </select>
+    <div class="modal-actions">
+      <button class="btn-cancel" onclick="closeUserModal()">Anuluj</button>
+      <button class="btn-save" onclick="saveUser()">Zapisz</button>
     </div>
   </div>
-
-</div><!-- /main-app -->
+</div>
 
 </body>
 </html>
