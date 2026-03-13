@@ -2498,41 +2498,72 @@ function renderResList() {
     return;
   }
 
-  // Group by month
-  const byMonth = {};
-  all.forEach(item => {
-    const mo = item.b.from.slice(0,7);
-    if (!byMonth[mo]) byMonth[mo] = [];
-    byMonth[mo].push(item);
+  let html = '';
+  all.forEach(({ b, apt, i }) => {
+    const isActive = today >= b.from && today < b.to;
+    const nights = Math.round((new Date(b.to) - new Date(b.from)) / 86400000);
+    const noc = nights === 1 ? 'noc' : nights < 5 ? 'noce' : 'nocy';
+    const guestName = b.guest || '—';
+    const initials = guestName !== '—' ? guestName.split(' ').map(w=>w[0]).join('').slice(0,2).toUpperCase() : '?';
+    const statusDot = isActive
+      ? '<span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:#16a34a;margin-left:6px;vertical-align:middle"></span>'
+      : '<span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:#3b5bdb;margin-left:6px;vertical-align:middle"></span>';
+
+    html += `
+      <div style="background:#fff;border-radius:16px;border:1px solid #e4e8f0;margin-bottom:12px;overflow:hidden;">
+        <!-- Header row -->
+        <div style="display:flex;align-items:center;padding:14px 16px 10px;gap:12px;cursor:pointer" onclick="openEditBooking('${apt.id}',${i})">
+          <!-- Avatar -->
+          <div style="width:44px;height:44px;border-radius:50%;background:#1a2744;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+            <span style="color:#fff;font-size:15px;font-weight:700">${initials}</span>
+          </div>
+          <!-- Name + meta -->
+          <div style="flex:1;min-width:0;">
+            <div style="display:flex;align-items:center;gap:4px;">
+              <span style="font-size:15px;font-weight:700;color:#0f1e3d">${guestName}</span>
+              ${statusDot}
+            </div>
+            <div style="font-size:12px;color:#8a95a8;margin-top:2px">${apt.emoji} ${apt.name} · ${nights} ${noc}</div>
+          </div>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#c0c8d8" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+        </div>
+        <!-- Divider -->
+        <div style="height:1px;background:#e4e8f0;margin:0 16px"></div>
+        <!-- Details -->
+        <div style="padding:10px 16px;display:grid;grid-template-columns:1fr 1fr;gap:8px;">
+          <div>
+            <div style="font-size:10px;font-weight:600;color:#8a95a8;text-transform:uppercase;letter-spacing:0.8px;margin-bottom:2px">Apartament</div>
+            <div style="font-size:13px;font-weight:600;color:#0f1e3d">${apt.emoji} ${apt.name}</div>
+          </div>
+          <div>
+            <div style="font-size:10px;font-weight:600;color:#8a95a8;text-transform:uppercase;letter-spacing:0.8px;margin-bottom:2px">Przyjazd</div>
+            <div style="font-size:13px;font-weight:600;color:#0f1e3d">${b.from}</div>
+          </div>
+          <div>
+            <div style="font-size:10px;font-weight:600;color:#8a95a8;text-transform:uppercase;letter-spacing:0.8px;margin-bottom:2px">Wyjazd</div>
+            <div style="font-size:13px;font-weight:600;color:#0f1e3d">${b.to}</div>
+          </div>
+          ${b.phone ? `<div>
+            <div style="font-size:10px;font-weight:600;color:#8a95a8;text-transform:uppercase;letter-spacing:0.8px;margin-bottom:2px">Telefon</div>
+            <div style="font-size:13px;font-weight:600;color:#0f1e3d">${b.phone}</div>
+          </div>` : ''}
+        </div>
+        <!-- Divider -->
+        <div style="height:1px;background:#e4e8f0;margin:0 16px"></div>
+        <!-- Actions -->
+        <div style="display:flex;align-items:center;padding:10px 16px;gap:16px;">
+          <button onclick="openEditBooking('${apt.id}',${i})" style="background:none;border:none;cursor:pointer;color:#5a6480;padding:4px;display:flex;align-items:center;gap:6px;font-size:13px;font-family:'DM Sans',sans-serif;">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+            Edytuj
+          </button>
+          <button onclick="confirmDeleteBooking(()=>deleteBookingRes('${apt.id}',${i}))" style="background:none;border:none;cursor:pointer;color:#e55;padding:4px;display:flex;align-items:center;gap:6px;font-size:13px;font-family:'DM Sans',sans-serif;margin-left:auto;">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/><path d="M9 6V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/></svg>
+            Usuń
+          </button>
+        </div>
+      </div>`;
   });
 
-  let html = '<div style="background:#fff;border-radius:16px;padding:0 14px;border:1px solid #e8e4de">';
-  let firstGroup = true;
-  Object.entries(byMonth).forEach(([mo, items]) => {
-    const label = new Date(mo + '-01').toLocaleString('pl', {month:'long', year:'numeric'});
-    html += `<div class="res-section-header" style="${firstGroup ? 'padding-top:10px' : ''}">${label.charAt(0).toUpperCase()+label.slice(1)}</div>`;
-    firstGroup = false;
-    items.forEach(({ b, apt, i }) => {
-      const isActive = today >= b.from && today < b.to;
-      const nights = Math.round((new Date(b.to) - new Date(b.from)) / 86400000);
-      const noc = nights===1?'noc':nights<5?'noce':'nocy';
-      const guestName = b.guest || '—';
-      html += `<div class="res-table-row" onclick="openEditBooking('${apt.id}',${i})">
-        <div class="res-id">✎</div>
-        <div class="res-main">
-          <div class="res-guest">${guestName}</div>
-          <div class="res-apt">${apt.emoji} ${apt.name}</div>
-        </div>
-        <div class="res-dates">
-          <div class="res-date-from">${b.from.slice(5).replace('-','.')}</div>
-          <div class="res-date-nights">${nights} ${noc}${isActive ? ' · <span class="res-status active">teraz</span>' : ''}</div>
-    </div>
-        </div>
-        <div class="res-chevron"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg></div>
-      </div>`;
-    });
-  });
-  html += '</div>';
   list.innerHTML = html;
 }
 
