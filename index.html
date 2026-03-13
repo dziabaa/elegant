@@ -123,16 +123,18 @@ box-shadow: 0 2px 10px rgba(0,0,0,0.25);
 }
 .tab:hover:not(.active) { background: rgba(255,255,255,0.12); color: #ffffff; }
 
-/* Labels */
-.label {
-font-size: 10px; font-weight: 600;
-letter-spacing: 1.5px; color: var(–muted);
-text-transform: uppercase; margin-bottom: 10px;
+/* Section titles (naglowki sekcji panelu) */
+.label, .section-title {
+font-size: 11px; font-weight: 700;
+letter-spacing: 0.5px; color: var(–muted);
+text-transform: none; margin-bottom: 10px;
+font-family: ‘DM Sans’, sans-serif;
 }
-.section-title {
+/* Field labels (etykiety pol formularza) */
+.field-label {
 font-size: 10px; font-weight: 600;
-letter-spacing: 1.5px; color: var(–muted);
-text-transform: uppercase; margin-bottom: 10px;
+letter-spacing: 1.2px; color: var(–muted);
+text-transform: uppercase; margin-bottom: 6px;
 font-family: ‘DM Sans’, sans-serif;
 }
 
@@ -567,6 +569,7 @@ border-radius: 20px; padding: 20px 16px; color: #1a1a1a;
 }
 .panel.active .label { color: #666660; }
 .panel.active .section-title { color: #666660; }
+.panel.active .field-label { color: #888880; }
 .panel.active .input-wrap { background: #ffffff; border: 1px solid #d0cbc3; }
 .panel.active .input-wrap input { color: #1a1a1a; }
 .panel.active select { background: #ffffff; border-color: #d0cbc3; color: #1a1a1a; }
@@ -775,14 +778,14 @@ text-transform: uppercase; padding: 3px 9px; border-radius: 20px;
 <!-- Sub-panel: Powitanie -->
 <div id="msgpanel-welcome">
   <div class="field">
-    <div class="label">Numer telefonu gościa</div>
+    <div class="field-label">Numer telefonu gościa</div>
     <div class="input-wrap">
       <input type="tel" id="wel-phone" placeholder="+48 600 000 000">
       <button class="btn-paste" onclick="pastePhone('wel-phone')">WKLEJ</button>
     </div>
   </div>
   <div class="field">
-    <div class="label">Wybierz apartament</div>
+    <div class="field-label">Wybierz apartament</div>
     <select id="wel-apt" onchange="updateWelcomePreview()">
       <option value="">— wybierz apartament —</option>
     </select>
@@ -794,7 +797,7 @@ text-transform: uppercase; padding: 3px 9px; border-radius: 20px;
       <button class="lang-tab wel-lang-tab" onclick="switchWelLang('uk', this)">🇺🇦 UA</button>
     </div>
     <div class="preview-header" style="margin-top:10px">
-      <div class="label" style="margin:0">Podgląd wiadomości powitalnej (edytowalny)</div>
+      <div class="field-label" style="margin:0">Podgląd wiadomości powitalnej (edytowalny)</div>
     </div>
     <textarea class="message-box" id="wel-msg-pl" rows="10" style="color:var(--text)"></textarea>
     <textarea class="message-box" id="wel-msg-en" rows="10" style="display:none;color:var(--text)"></textarea>
@@ -829,20 +832,20 @@ text-transform: uppercase; padding: 3px 9px; border-radius: 20px;
 <!-- Sub-panel: PIN -->
 <div id="msgpanel-pin" style="display:none">
   <div class="field">
-    <div class="label">Numer telefonu gościa</div>
+    <div class="field-label">Numer telefonu gościa</div>
     <div class="input-wrap">
       <input type="tel" id="pin-phone" placeholder="+48 600 000 000">
       <button class="btn-paste" onclick="pastePhone('pin-phone')">WKLEJ</button>
     </div>
   </div>
   <div class="field">
-    <div class="label">Wybierz apartament</div>
+    <div class="field-label">Wybierz apartament</div>
     <select id="pin-apt" onchange="updatePinPreview()">
       <option value="">— wybierz apartament —</option>
     </select>
   </div>
   <div class="field">
-    <div class="label">Kod PIN</div>
+    <div class="field-label">Kod PIN</div>
     <div class="pin-display">
       <input class="pin-digits" id="pin-display" type="text" inputmode="numeric" maxlength="10" placeholder="· · · ·" oninput="onPinInput()" onblur="savePinInline()">
     </div>
@@ -854,7 +857,7 @@ text-transform: uppercase; padding: 3px 9px; border-radius: 20px;
       <button class="lang-tab" onclick="switchLang('uk', this)">🇺🇦 UA</button>
     </div>
     <div class="preview-header" style="margin-top:10px">
-      <div class="label" style="margin:0">Podgląd wiadomości (edytowalny)</div>
+      <div class="field-label" style="margin:0">Podgląd wiadomości (edytowalny)</div>
     </div>
     <textarea class="message-box" id="pin-msg-pl" rows="10" style="color:var(--text)"></textarea>
     <textarea class="message-box" id="pin-msg-en" rows="10" style="display:none;color:var(--text)"></textarea>
