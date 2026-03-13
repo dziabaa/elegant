@@ -1005,8 +1005,8 @@ letter-spacing: 0.3px;
 }
 
 .cal-grid {
-display: grid;
-grid-template-columns: repeat(7, 1fr);
+display: block;
+width: 100%;
 margin-bottom: 16px;
 }
 
@@ -2527,107 +2527,150 @@ function renderCalendar() {
   if (titleEl) titleEl.textContent = `${MONTHS[calMonth]} ${calYear}`;
 
   const grid = document.getElementById('cal-grid');
-  grid.innerHTML = '';
 
-  DAYS.forEach(d => {
-    const el = document.createElement('div');
-    el.className = 'cal-day-name';
-    el.textContent = d;
-    grid.appendChild(el);
-  });
-
-  const firstDay = new Date(calYear, calMonth, 1);
-  const startOffset = (firstDay.getDay() + 6) % 7;
+  const firstDay  = new Date(calYear, calMonth, 1);
+  const startOffset = (firstDay.getDay() + 6) % 7; // Mon=0
   const daysInMonth = new Date(calYear, calMonth + 1, 0).getDate();
-  const today = new Date();
+  const today    = new Date();
   const todayStr = dateStr(today.getFullYear(), today.getMonth(), today.getDate());
 
-  // Build list of all reservations for this month
-  const reservations = []; // {from, to, color}
+  // Build reservations list
+  const reservations = [];
   if (aptId) {
     const apt = getApt(parseInt(aptId));
-    // Manual bookings
-    (apt && apt.bookings || []).forEach(b => {
-      reservations.push({ from: b.from, to: b.to, color: 'manual', booking: b });
-    });
-    // iCal bookings (Booking.com)
-    (apt && apt.icalEvents || []).forEach(e => {
-      reservations.push({ from: e.from, to: e.to, color: 'ical' });
-    });
-    // iCal bookings (Airbnb)
-    (apt && apt.icalEventsAirbnb || []).forEach(e => {
-      reservations.push({ from: e.from, to: e.to, color: 'airbnb' });
-    });
+    const manualRanges = (apt && apt.bookings || []).map(b => ({ from: b.from, to: b.to }));
+    const overlapsManual = (from, to) => manualRanges.some(m => from < m.to && to > m.from);
+    (apt && apt.bookings || []).forEach(b => reservations.push({ from: b.from, to: b.to, color: 'manual', booking: b }));
+    (apt && apt.icalEvents || []).filter(e => !overlapsManual(e.from, e.to)).forEach(e => reservations.push({ from: e.from, to: e.to, color: 'ical' }));
+    (apt && apt.icalEventsAirbnb || []).filter(e => !overlapsManual(e.from, e.to)).forEach(e => reservations.push({ from: e.from, to: e.to, color: 'airbnb' }));
   }
 
-  // For each day figure out which reservation it belongs to and position
-  function getDayReservation(ds) {
-    // Checkout day takes priority if it exists (show end of previous stay)
-    const chk = reservations.find(r => ds === r.to);
-    if (chk) return { ...chk, checkoutOnly: true };
-    // Occupied days: from <= ds < to
-    const occ = reservations.find(r => ds >= r.from && ds < r.to);
-    if (occ) return occ;
-    return null;
+  const resColorHex = (c) => c === 'ical' ? '#1a3a6b' : c === 'airbnb' ? '#FF5A5F' : '#1a1a1a';
+
+  // SVG layout
+  const COLS   = 7;
+  const HDR_H  = 28;  // day-name header height
+  const ROWS   = Math.ceil((startOffset + daysInMonth) / 7);
+  const W      = 308; // total width (viewBox, scales to container)
+  const CELL   = W / COLS;
+  const CELL_H = CELL; // square cells
+  const svgH   = HDR_H + ROWS * CELL_H;
+  const DAYS_SHORT = ['Pn','Wt','Śr','Cz','Pt','So','Nd'];
+  const BAR_PAD = 0.22; // fraction of cell height for bar top/bottom padding
+  const BAR_R   = 5;
+
+  // Background + grid lines
+  let bg = `<rect x="0" y="0" width="${W}" height="${svgH}" fill="#f0ede8" rx="12"/>`;
+
+  // Shade weekends (col 5=Sat, 6=Sun)
+  for (let row = 0; row < ROWS; row++) {
+    for (let col = 5; col <= 6; col++) {
+      bg += `<rect x="${col*CELL}" y="${HDR_H + row*CELL_H}" width="${CELL}" height="${CELL_H}" fill="#e9e4dd"/>`;
+    }
   }
 
-  for (let i = 0; i < startOffset; i++) {
-    const el = document.createElement('div');
-    el.className = 'cal-day empty';
-    grid.appendChild(el);
+  // Grid lines — vertical
+  for (let c = 1; c < COLS; c++) {
+    bg += `<line x1="${c*CELL}" y1="${HDR_H}" x2="${c*CELL}" y2="${svgH}" stroke="#ddd8d0" stroke-width="0.5"/>`;
   }
+  // Grid lines — horizontal
+  for (let r = 1; r <= ROWS; r++) {
+    bg += `<line x1="0" y1="${HDR_H + r*CELL_H}" x2="${W}" y2="${HDR_H + r*CELL_H}" stroke="#ddd8d0" stroke-width="0.5"/>`;
+  }
+  // Outer border
+  bg += `<rect x="0" y="0" width="${W}" height="${svgH}" fill="none" stroke="#ddd8d0" stroke-width="1" rx="12"/>`;
+  // Header separator
+  bg += `<line x1="0" y1="${HDR_H}" x2="${W}" y2="${HDR_H}" stroke="#ddd8d0" stroke-width="1"/>`;
+
+  // Day name headers
+  let hdr = '';
+  DAYS_SHORT.forEach((name, i) => {
+    const isSun = i === 6;
+    hdr += `<text x="${i*CELL + CELL/2}" y="${HDR_H - 8}" text-anchor="middle" font-size="9" font-weight="700" fill="${isSun ? '#ef4444' : '#888'}" font-family="DM Sans,sans-serif" letter-spacing="0.5">${name}</text>`;
+  });
+
+  // Reservation bars + day numbers
+  let bars = '';
+  let nums = '';
+  // Track click areas for manual bookings
+  const clickAreas = [];
 
   for (let d = 1; d <= daysInMonth; d++) {
     const ds = dateStr(calYear, calMonth, d);
-    const el = document.createElement('div');
+    const cellIdx = startOffset + d - 1;
+    const col = cellIdx % 7;
+    const row = Math.floor(cellIdx / 7);
+    const cx  = col * CELL;
+    const cy  = HDR_H + row * CELL_H;
     const isToday = ds === todayStr;
+    const isSun = col === 6;
 
     const chkRes = reservations.find(r => ds === r.to);
     const occRes = reservations.find(r => ds >= r.from && ds < r.to);
-
-    // A reservation is "active" (ongoing today) if today falls within it
     const isActiveRes = (res) => res && todayStr >= res.from && todayStr < res.to;
 
+    const barTop    = cy + CELL_H * BAR_PAD;
+    const barHeight = CELL_H * (1 - 2 * BAR_PAD);
+
     if (chkRes && occRes) {
-      const occActive = isActiveRes(occRes);
-      const chkActive = isActiveRes(chkRes);
-      const resColor = (res) => res.color==='ical' ? '#1a3a6b' : res.color==='airbnb' ? '#FF5A5F' : '#1a1a1a';
-      const occBg = occActive ? '#16a34a' : resColor(occRes);
-      const chkBg = chkActive ? '#16a34a' : resColor(chkRes);
-      el.className = `cal-day${isToday ? ' today' : ''}`;
-      el.innerHTML = `
-        <div class="res-bar" style="left:0;right:88%;background:${chkBg};border-radius:0 6px 6px 0;top:20%;bottom:20%;position:absolute;"></div>
-        <div class="res-bar" style="left:30%;right:0;background:${occBg};border-radius:6px 0 0 6px;top:20%;bottom:20%;position:absolute;"></div>
-        <span class="day-num" style="position:absolute;left:50%;transform:translate(-50%,-50%);top:50%;z-index:2;color:#fff;font-weight:700;font-size:13px;">${d}</span>`;
-    } else if (chkRes || occRes) {
-      const res = chkRes || occRes;
-      const active = isActiveRes(res);
-      const colorClass = active ? 'res-active' : (res.color === 'ical' ? 'res-ical' : res.color === 'airbnb' ? 'res-airbnb' : 'res-manual');
-      let shapeClass = '';
-      if (chkRes) {
-        shapeClass = 'res-left';
-      } else {
-        const trueStart = ds === res.from;
-        if (trueStart) shapeClass = 'res-right';
-        else           shapeClass = 'res-mid';
-      }
-      el.className = `cal-day res ${colorClass} ${shapeClass}${isToday ? ' today' : ''}`;
-      el.innerHTML = `<div class="res-bar"></div><span class="day-num">${d}</span>`;
-    } else {
-      el.className = `cal-day${isToday ? ' today' : ''}`;
-      el.innerHTML = `<span class="day-num">${d}</span>`;
-    }
-    // Click handler for manual reservations
-    if (occRes && occRes.color === 'manual' && occRes.booking) {
-      el.style.cursor = 'pointer';
-      el.addEventListener('click', () => showBookingPopup(occRes.booking));
-    } else if (chkRes && chkRes.color === 'manual' && chkRes.booking) {
-      el.style.cursor = 'pointer';
-      el.addEventListener('click', () => showBookingPopup(chkRes.booking));
+      // Split cell: left=checkout, right=checkin
+      const chkCol = isActiveRes(chkRes) ? '#16a34a' : resColorHex(chkRes.color);
+      const occCol = isActiveRes(occRes) ? '#16a34a' : resColorHex(occRes.color);
+      bars += `<rect x="${cx}" y="${barTop}" width="${CELL*0.38}" height="${barHeight}" rx="${BAR_R}" fill="${chkCol}"/>`;
+      bars += `<rect x="${cx + CELL*0.62}" y="${barTop}" width="${CELL*0.38}" height="${barHeight}" rx="${BAR_R}" fill="${occCol}"/>`;
+      if (chkRes.color === 'manual' && chkRes.booking) clickAreas.push({ x: cx, y: cy, w: CELL*0.5, h: CELL_H, booking: chkRes.booking });
+      if (occRes.color === 'manual' && occRes.booking) clickAreas.push({ x: cx+CELL*0.5, y: cy, w: CELL*0.5, h: CELL_H, booking: occRes.booking });
+    } else if (chkRes) {
+      const col2 = isActiveRes(chkRes) ? '#16a34a' : resColorHex(chkRes.color);
+      bars += `<rect x="${cx}" y="${barTop}" width="${CELL*0.4}" height="${barHeight}" rx="${BAR_R}" fill="${col2}"/>`;
+      if (chkRes.color === 'manual' && chkRes.booking) clickAreas.push({ x: cx, y: cy, w: CELL, h: CELL_H, booking: chkRes.booking });
+    } else if (occRes) {
+      const col2 = isActiveRes(occRes) ? '#16a34a' : resColorHex(occRes.color);
+      const isStart = ds === occRes.from;
+      const bx   = isStart ? cx + CELL*0.2 : cx;
+      const bw   = isStart ? CELL*0.8       : CELL;
+      const rxL  = isStart ? BAR_R : 0;
+      const rxR  = 0; // will continue to next day
+      // Use path for asymmetric radius
+      bars += `<rect x="${bx}" y="${barTop}" width="${bw}" height="${barHeight}" rx="${isStart ? BAR_R : 0}" fill="${col2}"/>`;
+      if (occRes.color === 'manual' && occRes.booking) clickAreas.push({ x: cx, y: cy, w: CELL, h: CELL_H, booking: occRes.booking });
     }
 
-    grid.appendChild(el);
+    // Day number
+    const hasRes = chkRes || occRes;
+    const numRes = occRes || (chkRes && !occRes ? null : chkRes);
+    const showDark = occRes && !isToday;
+    const numColor = isToday ? '#fff' : showDark ? '#fff' : isSun ? '#ef4444' : '#1a1a1a';
+    const numBg    = isToday ? '#D23249' : 'none';
+    const numR     = 11;
+    if (isToday || showDark) {
+      nums += `<circle cx="${cx+CELL/2}" cy="${cy+CELL_H/2}" r="${numR}" fill="${numBg}"/>`;
+    }
+    nums += `<text x="${cx+CELL/2}" y="${cy+CELL_H/2+4}" text-anchor="middle" font-size="12" font-weight="${hasRes||isToday?'700':'500'}" fill="${numColor}" font-family="DM Sans,sans-serif">${d}</text>`;
   }
+
+  // Build SVG
+  const svgEl = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+  svgEl.setAttribute('viewBox', `0 0 ${W} ${svgH}`);
+  svgEl.setAttribute('width', '100%');
+  svgEl.setAttribute('style', 'display:block;border-radius:12px;');
+  svgEl.innerHTML = bg + hdr + bars + nums;
+
+  // Add click listeners for manual bookings
+  clickAreas.forEach(area => {
+    const rect = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
+    rect.setAttribute('x', area.x);
+    rect.setAttribute('y', area.y);
+    rect.setAttribute('width', area.w);
+    rect.setAttribute('height', area.h);
+    rect.setAttribute('fill', 'transparent');
+    rect.style.cursor = 'pointer';
+    rect.addEventListener('click', () => showBookingPopup(area.booking));
+    svgEl.appendChild(rect);
+  });
+
+  grid.innerHTML = '';
+  grid.appendChild(svgEl);
 }
 
 function openBookingModal(aptIdOverride) {
