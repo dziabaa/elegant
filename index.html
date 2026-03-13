@@ -318,28 +318,28 @@ font-family: ‘DM Sans’, sans-serif;
 /* Apartments */
 .apt-item {
 display: flex; flex-direction: column;
-background: #ffffff; border: 1px solid #d0cbc3;
-border-radius: 14px; padding: 12px 14px;
-gap: 10px; color: #1a1a1a; margin-bottom: 10px;
+background: #ffffff; border: 1.5px solid #e4e8f0;
+border-radius: 14px; padding: 14px 16px;
+gap: 10px; color: #0f1e3d; margin-bottom: 10px;
 }
 .apt-row { display: flex; align-items: center; gap: 8px; overflow: hidden; }
 .apt-ical-row { display: flex; align-items: center; gap: 8px; }
 .apt-ical-wrap {
 flex: 1; display: flex; align-items: center;
-background: #f0ede8; border: 1px solid #d0cbc3;
+background: #f3f5f9; border: 1.5px solid #e4e8f0;
 border-radius: 10px; padding: 0 10px; gap: 6px; overflow: hidden;
 }
-.apt-ical-icon { font-size: 13px; flex-shrink: 0; }
+.apt-ical-icon { font-size: 13px; flex-shrink: 0; color: #5a6480; }
 .apt-ical-input {
 flex: 1; background: none; border: none; outline: none;
-font-size: 11px; color: var(–text);
+font-size: 11px; color: #0f1e3d;
 font-family: ‘DM Sans’, sans-serif;
 padding: 9px 0; min-width: 0;
 }
-.apt-ical-input::placeholder { color: var(–muted); }
-.apt-ical-ok { color: #1a7a45; font-size: 13px; font-weight: 700; flex-shrink: 0; }
+.apt-ical-input::placeholder { color: #8a95a8; }
+.apt-ical-ok { color: #16a34a; font-size: 13px; font-weight: 700; flex-shrink: 0; }
 .btn-ical-fetch {
-width: 36px; height: 36px; background: #1a1a1a;
+width: 36px; height: 36px; background: #1a2744;
 border: none; border-radius: 10px; color: #fff;
 font-size: 16px; cursor: pointer; flex-shrink: 0;
 display: flex; align-items: center; justify-content: center;
@@ -348,34 +348,34 @@ transition: opacity 0.2s;
 .btn-ical-fetch:hover { opacity: 0.8; }
 .apt-emoji { font-size: 22px; flex-shrink: 0; cursor: pointer; }
 .apt-name {
-flex: 1; min-width: 0; font-size: 15px; font-weight: 500;
+flex: 1; min-width: 0; font-size: 15px; font-weight: 600;
 outline: none; background: none; border: none;
-color: #1a1a1a; font-family: ‘DM Sans’, sans-serif;
+color: #0f1e3d; font-family: ‘DM Sans’, sans-serif;
 }
 .btn-template {
-background: #f0ede8; border: 1px solid #d0cbc3;
-border-radius: 8px; padding: 7px 12px; color: #1a1a1a;
-font-size: 12px; font-weight: 500; cursor: pointer;
+background: #f3f5f9; border: 1.5px solid #e4e8f0;
+border-radius: 8px; padding: 7px 12px; color: #1a2744;
+font-size: 12px; font-weight: 600; cursor: pointer;
 display: flex; align-items: center; gap: 5px;
 white-space: nowrap; transition: all 0.2s;
 }
-.btn-template:hover { background: #e8e4dd; }
+.btn-template:hover { background: #e4e8f0; }
 .btn-remove {
-background: #f0ede8; border: 1px solid #d0cbc3;
-border-radius: 8px; padding: 7px 10px; color: #1a1a1a;
+background: #f3f5f9; border: 1.5px solid #e4e8f0;
+border-radius: 8px; padding: 7px 10px; color: #5a6480;
 cursor: pointer; display: flex; align-items: center;
 justify-content: center; transition: all 0.2s; flex-shrink: 0;
 }
-.btn-remove:hover { background: #fde8e8; border-color: #e55; color: #e55; }
+.btn-remove:hover { background: #fde8e8; border-color: #fca5a5; color: #e55; }
 .btn-add {
 width: 100%; padding: 14px;
-border: 1.5px dashed #d0cbc3; border-radius: 14px;
-background: none; color: #1a3a6b;
-font-size: 14px; font-weight: 500; cursor: pointer;
+border: 1.5px dashed #c0c8d8; border-radius: 14px;
+background: none; color: #1a2744;
+font-size: 14px; font-weight: 600; cursor: pointer;
 transition: all 0.2s; font-family: ‘DM Sans’, sans-serif;
 display: flex; align-items: center; justify-content: center; gap: 8px;
 }
-.btn-add:hover { background: #e8e4dd; border-color: #bbb; }
+.btn-add:hover { background: #f0f2f7; border-color: #1a2744; }
 
 /* Msg subtabs */
 .msg-subtabs {
@@ -479,13 +479,13 @@ color: #1a1a1a; box-shadow: 0 1px 4px rgba(0,0,0,0.08);
 
 /* iCal */
 .ical-apt-item {
-background: #ffffff; border: 1px solid #d0cbc3;
-border-radius: 14px; padding: 12px 14px;
-margin-bottom: 10px; color: #1a1a1a;
+background: #ffffff; border: 1.5px solid #e4e8f0;
+border-radius: 14px; padding: 14px 16px;
+margin-bottom: 10px; color: #0f1e3d;
 }
 .ical-apt-label {
-font-size: 13px; font-weight: 600; color: #1a1a1a;
-margin-bottom: 8px; display: flex; align-items: center; gap: 8px;
+font-size: 14px; font-weight: 700; color: #0f1e3d;
+margin-bottom: 10px; display: flex; align-items: center; gap: 8px;
 }
 
 /* Calendar pills */
@@ -1183,17 +1183,17 @@ text-transform: uppercase; padding: 3px 9px; border-radius: 20px;
       <div class="panel-section-title">Ustawienia</div>
     </div>
     <div class="panel-content">
-    <div class="label">Lista apartamentów</div>
+    <div style="font-size:13px;font-weight:700;color:#0f1e3d;margin-bottom:10px">Lista apartamentów</div>
     <div id="apt-list"></div>
     <button class="btn-add" onclick="addApartment()">
       <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
       Dodaj apartament
     </button>
     <div style="margin-top:16px;display:flex;gap:8px">
-      <button onclick="syncToKV().then(ok=>showToast(ok?'✓ Wysłano do chmury':'✗ Błąd wysyłania'))" style="flex:1;padding:12px;border:1.5px solid #d0cbc3;border-radius:12px;background:#f0ede8;font-size:13px;font-family:'DM Sans',sans-serif;cursor:pointer">☁️ Wyślij do chmury</button>
-      <button onclick="syncFromKV()" style="flex:1;padding:12px;border:1.5px solid #d0cbc3;border-radius:12px;background:#f0ede8;font-size:13px;font-family:'DM Sans',sans-serif;cursor:pointer">⬇️ Pobierz z chmury</button>
+      <button onclick="syncToKV().then(ok=>showToast(ok?'✓ Wysłano do chmury':'✗ Błąd wysyłania'))" style="flex:1;padding:12px;border:1.5px solid #e4e8f0;border-radius:12px;background:#ffffff;font-size:13px;font-weight:600;color:#1a2744;font-family:'DM Sans',sans-serif;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:6px">☁️ Wyślij</button>
+      <button onclick="syncFromKV()" style="flex:1;padding:12px;border:1.5px solid #e4e8f0;border-radius:12px;background:#ffffff;font-size:13px;font-weight:600;color:#1a2744;font-family:'DM Sans',sans-serif;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:6px">⬇️ Pobierz</button>
     </div>
-    <div class="label" style="margin-top:20px">Synchronizacja iCal</div>
+    <div style="font-size:13px;font-weight:700;color:#0f1e3d;margin-top:24px;margin-bottom:10px">Synchronizacja iCal</div>
     <div id="ical-apt-list"></div>
     </div>
   </div>
