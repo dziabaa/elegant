@@ -3033,7 +3033,7 @@ function renderGantt() {
       if (w <= 0) return;
 
       const isActive = todayStr >= res.from && todayStr < res.to;
-      const fill = isActive ? '#16a34a' : resColor(res.color);
+      const fill = (isActive && res.color !== 'manual') ? '#16a34a' : resColor(res.color);
       bars += `<rect x="${x}" y="${barTop}" width="${w}" height="${barHeight}" rx="5" fill="${fill}" opacity="0.92"/>`;
     });
   });
