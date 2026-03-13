@@ -1948,7 +1948,7 @@ function renderCalendar() {
 
   let bg = `<rect x="0" y="0" width="${W}" height="${svgH}" fill="#ffffff" rx="12"/>`;
   for (let row = 0; row < ROWS; row++) {
-    for (let col = 5; col <= 6; col++) bg += `<rect x="${col*CELL}" y="${HDR_H + row*CELL_H}" width="${CELL}" height="${CELL_H}" fill="#f0f2f7"/>`;
+    for (let col = 5; col <= 6; col++) bg += `<rect x="${col*CELL}" y="${HDR_H + row*CELL_H}" width="${CELL}" height="${CELL_H}" fill="#f7f8fb"/>`;
   }
   for (let c = 1; c < COLS; c++) bg += `<line x1="${c*CELL}" y1="${HDR_H}" x2="${c*CELL}" y2="${svgH}" stroke="#e4e8f0" stroke-width="0.5"/>`;
   for (let r = 1; r <= ROWS; r++) bg += `<line x1="0" y1="${HDR_H + r*CELL_H}" x2="${W}" y2="${HDR_H + r*CELL_H}" stroke="#e4e8f0" stroke-width="0.5"/>`;
@@ -2331,7 +2331,7 @@ function renderCleanCalendar() {
   let bg = `<rect x="0" y="0" width="${W}" height="${svgH}" fill="#ffffff" rx="12"/>`;
   for (let row = 0; row < ROWS; row++)
     for (let col = 5; col <= 6; col++)
-      bg += `<rect x="${col*CELL}" y="${HDR_H + row*CELL_H}" width="${CELL}" height="${CELL_H}" fill="#f0f2f7"/>`;
+      bg += `<rect x="${col*CELL}" y="${HDR_H + row*CELL_H}" width="${CELL}" height="${CELL_H}" fill="#f7f8fb"/>`;
   for (let c = 1; c < COLS; c++) bg += `<line x1="${c*CELL}" y1="${HDR_H}" x2="${c*CELL}" y2="${svgH}" stroke="#e4e8f0" stroke-width="0.5"/>`;
   for (let r = 1; r <= ROWS; r++) bg += `<line x1="0" y1="${HDR_H + r*CELL_H}" x2="${W}" y2="${HDR_H + r*CELL_H}" stroke="#e4e8f0" stroke-width="0.5"/>`;
   bg += `<rect x="0" y="0" width="${W}" height="${svgH}" fill="none" stroke="#e4e8f0" stroke-width="1" rx="12"/>`;
