@@ -2633,9 +2633,9 @@ function renderCalendar() {
       if (occRes.color === 'manual' && occRes.booking) clickAreas.push({ x: cx+CELL*0.5, y: cy, w: CELL*0.5, h: CELL_H, booking: occRes.booking });
 
     } else if (chkRes) {
-      // Checkout: right half of previous bar — flat left, rounded right
+      // Checkout only: same width as in split view
       const col2 = isActiveRes(chkRes) ? '#16a34a' : resColorHex(chkRes.color);
-      const w = CELL * 0.5;
+      const w = CELL * 0.14;
       bars += `<path d="${roundedRect(cx, barTop, w, barHeight, 0, R, R, 0)}" fill="${col2}"/>`;
       if (chkRes.color === 'manual' && chkRes.booking) clickAreas.push({ x: cx, y: cy, w: CELL, h: CELL_H, booking: chkRes.booking });
 
