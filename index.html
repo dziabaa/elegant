@@ -1881,18 +1881,26 @@ function showGanttPopup(aptId, bookingIdx, sourceType) {
     ${res.price ? `<div class="bpop-row"><div class="bpop-icon">💰</div><div><div class="bpop-label">Cena</div><div class="bpop-val">${res.price} PLN</div></div></div>` : ''}
     ${res.note  ? `<div class="bpop-row"><div class="bpop-icon">📝</div><div><div class="bpop-label">Notatka</div><div class="bpop-val">${res.note}</div></div></div>` : ''}
     ${sourceType === 'manual' ? `<div class="bpop-actions">
-      <button class="bpop-btn-edit" onclick="openEditBooking('${aptId}',${bookingIdx});document.getElementById('gantt-popup').remove()">✏️ Edytuj</button>
-      <button class="bpop-btn-del" onclick="confirmDeleteBooking(()=>{deleteBookingRes('${aptId}',${bookingIdx})});document.getElementById('gantt-popup').remove()">🗑</button>
+      <button class="bpop-btn-edit" onclick="closeGanttPop();openEditBooking('${aptId}',${bookingIdx})">✏️ Edytuj</button>
+      <button class="bpop-btn-del" onclick="closeGanttPop();confirmDeleteBooking(()=>{deleteBookingRes('${aptId}',${bookingIdx})})">🗑</button>
     </div>` : ''}
   `;
   // style handled by .booking-popup-sheet CSS class
   document.body.appendChild(popup);
-  // close on backdrop tap
-  setTimeout(() => {
-    const closeOnTap = (e) => { if (!popup.contains(e.target)) { popup.remove(); document.removeEventListener('touchstart', closeOnTap); document.removeEventListener('mousedown', closeOnTap); } };
-    document.addEventListener('touchstart', closeOnTap);
-    document.addEventListener('mousedown', closeOnTap);
-  }, 100);
+  const bd = document.createElement('div');
+  bd.id = 'gantt-popup-backdrop';
+  bd.style.cssText = 'position:fixed;inset:0;z-index:299;';
+  bd.addEventListener('click', () => closeGanttPop());
+  document.body.appendChild(bd);
+  const closeBtn = popup.querySelector('.bpop-close');
+  if (closeBtn) closeBtn.addEventListener('click', () => closeGanttPop());
+}
+
+function closeGanttPop() {
+  const p = document.getElementById('gantt-popup');
+  const b = document.getElementById('gantt-popup-backdrop');
+  if (p) p.remove();
+  if (b) b.remove();
 }
 
 function renderGantt() {
@@ -2193,15 +2201,24 @@ function showBookingPopup(aptId, bookingIdx) {
     ${b.price  ? `<div class="bpop-row"><div class="bpop-icon">💰</div><div><div class="bpop-label">Cena</div><div class="bpop-val">${b.price} PLN</div></div></div>` : ''}
     ${b.note   ? `<div class="bpop-row"><div class="bpop-icon">📝</div><div><div class="bpop-label">Notatka</div><div class="bpop-val">${b.note}</div></div></div>` : ''}
     <div class="bpop-actions">
-      <button class="bpop-btn-edit" onclick="openEditBooking('${aptId}',${bookingIdx});document.getElementById('booking-detail-popup').remove()">✏️ Edytuj</button>
-      <button class="bpop-btn-del" onclick="confirmDeleteBooking(()=>{deleteBookingRes('${aptId}',${bookingIdx})});document.getElementById('booking-detail-popup').remove()">🗑</button>
+      <button class="bpop-btn-edit" onclick="closeBpop();openEditBooking('${aptId}',${bookingIdx})">✏️ Edytuj</button>
+      <button class="bpop-btn-del" onclick="closeBpop();confirmDeleteBooking(()=>{deleteBookingRes('${aptId}',${bookingIdx})})">🗑</button>
     </div>`;
   document.body.appendChild(popup);
-  setTimeout(() => {
-    const close = (e) => { if (!popup.contains(e.target)) { popup.remove(); document.removeEventListener('touchstart', close); document.removeEventListener('mousedown', close); } };
-    document.addEventListener('touchstart', close);
-    document.addEventListener('mousedown', close);
-  }, 100);
+  // backdrop — osobny element pod popupem
+  const backdrop = document.createElement('div');
+  backdrop.id = 'booking-popup-backdrop';
+  backdrop.style.cssText = 'position:fixed;inset:0;z-index:299;';
+  backdrop.addEventListener('click', () => closeBpop());
+  document.body.appendChild(backdrop);
+  popup.querySelector('.bpop-close').addEventListener('click', () => closeBpop());
+}
+
+function closeBpop() {
+  const p = document.getElementById('booking-detail-popup');
+  const b = document.getElementById('booking-popup-backdrop');
+  if (p) p.remove();
+  if (b) b.remove();
 }
 
 function bookingCardHtml(b, deleteCall, editCall) {
