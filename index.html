@@ -389,6 +389,11 @@ transition: transform 0.3s ease; z-index: 200; white-space: nowrap;
 }
 .toast.show { transform: translateX(-50%) translateY(0); }
 
+@keyframes slideUp {
+from { transform: translateX(-50%) translateY(100%); }
+to   { transform: translateX(-50%) translateY(0); }
+}
+
 /* Lang tabs */
 .lang-tabs {
 display: flex; gap: 4px; margin-bottom: 4px;
@@ -972,7 +977,7 @@ text-transform: uppercase; padding: 3px 9px; border-radius: 20px;
         <div class="cal-title" id="gantt-title"></div>
         <button class="cal-nav" onclick="changeGanttMonth(1)">›</button>
       </div>
-      <div id="gantt-container" style="overflow-x:auto;-webkit-overflow-scrolling:touch"></div>
+      <div id="gantt-container"></div>
     </div>
   </div>
 
@@ -1755,11 +1760,58 @@ function setCalView(view) {
 
 function changeGanttMonth(dir) { ganttOffset += dir * 30; renderGantt(); }
 
+function showGanttPopup(aptId, bookingIdx, sourceType) {
+  const apt = apartments.find(a => a.id === aptId); if (!apt) return;
+  let res;
+  if (sourceType === 'manual') {
+    res = (apt.bookings || [])[bookingIdx];
+  } else if (sourceType === 'ical') {
+    res = (apt.icalEvents || [])[bookingIdx];
+  } else {
+    res = (apt.icalEventsAirbnb || [])[bookingIdx];
+  }
+  if (!res) return;
+  const existing = document.getElementById('gantt-popup');
+  if (existing) existing.remove();
+  const label = sourceType === 'ical' ? 'Booking.com' : sourceType === 'airbnb' ? 'Airbnb' : 'Rezerwacja';
+  const badgeColor = sourceType === 'ical' ? '#1a3a6b' : sourceType === 'airbnb' ? '#FF5A5F' : '#1a1a1a';
+  const nights = res.from && res.to ? Math.round((new Date(res.to) - new Date(res.from)) / 86400000) : '';
+  const nightsStr = nights ? `${nights} ${nights === 1 ? 'noc' : nights < 5 ? 'noce' : 'nocy'}` : '';
+  const popup = document.createElement('div');
+  popup.id = 'gantt-popup';
+  popup.innerHTML = `
+    <div style="display:flex;align-items:center;gap:10px;margin-bottom:14px">
+      <div style="background:${badgeColor};color:#fff;border-radius:8px;padding:4px 10px;font-size:12px;font-weight:700">${label}</div>
+      <div style="font-size:15px;font-weight:700;color:#1a1a1a;flex:1">${apt.emoji} ${apt.name}</div>
+      <button onclick="document.getElementById('gantt-popup').remove()" style="background:none;border:none;font-size:18px;cursor:pointer;color:#888;line-height:1">×</button>
+    </div>
+    ${res.guest ? `<div style="display:flex;gap:8px;align-items:center;margin-bottom:8px"><span style="font-size:16px">👤</span><div><div style="font-size:11px;color:#888;text-transform:uppercase;letter-spacing:0.8px">Gość</div><div style="font-weight:600;color:#1a1a1a">${res.guest}</div></div></div>` : ''}
+    ${res.phone ? `<div style="display:flex;gap:8px;align-items:center;margin-bottom:8px"><span style="font-size:16px">📞</span><div><div style="font-size:11px;color:#888;text-transform:uppercase;letter-spacing:0.8px">Telefon</div><div style="font-weight:600;color:#1a1a1a">${res.phone}</div></div></div>` : ''}
+    <div style="display:flex;gap:8px;align-items:center;margin-bottom:8px"><span style="font-size:16px">📅</span><div><div style="font-size:11px;color:#888;text-transform:uppercase;letter-spacing:0.8px">Termin</div><div style="font-weight:600;color:#1a1a1a">${formatDate(res.from)} — ${formatDate(res.to)}${nightsStr ? ' · ' + nightsStr : ''}</div></div></div>
+    ${res.price ? `<div style="display:flex;gap:8px;align-items:center;margin-bottom:8px"><span style="font-size:16px">💰</span><div><div style="font-size:11px;color:#888;text-transform:uppercase;letter-spacing:0.8px">Cena</div><div style="font-weight:600;color:#1a1a1a">${res.price} PLN</div></div></div>` : ''}
+    ${res.note ? `<div style="display:flex;gap:8px;align-items:center;margin-bottom:8px"><span style="font-size:16px">📝</span><div><div style="font-size:11px;color:#888;text-transform:uppercase;letter-spacing:0.8px">Notatka</div><div style="font-weight:600;color:#1a1a1a">${res.note}</div></div></div>` : ''}
+    ${sourceType === 'manual' ? `<div style="display:flex;gap:8px;margin-top:14px;padding-top:12px;border-top:1px solid #e8e4de">
+      <button onclick="openEditBooking('${aptId}',${bookingIdx});document.getElementById('gantt-popup').remove()" style="flex:1;padding:10px;background:#1a1a1a;color:#fff;border:none;border-radius:10px;font-size:13px;font-weight:600;font-family:'DM Sans',sans-serif;cursor:pointer">✏️ Edytuj</button>
+      <button onclick="deleteBookingRes('${aptId}',${bookingIdx});document.getElementById('gantt-popup').remove()" style="padding:10px 14px;background:#fee2e2;color:#dc2626;border:none;border-radius:10px;font-size:13px;cursor:pointer">🗑</button>
+    </div>` : ''}
+  `;
+  popup.style.cssText = 'position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:420px;background:#fff;border-radius:20px 20px 0 0;padding:20px 20px 32px;box-shadow:0 -4px 30px rgba(0,0,0,0.18);z-index:300;animation:slideUp 0.25s ease';
+  document.body.appendChild(popup);
+  // close on backdrop tap
+  setTimeout(() => {
+    const closeOnTap = (e) => { if (!popup.contains(e.target)) { popup.remove(); document.removeEventListener('touchstart', closeOnTap); document.removeEventListener('mousedown', closeOnTap); } };
+    document.addEventListener('touchstart', closeOnTap);
+    document.addEventListener('mousedown', closeOnTap);
+  }, 100);
+}
+
 function renderGantt() {
   const container = document.getElementById('gantt-container'); if (!container) return;
   const today    = new Date();
   const todayStr = dateStr(today.getFullYear(), today.getMonth(), today.getDate());
-  const DAYS_SHOWN = 30, DAY_W = 36, APT_W = 90, ROW_H = 44, HDR_H = 42, GAP = 3;
+  const DAYS_SHOWN = 30;
+  const DAY_W = 38;
+  const ROW_H = 48;
   const startDate = new Date(today.getFullYear(), today.getMonth(), today.getDate() + ganttOffset);
   const days = [];
   for (let i = 0; i < DAYS_SHOWN; i++) {
@@ -1768,61 +1820,65 @@ function renderGantt() {
   }
   const startStr = days[0];
   const lastDay = new Date(startDate); lastDay.setDate(lastDay.getDate() + DAYS_SHOWN);
-  const endStr  = dateStr(lastDay.getFullYear(), lastDay.getMonth(), lastDay.getDate());
-  const totalW  = APT_W + DAYS_SHOWN * DAY_W;
-  const svgH    = HDR_H + apartments.length * ROW_H;
-  const titleEl = document.getElementById('gantt-title');
-  if (titleEl) titleEl.textContent = `${formatDate(startStr)} — ${formatDate(days[days.length - 1])}`;
-  const resColor = (c) => c === 'ical' ? '#1a3a6b' : c === 'airbnb' ? '#FF5A5F' : '#1a1a1a';
+  const endStr = dateStr(lastDay.getFullYear(), lastDay.getMonth(), lastDay.getDate());
+  const totalGridW = DAYS_SHOWN * DAY_W;
 
-  let bg = '';
-  days.forEach((ds, i) => {
-    const x = APT_W + i * DAY_W;
-    const d = new Date(ds);
-    const isSun = d.getDay() === 0, isSat = d.getDay() === 6, isToday = ds === todayStr;
-    bg += `<rect x="${x}" y="0" width="${DAY_W}" height="${svgH}" fill="${isToday ? 'rgba(0,0,0,0.06)' : (isSun||isSat) ? '#e8e3db' : '#f5f3ef'}"/>`;
-    bg += `<line x1="${x}" y1="${HDR_H}" x2="${x}" y2="${svgH}" stroke="#e0dbd4" stroke-width="1"/>`;
-  });
-  bg += `<line x1="${totalW}" y1="${HDR_H}" x2="${totalW}" y2="${svgH}" stroke="#e0dbd4" stroke-width="1"/>`;
+  const titleEl = document.getElementById('gantt-title');
+  if (titleEl) {
+    // show month(s) in header
+    const m0 = new Date(days[0]).toLocaleString('pl', {month:'long',year:'numeric'});
+    const mN = new Date(days[days.length-1]).toLocaleString('pl', {month:'long',year:'numeric'});
+    titleEl.textContent = m0 === mN ? m0.charAt(0).toUpperCase() + m0.slice(1) : `${m0} — ${mN}`;
+  }
+
+  // Build header row HTML
+  let hdrCells = '';
   let prevMonth = '';
   days.forEach((ds, i) => {
-    const mo = ds.slice(0, 7);
-    if (mo !== prevMonth && i > 0) bg += `<line x1="${APT_W + i * DAY_W}" y1="0" x2="${APT_W + i * DAY_W}" y2="${HDR_H}" stroke="#bbb" stroke-width="1.5"/>`;
-    prevMonth = mo;
-  });
-
-  let hdr = '';
-  days.forEach((ds, i) => {
-    const x = APT_W + i * DAY_W + DAY_W / 2;
     const d = new Date(ds);
-    const day = d.getDate(), dow = ['Nd','Pn','Wt','Śr','Cz','Pt','So'][d.getDay()];
-    const isToday = ds === todayStr, isSun = d.getDay() === 0;
-    const col = isToday ? '#fff' : isSun ? '#ef4444' : '#555';
-    if (isToday) hdr += `<rect x="${APT_W + i * DAY_W + 3}" y="3" width="${DAY_W - 6}" height="${HDR_H - 6}" rx="6" fill="#242424"/>`;
-    hdr += `<text x="${x}" y="18" text-anchor="middle" font-size="12" font-weight="700" fill="${col}" font-family="DM Sans,sans-serif">${day}</text>`;
-    hdr += `<text x="${x}" y="32" text-anchor="middle" font-size="9" fill="${col}" font-family="DM Sans,sans-serif">${dow}</text>`;
+    const day = d.getDate();
+    const dow = ['Nd','Pn','Wt','Śr','Cz','Pt','So'][d.getDay()];
+    const isSun = d.getDay() === 0;
+    const isSat = d.getDay() === 6;
+    const isToday = ds === todayStr;
+    const mo = ds.slice(0,7);
+    const monthBorder = (mo !== prevMonth && i > 0) ? 'border-left:2px solid #b0aaa2;' : '';
+    prevMonth = mo;
+    const bg = isToday ? 'background:#1a1a1a;border-radius:8px;' : '';
+    const col = isToday ? '#fff' : isSun ? '#ef4444' : '#333';
+    hdrCells += `<div style="width:${DAY_W}px;min-width:${DAY_W}px;text-align:center;${monthBorder}padding:2px 0">
+      <div style="display:inline-flex;flex-direction:column;align-items:center;justify-content:center;${bg}padding:3px 2px;width:${DAY_W-4}px">
+        <span style="font-size:13px;font-weight:700;color:${col};line-height:1.2">${day}</span>
+        <span style="font-size:9px;color:${col};opacity:0.7">${dow}</span>
+      </div>
+    </div>`;
   });
 
-  let labels = '';
+  // Build rows
+  let rowsHTML = '';
   apartments.forEach((apt, ri) => {
-    const y = HDR_H + ri * ROW_H;
-    labels += `<line x1="0" y1="${y}" x2="${totalW}" y2="${y}" stroke="#e0dbd4" stroke-width="1"/>`;
-    labels += `<text x="${APT_W - 8}" y="${y + ROW_H / 2 + 4}" text-anchor="end" font-size="12" font-weight="600" fill="#1a1a1a" font-family="DM Sans,sans-serif">${apt.emoji} ${apt.name}</text>`;
-  });
-  labels += `<line x1="0" y1="${svgH}" x2="${totalW}" y2="${svgH}" stroke="#e0dbd4" stroke-width="1"/>`;
-  labels += `<line x1="0" y1="${HDR_H}" x2="${totalW}" y2="${HDR_H}" stroke="#bbb" stroke-width="1.5"/>`;
-
-  let bars = '';
-  apartments.forEach((apt, ri) => {
-    const rowY = HDR_H + ri * ROW_H;
-    const barTop = rowY + 7, barHeight = ROW_H - 14;
     const manualRanges = (apt.bookings || []).map(b => ({ from: b.from, to: b.to }));
     const overlapsManual = (from, to) => manualRanges.some(m => from < m.to && to > m.from);
     const reservations = [
-      ...(apt.bookings || []).map(b => ({ from: b.from, to: b.to, color: 'manual' })),
-      ...(apt.icalEvents || []).filter(e => !overlapsManual(e.from, e.to)).map(e => ({ from: e.from, to: e.to, color: 'ical' })),
-      ...(apt.icalEventsAirbnb || []).filter(e => !overlapsManual(e.from, e.to)).map(e => ({ from: e.from, to: e.to, color: 'airbnb' })),
+      ...(apt.bookings || []).map((b, idx) => ({ ...b, color: 'manual', srcIdx: idx, srcType: 'manual' })),
+      ...(apt.icalEvents || []).filter(e => !overlapsManual(e.from, e.to)).map((e, idx) => ({ ...e, color: 'ical', srcIdx: idx, srcType: 'ical' })),
+      ...(apt.icalEventsAirbnb || []).filter(e => !overlapsManual(e.from, e.to)).map((e, idx) => ({ ...e, color: 'airbnb', srcIdx: idx, srcType: 'airbnb' })),
     ];
+
+    // Build day cells background
+    let dayCells = '';
+    days.forEach((ds, i) => {
+      const d = new Date(ds);
+      const isSun = d.getDay() === 0, isSat = d.getDay() === 6, isToday = ds === todayStr;
+      const mo = ds.slice(0,7);
+      const bg = isToday ? '#ddd8d0' : (isSun||isSat) ? '#e8e3db' : '#f5f3ef';
+      const borderLeft = i === 0 ? '' : 'border-left:1px solid #e0dbd4;';
+      dayCells += `<div style="width:${DAY_W}px;min-width:${DAY_W}px;height:${ROW_H}px;background:${bg};${borderLeft}"></div>`;
+    });
+
+    // Build bars as absolute positioned divs
+    let barsHTML = '';
+    const GAP = 2;
     reservations.forEach(res => {
       const visFrom = res.from < startStr ? startStr : res.from;
       const visTo   = res.to   > endStr   ? endStr   : res.to;
@@ -1831,30 +1887,65 @@ function renderGantt() {
       const ti = Math.round((new Date(visTo)   - startDate) / 86400000);
       const fiC = Math.max(0, fi), tiC = Math.min(DAYS_SHOWN, ti);
       if (fiC >= tiC) return;
-      const checkoutDay = visTo, checkinDay = visFrom;
-      const hasCheckinCollision  = reservations.some(r => r !== res && r.to === checkinDay);
-      const hasCheckoutCollision = reservations.some(r => r !== res && r.from === checkoutDay);
-      const ciOffset = hasCheckoutCollision ? DAY_W * 0.35 : (fi >= 0 ? DAY_W * 0.20 : 0);
-      const coOffset = hasCheckinCollision  ? DAY_W * 0.30 : (ti <= DAYS_SHOWN ? DAY_W * 0.30 : 0);
-      const xStart = APT_W + fiC * DAY_W + ciOffset + GAP;
-      const xEnd   = APT_W + tiC * DAY_W + coOffset - GAP;
+
+      const hasCheckinCollision  = reservations.some(r => r !== res && r.to === res.from);
+      const hasCheckoutCollision = reservations.some(r => r !== res && r.from === res.to);
+      const ciOff = hasCheckoutCollision ? DAY_W * 0.35 : (fi >= 0 ? DAY_W * 0.15 : 0);
+      const coOff = hasCheckinCollision  ? DAY_W * 0.30 : (ti <= DAYS_SHOWN ? DAY_W * 0.20 : 0);
+      const xStart = fiC * DAY_W + ciOff + GAP;
+      const xEnd   = tiC * DAY_W - coOff - GAP;
       const w = xEnd - xStart; if (w <= 0) return;
+
       const isActive = todayStr >= res.from && todayStr < res.to;
-      const fill = (isActive && res.color !== 'manual') ? '#16a34a' : resColor(res.color);
-      bars += `<rect x="${xStart}" y="${barTop}" width="${w}" height="${barHeight}" rx="5" fill="${fill}" opacity="0.92"/>`;
+      const fill = res.color === 'airbnb' ? '#e8433a'
+                 : res.color === 'ical'   ? (isActive ? '#16a34a' : '#1a3a6b')
+                 : (isActive ? '#16a34a' : '#1a1a1a');
+
+      const guestName = res.guest || res.summary || '';
+      const shortName = guestName.length > 14 ? guestName.slice(0, 13) + '…' : guestName;
+
+      barsHTML += `<div onclick="showGanttPopup('${apt.id}',${res.srcIdx},'${res.srcType}')"
+        style="position:absolute;top:9px;left:${xStart}px;width:${w}px;height:${ROW_H-18}px;
+               background:${fill};border-radius:7px;cursor:pointer;overflow:hidden;
+               display:flex;align-items:center;padding:0 8px;
+               box-shadow:0 2px 6px rgba(0,0,0,0.18)">
+        <span style="color:#fff;font-size:11px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;pointer-events:none">${shortName}</span>
+      </div>`;
     });
+
+    const borderTop = ri === 0 ? 'border-top:1px solid #d0cbc3;' : '';
+    rowsHTML += `
+      <div style="display:flex;${borderTop}border-bottom:1px solid #d0cbc3;">
+        <!-- sticky left label -->
+        <div style="position:sticky;left:0;z-index:2;background:#f0ede8;width:90px;min-width:90px;
+                    display:flex;align-items:center;padding:0 8px 0 10px;border-right:1px solid #d0cbc3;">
+          <span style="font-size:12px;font-weight:600;color:#1a1a1a;line-height:1.2;word-break:break-word">${apt.emoji} ${apt.name}</span>
+        </div>
+        <!-- grid cells + bars -->
+        <div style="position:relative;display:flex;flex:1">
+          ${dayCells}
+          ${barsHTML}
+        </div>
+      </div>`;
   });
 
+  // Today vertical line offset
   const todayIdx = days.indexOf(todayStr);
-  let todayLine = '';
-  if (todayIdx >= 0) {
-    const tx = APT_W + todayIdx * DAY_W + DAY_W / 2;
-    todayLine = `<line x1="${tx}" y1="${HDR_H}" x2="${tx}" y2="${svgH}" stroke="#242424" stroke-width="2" stroke-dasharray="4,3" opacity="0.5"/>`;
-  }
+  const todayLineHTML = todayIdx >= 0 ? `<div style="position:absolute;top:0;bottom:0;left:${todayIdx * DAY_W + DAY_W/2}px;width:2px;background:#1a1a1a;opacity:0.25;pointer-events:none;border-radius:1px"></div>` : '';
 
-  container.innerHTML = `<div style="overflow-x:auto;-webkit-overflow-scrolling:touch">
-    <svg width="${totalW}" height="${svgH}" xmlns="http://www.w3.org/2000/svg">${bg}${hdr}${labels}${bars}${todayLine}</svg>
-  </div>`;
+  container.innerHTML = `
+    <div style="border-radius:14px;overflow:hidden;border:1px solid #d0cbc3;background:#f0ede8">
+      <!-- Header row -->
+      <div style="display:flex;background:#e8e4de;border-bottom:2px solid #c8c3bb;">
+        <div style="position:sticky;left:0;z-index:3;background:#e8e4de;width:90px;min-width:90px;border-right:1px solid #d0cbc3;"></div>
+        <div style="display:flex;overflow:visible">${hdrCells}</div>
+      </div>
+      <!-- Rows wrapper (scrollable) -->
+      <div style="position:relative;overflow-x:auto;-webkit-overflow-scrolling:touch;">
+        ${rowsHTML}
+        ${todayLineHTML}
+      </div>
+    </div>`;
 }
 
 // ─── CLEANING ─────────────────────────────────────────
