@@ -560,30 +560,33 @@ transition: background 0.2s;
 .btn-add-booking:hover { background: #e8e4dd; }
 .booking-popup {
 position: fixed; inset: 0;
-background: rgba(0,0,0,0.6); z-index: 200;
+background: rgba(0,0,0,0.5); z-index: 200;
 display: flex; align-items: center; justify-content: center; padding: 20px;
 }
 .booking-popup-box {
-background: #f0ede8; border-radius: 20px; padding: 24px;
+background: #ffffff; border-radius: 20px; padding: 24px;
 width: 100%; max-width: 360px;
-font-family: ‘DM Sans’, sans-serif; color: #1a1a1a;
+font-family: ‘DM Sans’, sans-serif; color: #0f1e3d;
+border: 1.5px solid #e4e8f0;
 }
 .booking-popup-title {
-font-size: 16px; font-weight: 700; margin-bottom: 16px;
+font-size: 18px; font-weight: 700; margin-bottom: 16px; color: #0f1e3d;
 display: flex; justify-content: space-between; align-items: center;
 }
 .booking-popup-close {
-background: none; border: none; font-size: 22px;
-color: #666660; cursor: pointer; line-height: 1; padding: 0;
+background: #f0f2f7; border: none; border-radius: 50%;
+width: 30px; height: 30px; cursor: pointer;
+display: flex; align-items: center; justify-content: center;
+color: #5a6480; line-height: 1; padding: 0; flex-shrink: 0;
 }
 .booking-popup-row {
-display: flex; gap: 8px; align-items: flex-start;
-padding: 8px 0; border-bottom: 1px solid #e0dbd4; font-size: 14px;
+display: flex; gap: 12px; align-items: flex-start;
+padding: 10px 0; border-bottom: 1px solid #e4e8f0; font-size: 14px;
 }
 .booking-popup-row:last-child { border-bottom: none; }
-.booking-popup-icon { font-size: 16px; flex-shrink: 0; width: 22px; }
-.booking-popup-label { color: #666660; font-size: 11px; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 2px; }
-.booking-popup-val { font-weight: 500; }
+.booking-popup-icon { flex-shrink: 0; width: 32px; height: 32px; background: #f0f2f7; border-radius: 8px; display: flex; align-items: center; justify-content: center; }
+.booking-popup-label { color: #8a95a8; font-size: 10px; text-transform: uppercase; letter-spacing: 0.8px; margin-bottom: 2px; font-weight: 600; }
+.booking-popup-val { font-weight: 600; color: #0f1e3d; }
 
 .date-input, .guest-input {
 display: block; width: 100%; min-width: 0; max-width: 100%;
@@ -1580,7 +1583,7 @@ function renderIcalSection() {
     const div = document.createElement('div');
     div.className = 'ical-apt-item';
     div.innerHTML = `
-      <div class="ical-apt-label">${apt.name} ${apt.icalSynced ? '<span class="apt-ical-ok">✓ ' + apt.icalSynced + '</span>' : ''}</div>
+      <div class="ical-apt-label">${apt.name}</div>
       <div class="apt-ical-row">
         <div class="apt-ical-wrap">
           <span class="apt-ical-icon"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></span>
@@ -1590,7 +1593,8 @@ function renderIcalSection() {
           <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg>
         </button>
       </div>
-      <div class="apt-ical-row" style="margin-top:6px">
+      ${apt.icalSynced ? `<div style="font-size:11px;color:#16a34a;margin:3px 0 6px 2px">✓ ${apt.icalSynced}</div>` : '<div style="margin-bottom:6px"></div>'}
+      <div class="apt-ical-row">
         <div class="apt-ical-wrap">
           <span class="apt-ical-icon" style="color:#FF5A5F">✦</span>
           <input class="apt-ical-input apt-ical-airbnb" type="url" placeholder="Link iCal z Airbnb..." value="${apt.icalUrlAirbnb || ''}">
@@ -1598,7 +1602,8 @@ function renderIcalSection() {
         <button class="btn-ical-fetch btn-ical-airbnb" style="background:#FF5A5F">
           <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg>
         </button>
-      </div>`;
+      </div>
+      ${apt.icalSyncedAirbnb ? `<div style="font-size:11px;color:#16a34a;margin-top:3px">✓ ${apt.icalSyncedAirbnb}</div>` : ''}`;
     const btn       = div.querySelector('.btn-ical-booking');
     const input     = div.querySelector('.apt-ical-input:not(.apt-ical-airbnb)');
     const btnAirbnb = div.querySelector('.btn-ical-airbnb');
@@ -2444,22 +2449,35 @@ function showBookingPopup(aptId, bookingIdx) {
   const popup = document.createElement('div');
   popup.id = 'booking-detail-popup';
   popup.className = 'booking-popup-sheet';
+  const iconPerson = `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#1a2744" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>`;
+  const iconPhone = `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#1a2744" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12 19.79 19.79 0 0 1 1.61 3.41 2 2 0 0 1 3.6 1.23h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 8.82a16 16 0 0 0 6.29 6.29l.95-.95a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>`;
+  const iconCal = `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#1a2744" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>`;
+  const iconPeople = `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#1a2744" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>`;
+  const iconPrice = `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#1a2744" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>`;
+  const iconNote = `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#1a2744" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>`;
   popup.innerHTML = `
     <div class="bpop-header">
       <div class="bpop-source">Ręczna</div>
-      <div class="bpop-title">${apt.emoji} ${apt.name}</div>
-      ${isActive ? '<span class="res-status active">Trwa teraz</span>' : ''}
-      <button class="bpop-close" onclick="document.getElementById('booking-detail-popup').remove()">×</button>
+      <div class="bpop-title">${apt.name}</div>
+      ${isActive ? '<span style="font-size:11px;font-weight:700;color:#16a34a;background:#dcfce7;padding:2px 8px;border-radius:20px">Trwa teraz</span>' : ''}
+      <button class="bpop-close">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </button>
     </div>
-    ${b.guest ? `<div class="bpop-row"><div class="bpop-icon">👤</div><div><div class="bpop-label">Gość</div><div class="bpop-val">${b.guest}</div></div></div>` : ''}
-    ${b.phone ? `<div class="bpop-row"><div class="bpop-icon">📞</div><div><div class="bpop-label">Telefon</div><div class="bpop-val"><a href="tel:${b.phone}" style="color:#1a1a1a;text-decoration:none">${b.phone}</a></div></div></div>` : ''}
-    <div class="bpop-row"><div class="bpop-icon">📅</div><div><div class="bpop-label">Termin</div><div class="bpop-val">${formatDate(b.from)} — ${formatDate(b.to)} · ${nights} ${noc}</div></div></div>
-    ${b.people ? `<div class="bpop-row"><div class="bpop-icon">👥</div><div><div class="bpop-label">Gości</div><div class="bpop-val">${b.people} os.</div></div></div>` : ''}
-    ${b.price  ? `<div class="bpop-row"><div class="bpop-icon">💰</div><div><div class="bpop-label">Cena</div><div class="bpop-val">${b.price} PLN</div></div></div>` : ''}
-    ${b.note   ? `<div class="bpop-row"><div class="bpop-icon">📝</div><div><div class="bpop-label">Notatka</div><div class="bpop-val">${b.note}</div></div></div>` : ''}
+    <div class="bpop-row"><div class="bpop-icon">${iconCal}</div><div><div class="bpop-label">Termin</div><div class="bpop-val">${formatDate(b.from)} — ${formatDate(b.to)} · ${nights} ${noc}</div></div></div>
+    ${b.guest ? `<div class="bpop-row"><div class="bpop-icon">${iconPerson}</div><div><div class="bpop-label">Gość</div><div class="bpop-val">${b.guest}</div></div></div>` : ''}
+    ${b.phone ? `<div class="bpop-row"><div class="bpop-icon">${iconPhone}</div><div><div class="bpop-label">Telefon</div><div class="bpop-val"><a href="tel:${b.phone}" style="color:#0f1e3d;text-decoration:none">${b.phone}</a></div></div></div>` : ''}
+    ${b.people ? `<div class="bpop-row"><div class="bpop-icon">${iconPeople}</div><div><div class="bpop-label">Liczba gości</div><div class="bpop-val">${b.people} os.</div></div></div>` : ''}
+    ${b.price  ? `<div class="bpop-row"><div class="bpop-icon">${iconPrice}</div><div><div class="bpop-label">Cena</div><div class="bpop-val">${b.price} PLN</div></div></div>` : ''}
+    ${b.note   ? `<div class="bpop-row"><div class="bpop-icon">${iconNote}</div><div><div class="bpop-label">Notatka</div><div class="bpop-val">${b.note}</div></div></div>` : ''}
     <div class="bpop-actions">
-      <button class="bpop-btn-edit" onclick="closeBpop();openEditBooking('${aptId}',${bookingIdx})">✏️ Edytuj</button>
-      <button class="bpop-btn-del" onclick="closeBpop();confirmDeleteBooking(()=>{deleteBookingRes('${aptId}',${bookingIdx})})">🗑</button>
+      <button class="bpop-btn-edit" onclick="closeBpop();openEditBooking('${aptId}',${bookingIdx})">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+        Edytuj
+      </button>
+      <button class="bpop-btn-del" onclick="closeBpop();confirmDeleteBooking(()=>{deleteBookingRes('${aptId}',${bookingIdx})})">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/></svg>
+      </button>
     </div>`;
   document.body.appendChild(popup);
   // backdrop — osobny element pod popupem
