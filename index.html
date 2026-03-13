@@ -2163,9 +2163,9 @@ function renderGantt() {
     const isSat = d.getDay() === 6;
     const isToday = ds === todayStr;
     const mo = ds.slice(0,7);
-    const monthBorder = (mo !== prevMonth && i > 0) ? 'border-left:2px solid #b0aaa2;' : '';
+    const monthBorder = (mo !== prevMonth && i > 0) ? 'border-left:2px solid #c8d0e0;' : '';
     prevMonth = mo;
-    const bg = isToday ? 'background:#1a1a1a;border-radius:8px;' : '';
+    const bg = isToday ? 'background:#1a2744;border-radius:8px;' : '';
     const col = isToday ? '#fff' : isSun ? '#ef4444' : '#333';
     hdrCells += `<div style="width:${DAY_W}px;min-width:${DAY_W}px;text-align:center;${monthBorder}padding:2px 0">
       <div style="display:inline-flex;flex-direction:column;align-items:center;justify-content:center;${bg}padding:3px 2px;width:${DAY_W-4}px">
@@ -2192,8 +2192,8 @@ function renderGantt() {
       const d = new Date(ds);
       const isSun = d.getDay() === 0, isSat = d.getDay() === 6, isToday = ds === todayStr;
       const mo = ds.slice(0,7);
-      const bg = isToday ? '#ddd8d0' : (isSun||isSat) ? '#e8e3db' : '#f5f3ef';
-      const borderLeft = i === 0 ? '' : 'border-left:1px solid #e0dbd4;';
+      const bg = isToday ? '#e4e8f0' : (isSun||isSat) ? '#f7f8fb' : '#ffffff';
+      const borderLeft = i === 0 ? '' : 'border-left:1px solid #e4e8f0;';
       dayCells += `<div style="width:${DAY_W}px;min-width:${DAY_W}px;height:${ROW_H}px;background:${bg};${borderLeft}"></div>`;
     });
 
@@ -2234,13 +2234,13 @@ function renderGantt() {
       </div>`;
     });
 
-    const borderTop = ri === 0 ? 'border-top:1px solid #d0cbc3;' : '';
+    const borderTop = ri === 0 ? 'border-top:1px solid #e4e8f0;' : '';
     rowsHTML += `
-      <div style="display:flex;${borderTop}border-bottom:1px solid #d0cbc3;">
+      <div style="display:flex;${borderTop}border-bottom:1px solid #e4e8f0;">
         <!-- sticky left label -->
-        <div style="position:sticky;left:0;z-index:2;background:#f0ede8;width:90px;min-width:90px;
-                    display:flex;align-items:center;padding:0 8px 0 10px;border-right:1px solid #d0cbc3;">
-          <span style="font-size:12px;font-weight:600;color:#1a1a1a;line-height:1.2;word-break:break-word">${apt.emoji} ${apt.name}</span>
+        <div style="position:sticky;left:0;z-index:2;background:#ffffff;width:90px;min-width:90px;
+                    display:flex;align-items:center;padding:0 8px 0 10px;border-right:1px solid #e4e8f0;">
+          <span style="font-size:12px;font-weight:600;color:#1a2744;line-height:1.2;word-break:break-word">${apt.emoji} ${apt.name}</span>
         </div>
         <!-- grid cells + bars -->
         <div style="position:relative;display:flex;flex:1">
@@ -2252,13 +2252,13 @@ function renderGantt() {
 
   // Today vertical line offset
   const todayIdx = days.indexOf(todayStr);
-  const todayLineHTML = todayIdx >= 0 ? `<div style="position:absolute;top:0;bottom:0;left:${todayIdx * DAY_W + DAY_W/2}px;width:2px;background:#1a1a1a;opacity:0.25;pointer-events:none;border-radius:1px"></div>` : '';
+  const todayLineHTML = todayIdx >= 0 ? `<div style="position:absolute;top:0;bottom:0;left:${todayIdx * DAY_W + DAY_W/2}px;width:2px;background:#1a2744;opacity:0.2;pointer-events:none;border-radius:1px"></div>` : '';
 
   container.innerHTML = `
-    <div style="border-radius:14px;overflow:hidden;border:1px solid #d0cbc3;background:#f0ede8">
+    <div style="border-radius:14px;overflow:hidden;border:1px solid #e4e8f0;background:#ffffff">
       <!-- Header row -->
-      <div style="display:flex;background:#e8e4de;border-bottom:2px solid #c8c3bb;">
-        <div style="position:sticky;left:0;z-index:3;background:#e8e4de;width:90px;min-width:90px;border-right:1px solid #d0cbc3;"></div>
+      <div style="display:flex;background:#f0f2f7;border-bottom:2px solid #e4e8f0;">
+        <div style="position:sticky;left:0;z-index:3;background:#f0f2f7;width:90px;min-width:90px;border-right:1px solid #e4e8f0;"></div>
         <div style="display:flex;overflow:visible">${hdrCells}</div>
       </div>
       <!-- Rows wrapper (scrollable) -->
