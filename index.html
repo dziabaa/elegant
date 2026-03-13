@@ -1669,6 +1669,35 @@ text-transform: uppercase; padding: 3px 9px; border-radius: 20px;
   </div>
 </div>
 
+<!-- EKRAN DODAJ/EDYTUJ UŻYTKOWNIKA -->
+
+<div id="user-screen">
+  <div style="width:100%;max-width:420px;padding:20px 16px 60px;box-sizing:border-box;">
+    <div style="display:flex;align-items:center;gap:12px;margin-bottom:24px;margin-top:8px">
+      <button onclick="closeUserModal()" style="background:#fff;border:1px solid #ede9e3;border-radius:12px;width:40px;height:40px;display:flex;align-items:center;justify-content:center;cursor:pointer;flex-shrink:0;padding:0">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#1a1a1a" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+      </button>
+      <div id="user-screen-title" style="font-size:17px;font-weight:700;color:#1a1a1a">Nowy użytkownik</div>
+    </div>
+    <div style="background:#fff;border-radius:16px;padding:20px;border:1px solid #ede9e3">
+      <label style="display:block;font-size:11px;font-weight:700;letter-spacing:0.6px;text-transform:uppercase;color:#999;margin-bottom:6px">Imię / Nazwa</label>
+      <input type="text" id="user-name" class="date-input" placeholder="np. Anna Kowalska" style="margin-bottom:16px">
+      <label style="display:block;font-size:11px;font-weight:700;letter-spacing:0.6px;text-transform:uppercase;color:#999;margin-bottom:6px">Login</label>
+      <input type="text" id="user-login" class="date-input" placeholder="np. anna" autocomplete="off" style="margin-bottom:16px">
+      <label style="display:block;font-size:11px;font-weight:700;letter-spacing:0.6px;text-transform:uppercase;color:#999;margin-bottom:6px">Hasło <span id="user-pass-hint" style="font-weight:400;color:#aaa;text-transform:none;letter-spacing:0">(zostaw puste aby nie zmieniać)</span></label>
+      <input type="password" id="user-pass" class="date-input" placeholder="••••••••" autocomplete="new-password" style="margin-bottom:16px">
+      <label style="display:block;font-size:11px;font-weight:700;letter-spacing:0.6px;text-transform:uppercase;color:#999;margin-bottom:6px">Rola</label>
+      <select id="user-role" class="date-input" style="margin-bottom:24px">
+        <option value="admin">👑 Admin — pełny dostęp</option>
+        <option value="reception">🛎️ Recepcja — rezerwacje + PIN</option>
+        <option value="cleaner">🧹 Sprzątacz — sprzątanie + kalendarz</option>
+        <option value="viewer">👁️ Podgląd — tylko odczyt</option>
+      </select>
+      <button onclick="saveUser()" style="width:100%;background:#1a1a1a;color:#fff;border:none;border-radius:12px;padding:14px;font-size:15px;font-weight:600;font-family:'DM Sans',sans-serif;cursor:pointer">Zapisz</button>
+    </div>
+  </div>
+</div>
+
 <div class="app" id="main-app" style="display:none">
   <div class="header">
     <div class="logo">🏠</div>
@@ -3969,35 +3998,6 @@ if (authToken && authRole) {
   </div>
 
 </div><!-- /main-app -->
-
-<!-- EKRAN DODAJ/EDYTUJ UŻYTKOWNIKA -->
-
-<div id="user-screen">
-  <div style="width:100%;max-width:420px;padding:20px 16px 60px;box-sizing:border-box;">
-    <div style="display:flex;align-items:center;gap:12px;margin-bottom:24px;margin-top:8px">
-      <button onclick="closeUserModal()" style="background:#fff;border:1px solid #ede9e3;border-radius:12px;width:40px;height:40px;display:flex;align-items:center;justify-content:center;cursor:pointer;flex-shrink:0;padding:0">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#1a1a1a" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
-      </button>
-      <div id="user-screen-title" style="font-size:17px;font-weight:700;color:#1a1a1a">Nowy użytkownik</div>
-    </div>
-    <div style="background:#fff;border-radius:16px;padding:20px;border:1px solid #ede9e3">
-      <label style="display:block;font-size:11px;font-weight:700;letter-spacing:0.6px;text-transform:uppercase;color:#999;margin-bottom:6px">Imię / Nazwa</label>
-      <input type="text" id="user-name" class="date-input" placeholder="np. Anna Kowalska" style="margin-bottom:16px">
-      <label style="display:block;font-size:11px;font-weight:700;letter-spacing:0.6px;text-transform:uppercase;color:#999;margin-bottom:6px">Login</label>
-      <input type="text" id="user-login" class="date-input" placeholder="np. anna" autocomplete="off" style="margin-bottom:16px">
-      <label style="display:block;font-size:11px;font-weight:700;letter-spacing:0.6px;text-transform:uppercase;color:#999;margin-bottom:6px">Hasło <span id="user-pass-hint" style="font-weight:400;color:#aaa;text-transform:none;letter-spacing:0">(zostaw puste aby nie zmieniać)</span></label>
-      <input type="password" id="user-pass" class="date-input" placeholder="••••••••" autocomplete="new-password" style="margin-bottom:16px">
-      <label style="display:block;font-size:11px;font-weight:700;letter-spacing:0.6px;text-transform:uppercase;color:#999;margin-bottom:6px">Rola</label>
-      <select id="user-role" class="date-input" style="margin-bottom:24px">
-        <option value="admin">👑 Admin — pełny dostęp</option>
-        <option value="reception">🛎️ Recepcja — rezerwacje + PIN</option>
-        <option value="cleaner">🧹 Sprzątacz — sprzątanie + kalendarz</option>
-        <option value="viewer">👁️ Podgląd — tylko odczyt</option>
-      </select>
-      <button onclick="saveUser()" style="width:100%;background:#1a1a1a;color:#fff;border:none;border-radius:12px;padding:14px;font-size:15px;font-weight:600;font-family:'DM Sans',sans-serif;cursor:pointer">Zapisz</button>
-    </div>
-  </div>
-</div>
 
 </body>
 </html>
