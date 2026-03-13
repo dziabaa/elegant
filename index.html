@@ -3288,6 +3288,9 @@ function renderCleanCalendar() {
       nums += `<circle cx="${cx+CELL/2}" cy="${cy+CELL_H/2}" r="13" fill="${circleBg}"/>`;
     }
     nums += `<text x="${cx+CELL/2}" y="${cy+CELL_H/2+4}" text-anchor="middle" font-size="12" font-weight="${count>0||isToday?'700':'500'}" fill="${numColor}" font-family="DM Sans,sans-serif">${d}</text>`;
+    if (count > 0) {
+      nums += `<text x="${cx+CELL-3}" y="${cy+10}" text-anchor="end" font-size="8" font-weight="800" fill="${dotBg}" font-family="DM Sans,sans-serif">${count}</text>`;
+    }
 
     if (count > 0) {
       clickAreas.push({ x: cx, y: cy, w: CELL, h: CELL_H, ds, apts });
