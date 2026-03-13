@@ -3011,10 +3011,19 @@ function renderGantt() {
     const barTop    = rowY + 7;
     const barHeight = ROW_H - 14;
 
+    const manualRanges = (apt.bookings || []).map(b => ({ from: b.from, to: b.to }));
+
+    const overlapsManual = (from, to) =>
+      manualRanges.some(m => from < m.to && to > m.from);
+
     const reservations = [
       ...(apt.bookings || []).map(b => ({ from: b.from, to: b.to, color: 'manual' })),
-      ...(apt.icalEvents || []).map(e => ({ from: e.from, to: e.to, color: 'ical' })),
-      ...(apt.icalEventsAirbnb || []).map(e => ({ from: e.from, to: e.to, color: 'airbnb' })),
+      ...(apt.icalEvents || [])
+        .filter(e => !overlapsManual(e.from, e.to))
+        .map(e => ({ from: e.from, to: e.to, color: 'ical' })),
+      ...(apt.icalEventsAirbnb || [])
+        .filter(e => !overlapsManual(e.from, e.to))
+        .map(e => ({ from: e.from, to: e.to, color: 'airbnb' })),
     ];
 
     reservations.forEach(res => {
