@@ -614,7 +614,7 @@ margin-bottom: 6px;
 
 .modal label { font-family: ‘DM Sans’, sans-serif; font-size: 11px; font-weight: 600; letter-spacing: 1px; color: #666660; text-transform: uppercase; display: block; margin-bottom: 6px; }
 
-#modal-welcome, #modal-welcome-en, #modal-welcome-uk, #modal-pin {
+#modal-welcome, #modal-welcome-en, #modal-welcome-uk, #modal-pin, #modal-pin-en, #modal-pin-uk {
 width: 100%;
 background: var(–card2);
 border: 1px solid var(–border);
@@ -632,7 +632,7 @@ margin-bottom: 14px;
 overflow: hidden;
 box-sizing: border-box;
 }
-#modal-welcome:focus, #modal-welcome-en:focus, #modal-welcome-uk:focus, #modal-pin:focus {
+#modal-welcome:focus, #modal-welcome-en:focus, #modal-welcome-uk:focus, #modal-pin:focus, #modal-pin-en:focus, #modal-pin-uk:focus {
 border-color: #1a1a1a;
 box-shadow: 0 0 0 3px rgba(26,26,26,0.08);
 }
@@ -1711,8 +1711,12 @@ color: #1a1a1a;
     <textarea id="modal-welcome-en" rows="4" placeholder="Welcome message EN..."></textarea>
     <label>Szablon powitalny 🇺🇦 UA</label>
     <textarea id="modal-welcome-uk" rows="4" placeholder="Вітальне повідомлення UA..."></textarea>
-    <label>Szablon PIN</label>
-    <textarea id="modal-pin" rows="4" placeholder="Wiadomość z kodem PIN..."></textarea>
+    <label>Szablon PIN 🇵🇱 PL</label>
+    <textarea id="modal-pin" rows="4" placeholder="Wiadomość z kodem PIN PL..."></textarea>
+    <label>Szablon PIN 🇬🇧 EN</label>
+    <textarea id="modal-pin-en" rows="4" placeholder="PIN message EN..."></textarea>
+    <label>Szablon PIN 🇺🇦 UA</label>
+    <textarea id="modal-pin-uk" rows="4" placeholder="Повідомлення з PIN UA..."></textarea>
     <div class="modal-actions">
       <button class="btn-cancel" onclick="closeModal()">Anuluj</button>
       <button class="btn-save" onclick="saveTemplate()">Zapisz</button>
@@ -2151,10 +2155,12 @@ function openModal(id) {
   document.getElementById('modal-welcome').value = apt.welcomeTemplate || '';
   document.getElementById('modal-welcome-en').value = apt.welcomeTemplateEn || '';
   document.getElementById('modal-welcome-uk').value = apt.welcomeTemplateUk || '';
-  document.getElementById('modal-pin').value = apt.pinTemplate;
+  document.getElementById('modal-pin').value = apt.pinTemplate || '';
+  document.getElementById('modal-pin-en').value = apt.pinTemplateEn || '';
+  document.getElementById('modal-pin-uk').value = apt.pinTemplateUk || '';
   document.getElementById('modal').classList.add('open');
   setTimeout(() => {
-    ['modal-welcome','modal-welcome-en','modal-welcome-uk','modal-pin'].forEach(fid => {
+    ['modal-welcome','modal-welcome-en','modal-welcome-uk','modal-pin','modal-pin-en','modal-pin-uk'].forEach(fid => {
       const el = document.getElementById(fid);
       autoResize(el);
       el.oninput = () => autoResize(el);
@@ -2172,7 +2178,9 @@ function saveTemplate() {
   apt.welcomeTemplate   = document.getElementById('modal-welcome').value;
   apt.welcomeTemplateEn = document.getElementById('modal-welcome-en').value;
   apt.welcomeTemplateUk = document.getElementById('modal-welcome-uk').value;
-  apt.pinTemplate = document.getElementById('modal-pin').value;
+  apt.pinTemplate   = document.getElementById('modal-pin').value;
+  apt.pinTemplateEn = document.getElementById('modal-pin-en').value;
+  apt.pinTemplateUk = document.getElementById('modal-pin-uk').value;
   save();
   closeModal();
   updatePinPreview();
