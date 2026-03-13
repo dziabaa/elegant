@@ -2240,7 +2240,7 @@ function renderGantt() {
     rowsHTML += `
       <div style="display:flex;">
         <!-- grid cells + bars -->
-        <div style="position:relative;display:flex;flex:1;border-bottom:1px solid #e4e8f0;box-sizing:border-box;">
+        <div style="position:relative;display:flex;min-width:${DAYS_SHOWN * DAY_W}px;border-bottom:1px solid #e4e8f0;box-sizing:border-box;">
           ${dayCells}
           ${barsHTML}
         </div>
@@ -2270,7 +2270,7 @@ function renderGantt() {
           ${hdrCells}
         </div>
         <!-- Rows -->
-        <div style="position:relative;">
+        <div style="position:relative;min-width:${DAYS_SHOWN * DAY_W}px;">
           ${rowsHTML}
           ${todayLineHTML}
         </div>
