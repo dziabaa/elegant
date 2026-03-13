@@ -978,7 +978,7 @@ align-items: center;
 justify-content: space-between;
 margin-bottom: 16px;
 background: #1a1a1a;
-border-radius: 20px;
+border-radius: 12px;
 padding: 10px 14px;
 }
 
@@ -1445,7 +1445,7 @@ color: #1a1a1a;
 .panel.active .lang-tab { color: #666660; }
 .panel.active .lang-tab.active { background: #ffffff; color: #1a1a1a; }
 .panel.active .cal-apt-pills { background: #e8e4dd; }
-.panel.active .cal-header { background: #1a1a1a !important; display: flex !important; align-items: center !important; justify-content: space-between !important; border-radius: 20px !important; }
+.panel.active .cal-header { background: #1a1a1a !important; display: flex !important; align-items: center !important; justify-content: space-between !important; border-radius: 12px !important; }
 .panel.active .cal-nav { background: rgba(255,255,255,0.1) !important; color: #fff !important; width: 36px !important; height: 36px !important; display: flex !important; align-items: center !important; justify-content: center !important; }
 .panel.active .cal-nav:hover { background: rgba(255,255,255,0.2) !important; }
 .panel.active .cal-title { color: #fff !important; }
@@ -2026,14 +2026,21 @@ function setCalAptId(id) { _calAptId = id; }
 function updatePinPreview() {
   const id = parseInt(document.getElementById('pin-apt').value);
   const apt = getApt(id);
+  const pin = apt ? (apt.pin || '0000') : '0000';
   ['pl','en','uk'].forEach(l => {
     const el = document.getElementById('pin-msg-' + l);
     if (!el) return;
-    el.value = apt ? PIN_TEMPLATES[l](apt.pin || '0000') : '';
+    if (apt) {
+      const tplKey = l === 'pl' ? 'pinTemplate' : l === 'en' ? 'pinTemplateEn' : 'pinTemplateUk';
+      const tpl = apt[tplKey] || apt.pinTemplate || PIN_TEMPLATES[l](pin);
+      el.value = tpl.replace(/\{PIN\}/g, pinToEmoji(pin) + '#️⃣').replace(/\{pin\}/g, pin);
+    } else {
+      el.value = '';
+    }
     el.style.display = l === activePinLang ? '' : 'none';
   });
   if (apt) {
-    document.getElementById('pin-display').value = apt.pin || '0000';
+    document.getElementById('pin-display').value = pin;
   } else {
     document.getElementById('pin-display').value = '';
   }
@@ -2050,7 +2057,10 @@ function onPinInput() {
   if (apt) {
     ['pl','en','uk'].forEach(l => {
       const el = document.getElementById('pin-msg-' + l);
-      if (el) el.value = PIN_TEMPLATES[l](pin);
+      if (!el) return;
+      const tplKey = l === 'pl' ? 'pinTemplate' : l === 'en' ? 'pinTemplateEn' : 'pinTemplateUk';
+      const tpl = apt[tplKey] || apt.pinTemplate || PIN_TEMPLATES[l](pin);
+      el.value = tpl.replace(/\{PIN\}/g, pinToEmoji(pin) + '#️⃣').replace(/\{pin\}/g, pin);
     });
     requestAnimationFrame(() => {
       const el = document.getElementById('pin-msg-' + activePinLang);
