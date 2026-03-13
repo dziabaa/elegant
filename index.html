@@ -2622,7 +2622,7 @@ function renderCalendar() {
       // Split: left half = checkout (rounded right), right half = checkin (rounded left)
       const chkCol = isActiveRes(chkRes) ? '#16a34a' : resColorHex(chkRes.color);
       const occCol = isActiveRes(occRes) ? '#16a34a' : resColorHex(occRes.color);
-      const gap     = CELL * 0.06;
+      const gap     = CELL * 0.12;
       const chkW    = CELL * 0.2;
       const occW    = CELL - chkW - gap;
       // checkout bar: smaller, rounded on RIGHT
