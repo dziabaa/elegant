@@ -1623,8 +1623,12 @@ color: #1a1a1a;
 
   <div class="panel" id="panel-apts">
     <div class="label">Lista apartamentów</div>
-    <div class="apt-list" id="apt-list"></div>
+    <div id="apt-list"></div>
     <button class="btn-add" onclick="addApartment()"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg> Dodaj apartament</button>
+    <div style="margin-top:16px;display:flex;gap:8px">
+      <button onclick="syncToKV().then(ok=>showToast(ok?'✓ Wysłano do chmury':'✗ Błąd wysyłania'))" style="flex:1;padding:12px;border:1.5px solid #d0cbc3;border-radius:12px;background:#f0ede8;font-size:13px;font-family:'DM Sans',sans-serif;cursor:pointer">☁️ Wyślij do chmury</button>
+      <button onclick="syncFromKV()" style="flex:1;padding:12px;border:1.5px solid #d0cbc3;border-radius:12px;background:#f0ede8;font-size:13px;font-family:'DM Sans',sans-serif;cursor:pointer">⬇️ Pobierz z chmury</button>
+    </div>
 
 ```
 <div class="ical-section">
@@ -1752,12 +1756,13 @@ const KV_URL = 'https://nameless-base-0f4d.dziabaa.workers.dev/data?key=apts';
 
 async function syncToKV() {
   try {
-    await fetch(KV_URL, {
+    const res = await fetch(KV_URL, {
       method: 'PUT',
       body: JSON.stringify(apartments),
       headers: { 'Content-Type': 'application/json' }
     });
-  } catch(e) { /* silent fail */ }
+    return res.ok;
+  } catch(e) { return false; }
 }
 
 async function syncFromKV() {
@@ -1765,14 +1770,21 @@ async function syncFromKV() {
     const res = await fetch(KV_URL);
     const data = await res.json();
     if (Array.isArray(data) && data.length > 0) {
+      // KV has data — use it (newer or from another device)
       apartments = data;
       localStorage.setItem('apts', JSON.stringify(apartments));
       renderApts();
       updateSelects();
       updateWelcomePreview();
-      showToast('✓ Zsynchronizowano');
+      showToast('✓ Zsynchronizowano z chmury');
+    } else {
+      // KV is empty — push local data to KV
+      if (apartments.length > 0) {
+        const ok = await syncToKV();
+        if (ok) showToast('✓ Dane wysłane do chmury');
+      }
     }
-  } catch(e) { /* silent fail */ }
+  } catch(e) { showToast('⚠ Brak połączenia z chmurą'); }
 }
 
 function save() {
@@ -2956,7 +2968,7 @@ function renderGantt() {
     const isSun = d.getDay() === 0;
     const isSat = d.getDay() === 6;
     const isToday = ds === todayStr;
-    const fill = isToday ? 'rgba(0,0,0,0.06)' : (isSun || isSat) ? '#ede9e3' : '#f5f3ef';
+    const fill = isToday ? 'rgba(0,0,0,0.06)' : (isSun || isSat) ? '#e8e3db' : '#f5f3ef';
     bg += `<rect x="${x}" y="0" width="${DAY_W}" height="${svgH}" fill="${fill}"/>`;
     // vertical grid line
     bg += `<line x1="${x}" y1="${HDR_H}" x2="${x}" y2="${svgH}" stroke="#e0dbd4" stroke-width="1"/>`;
