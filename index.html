@@ -2049,8 +2049,10 @@ function updatePinPreview() {
     document.getElementById('pin-display').value = '';
   }
   requestAnimationFrame(() => {
-    const el = document.getElementById('pin-msg-' + activePinLang);
-    if (el) autoResize(el);
+    ['pl','en','uk'].forEach(l => {
+      const el = document.getElementById('pin-msg-' + l);
+      if (el) autoResize(el);
+    });
   });
 }
 
@@ -2331,8 +2333,21 @@ function sendActivePinMsg(app) {
 }
 
 function autoResize(el) {
-  el.style.height = 'auto';
-  el.style.height = el.scrollHeight + 'px';
+  if (el.style.display === 'none') {
+    // measure while temporarily visible but off-screen
+    el.style.position = 'absolute';
+    el.style.visibility = 'hidden';
+    el.style.display = 'block';
+    el.style.height = 'auto';
+    const h = el.scrollHeight;
+    el.style.display = 'none';
+    el.style.position = '';
+    el.style.visibility = '';
+    el.style.height = h + 'px';
+  } else {
+    el.style.height = 'auto';
+    el.style.height = el.scrollHeight + 'px';
+  }
 }
 
 function applyAutoResize() {
