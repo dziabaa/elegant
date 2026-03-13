@@ -2624,10 +2624,10 @@ function renderCalendar() {
       const occCol = isActiveRes(occRes) ? '#16a34a' : resColorHex(occRes.color);
       const gap = CELL * 0.08;
       const hw  = CELL * 0.5 - gap;
-      // checkout bar: rounded on LEFT (end of stay)
-      bars += `<path d="${roundedRect(cx, barTop, hw, barHeight, R, 0, 0, R)}" fill="${chkCol}"/>`;
-      // checkin bar: rounded on RIGHT (start of stay)
-      bars += `<path d="${roundedRect(cx + CELL*0.5 + gap, barTop, hw, barHeight, 0, R, R, 0)}" fill="${occCol}"/>`;
+      // checkout bar: rounded on RIGHT
+      bars += `<path d="${roundedRect(cx, barTop, hw, barHeight, 0, R, R, 0)}" fill="${chkCol}"/>`;
+      // checkin bar: rounded on LEFT
+      bars += `<path d="${roundedRect(cx + CELL*0.5 + gap, barTop, hw, barHeight, R, 0, 0, R)}" fill="${occCol}"/>`;
       if (chkRes.color === 'manual' && chkRes.booking) clickAreas.push({ x: cx, y: cy, w: CELL*0.5, h: CELL_H, booking: chkRes.booking });
       if (occRes.color === 'manual' && occRes.booking) clickAreas.push({ x: cx+CELL*0.5, y: cy, w: CELL*0.5, h: CELL_H, booking: occRes.booking });
 
