@@ -2225,14 +2225,14 @@ function renderGantt() {
       const guestName = res.guest || res.summary || '';
       const shortName = guestName.length > 14 ? guestName.slice(0, 13) + '…' : guestName;
       const isBlack = fill === '#1a1a1a';
-      const textSize = isBlack ? '11px' : '10px';
+      const labelHTML = isBlack ? `<span style="color:#fff;font-size:11px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;pointer-events:none">${shortName}</span>` : '';
 
       barsHTML += `<div onclick="showGanttPopup('${apt.id}',${res.srcIdx},'${res.srcType}')"
         style="position:absolute;top:9px;left:${xStart}px;width:${w}px;height:${ROW_H-18}px;
                background:${fill};border-radius:7px;cursor:pointer;overflow:hidden;
                display:flex;align-items:center;padding:0 8px;
                box-shadow:0 2px 6px rgba(0,0,0,0.18)">
-        <span style="color:#fff;font-size:${textSize};font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;pointer-events:none">${shortName}</span>
+        ${labelHTML}
       </div>`;
     });
 
