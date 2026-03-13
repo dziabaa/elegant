@@ -43,7 +43,7 @@ body {
 /* ── TOP BAR ─────────────────────────────────────────── */
 .topbar {
 display: flex; align-items: center; justify-content: space-between;
-padding: 10px 14px;
+padding: 14px 16px 10px;
 background: #1a2744;
 border-radius: 20px 20px 0 0;
 position: relative; z-index: 10;
@@ -955,9 +955,15 @@ text-transform: uppercase; padding: 3px 9px; border-radius: 20px;
 <div class="app" id="main-app" style="display:none">
   <!-- TOP BAR -->
   <div class="topbar">
-    <button class="topbar-hamburger" onclick="openDrawer()">
-      <span></span><span></span><span></span>
-    </button>
+    <div class="topbar-left">
+      <button class="topbar-hamburger" onclick="openDrawer()">
+        <span></span><span></span><span></span>
+      </button>
+      <div>
+        <div class="topbar-title" id="topbar-tab-name">Wiadomości</div>
+        <div class="topbar-subtitle">Apartamenty Elegant</div>
+      </div>
+    </div>
     <div class="topbar-avatar" id="topbar-avatar" onclick="openDrawer()">A</div>
   </div>
 
