@@ -3123,18 +3123,16 @@ function renderGantt() {
       const tiC = Math.min(DAYS_SHOWN, ti);
       if (fiC >= tiC) return;
 
-      // checkin offset: bar starts 20% into the checkin day (unless clamped to left edge)
-      const checkinOffset  = (fi === fiC) ? DAY_W * 0.20 : 0;
-      // checkout offset: bar ends at 14% of the checkout day (unless clamped to right edge)
-      const checkoutOffset = (ti === tiC) ? DAY_W * (1 - 0.14) : 0;
-
-      const x = APT_W + fiC * DAY_W + checkinOffset + GAP;
-      const w = (tiC - fiC) * DAY_W - checkinOffset - checkoutOffset - GAP * 2;
+      // checkin: bar starts at 20% of checkin day (or left edge if clamped)
+      const xStart = APT_W + fiC * DAY_W + (fi >= 0 ? DAY_W * 0.20 : 0) + GAP;
+      // checkout: bar ends at 14% of checkout day (or right edge if clamped)
+      const xEnd   = APT_W + tiC * DAY_W + (ti <= DAYS_SHOWN ? DAY_W * 0.14 : 0) - GAP;
+      const w = xEnd - xStart;
       if (w <= 0) return;
 
       const isActive = todayStr >= res.from && todayStr < res.to;
       const fill = (isActive && res.color !== 'manual') ? '#16a34a' : resColor(res.color);
-      bars += `<rect x="${x}" y="${barTop}" width="${w}" height="${barHeight}" rx="5" fill="${fill}" opacity="0.92"/>`;
+      bars += `<rect x="${xStart}" y="${barTop}" width="${w}" height="${barHeight}" rx="5" fill="${fill}" opacity="0.92"/>`;
     });
   });
 
