@@ -74,7 +74,7 @@ border: 1.5px solid rgba(255,255,255,0.25);
 flex-shrink: 0; cursor: pointer;
 }
 
-/* ── TABS STRIP ──────────────────────────────────────── */
+/* Tab strip — ukryty na mobile, widoczny na desktop */
 .tabs {
 display: flex; overflow-x: auto; gap: 0;
 background: #1a2744;
@@ -85,6 +85,10 @@ margin-bottom: 16px;
 border-radius: 0 0 20px 20px;
 }
 .tabs::-webkit-scrollbar { display: none; }
+@media (max-width: 600px) {
+.tabs { display: none; }
+.topbar { border-radius: 20px; }
+}
 .tab {
 flex-shrink: 0;
 padding: 8px 14px; text-align: center;
