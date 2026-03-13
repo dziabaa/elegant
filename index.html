@@ -40,88 +40,146 @@ body {
 }
 .app { width: 100%; max-width: 420px; }
 
-/* Header */
-.header {
-text-align: center;
-padding: 36px 24px 28px;
-background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 50%, #1a1a1a 100%);
-border-radius: 24px;
-margin-bottom: 0;
-position: relative;
-overflow: hidden;
+/* ── TOP BAR ─────────────────────────────────────────── */
+.topbar {
+display: flex; align-items: center; justify-content: space-between;
+padding: 14px 16px 10px;
+background: #1a2744;
+border-radius: 20px 20px 0 0;
+position: relative; z-index: 10;
 }
-.header::before {
-content: ‘’;
-position: absolute;
-top: -60px; left: -60px;
-width: 220px; height: 220px;
-background: radial-gradient(circle, rgba(255,255,255,0.04) 0%, transparent 70%);
-pointer-events: none;
+.topbar-left { display: flex; align-items: center; gap: 12px; }
+.topbar-hamburger {
+width: 40px; height: 40px; border: none; cursor: pointer;
+background: rgba(255,255,255,0.08); border-radius: 10px;
+display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 5px;
+flex-shrink: 0;
 }
-.header::after {
-content: ‘’;
-position: absolute;
-bottom: -40px; right: -40px;
-width: 180px; height: 180px;
-background: radial-gradient(circle, rgba(255,255,255,0.03) 0%, transparent 70%);
-pointer-events: none;
+.topbar-hamburger span {
+display: block; width: 18px; height: 2px;
+background: #fff; border-radius: 2px;
 }
-.logo {
-width: 64px; height: 64px;
-background: rgba(255,255,255,0.08);
-border-radius: 50%;
-margin: 0 auto 18px;
-display: flex; align-items: center; justify-content: center;
-font-size: 28px;
-border: 1px solid rgba(255,255,255,0.12);
-backdrop-filter: blur(4px);
-position: relative; z-index: 1;
-}
-.header h1 {
+.topbar-title {
 font-family: ‘Playfair Display’, serif;
-font-size: 30px; font-weight: 700; color: #ffffff;
-margin-bottom: 8px; letter-spacing: -0.5px;
-position: relative; z-index: 1;
+font-size: 18px; font-weight: 700; color: #fff;
+letter-spacing: -0.3px;
 }
-.header p {
-font-size: 13px; color: rgba(255,255,255,0.45);
-font-weight: 400; letter-spacing: 0.3px;
-position: relative; z-index: 1;
-}
-.header-line {
-width: 40px; height: 2px;
+.topbar-subtitle { font-size: 11px; color: rgba(255,255,255,0.45); letter-spacing: 0.3px; }
+.topbar-avatar {
+width: 36px; height: 36px; border-radius: 50%;
 background: rgba(255,255,255,0.15);
-margin: 14px auto 0; border-radius: 2px;
-position: relative; z-index: 1;
+display: flex; align-items: center; justify-content: center;
+font-size: 15px; font-weight: 700; color: #fff;
+border: 1.5px solid rgba(255,255,255,0.25);
+flex-shrink: 0; cursor: pointer;
 }
 
-/* Tab nav */
+/* ── TABS STRIP ──────────────────────────────────────── */
 .tabs {
-display: grid;
-grid-template-columns: 1fr 1fr 1fr;
-background: #242424;
-border-radius: 0 0 20px 20px;
-padding: 6px; gap: 4px;
+display: flex; overflow-x: auto; gap: 0;
+background: #1a2744;
+padding: 0 12px 10px;
+-webkit-overflow-scrolling: touch;
+scrollbar-width: none;
 margin-bottom: 16px;
+border-radius: 0 0 20px 20px;
 }
+.tabs::-webkit-scrollbar { display: none; }
 .tab {
-padding: 10px 8px; text-align: center;
+flex-shrink: 0;
+padding: 8px 14px; text-align: center;
 font-size: 12px; font-weight: 600;
-color: rgba(255,255,255,0.65);
-cursor: pointer; transition: all 0.2s;
-border: 1px solid rgba(255,255,255,0.1);
-background: rgba(255,255,255,0.06);
+color: rgba(255,255,255,0.5);
+cursor: pointer; transition: all 0.18s;
+border: none; background: none;
 border-radius: 10px;
 display: flex; align-items: center; justify-content: center;
-gap: 5px; line-height: 1; min-height: 40px;
+gap: 6px; line-height: 1; min-height: 38px;
 font-family: ‘DM Sans’, sans-serif;
+white-space: nowrap;
 }
 .tab.active {
-background: #ffffff; color: #1a1a1a;
-border-color: transparent;
-box-shadow: 0 2px 10px rgba(0,0,0,0.25);
+background: rgba(255,255,255,0.13); color: #fff;
+box-shadow: none;
 }
-.tab:hover:not(.active) { background: rgba(255,255,255,0.12); color: #ffffff; }
+.tab:hover:not(.active) { color: rgba(255,255,255,0.8); }
+
+/* ── DRAWER MENU ─────────────────────────────────────── */
+#drawer-backdrop {
+display: none; position: fixed; inset: 0;
+background: rgba(0,0,0,0.55); z-index: 500;
+}
+#drawer-backdrop.open { display: block; }
+#drawer {
+position: fixed; top: 0; left: 0; bottom: 0;
+width: 280px; background: #0f1e3d;
+z-index: 501; transform: translateX(-100%);
+transition: transform 0.28s cubic-bezier(0.4,0,0.2,1);
+display: flex; flex-direction: column;
+padding: 0 0 32px; overflow-y: auto;
+}
+#drawer.open { transform: translateX(0); }
+.drawer-header {
+padding: 52px 20px 20px;
+background: linear-gradient(135deg, #1a2e5a 0%, #0f1e3d 100%);
+border-bottom: 1px solid rgba(255,255,255,0.08);
+}
+.drawer-app-logo {
+width: 48px; height: 48px; background: rgba(255,255,255,0.1);
+border-radius: 14px; display: flex; align-items: center; justify-content: center;
+font-size: 22px; margin-bottom: 12px;
+border: 1px solid rgba(255,255,255,0.15);
+}
+.drawer-app-name {
+font-family: ‘Playfair Display’, serif;
+font-size: 17px; font-weight: 700; color: #fff; margin-bottom: 2px;
+}
+.drawer-app-sub { font-size: 11px; color: rgba(255,255,255,0.4); }
+.drawer-section-label {
+font-size: 10px; font-weight: 700; letter-spacing: 1.5px;
+color: rgba(255,255,255,0.3); text-transform: uppercase;
+padding: 20px 20px 8px;
+}
+.drawer-item {
+display: flex; align-items: center; gap: 14px;
+padding: 13px 20px; cursor: pointer;
+color: rgba(255,255,255,0.7); font-size: 14px; font-weight: 500;
+font-family: ‘DM Sans’, sans-serif; transition: all 0.15s;
+border: none; background: none; width: 100%; text-align: left;
+}
+.drawer-item:hover { background: rgba(255,255,255,0.07); color: #fff; }
+.drawer-item.active { background: rgba(255,255,255,0.12); color: #fff; }
+.drawer-item svg { flex-shrink: 0; opacity: 0.7; }
+.drawer-item.active svg { opacity: 1; }
+.drawer-divider { height: 1px; background: rgba(255,255,255,0.07); margin: 8px 20px; }
+.drawer-logout {
+margin: auto 20px 0;
+display: flex; align-items: center; gap: 12px;
+padding: 12px 16px; cursor: pointer;
+color: rgba(255,100,100,0.8); font-size: 13px; font-weight: 600;
+font-family: ‘DM Sans’, sans-serif; transition: all 0.15s;
+border: 1px solid rgba(255,100,100,0.2); background: none;
+border-radius: 12px; width: calc(100% - 40px);
+}
+.drawer-logout:hover { background: rgba(255,100,100,0.1); color: #ff6464; }
+.drawer-user {
+padding: 14px 20px;
+border-top: 1px solid rgba(255,255,255,0.08);
+display: flex; align-items: center; gap: 12px;
+margin-top: auto;
+}
+.drawer-user-avatar {
+width: 36px; height: 36px; border-radius: 50%;
+background: rgba(255,255,255,0.12);
+display: flex; align-items: center; justify-content: center;
+font-size: 14px; font-weight: 700; color: #fff;
+border: 1.5px solid rgba(255,255,255,0.2); flex-shrink: 0;
+}
+.drawer-user-name { font-size: 13px; font-weight: 600; color: #fff; }
+.drawer-user-role { font-size: 11px; color: rgba(255,255,255,0.4); }
+
+/* legacy header kept for login screen only */
+.header { display: none; }
 
 /* Section titles (naglowki sekcji panelu) */
 .label, .section-title {
@@ -818,39 +876,88 @@ text-transform: uppercase; padding: 3px 9px; border-radius: 20px;
   </div>
 </div>
 
+<!-- DRAWER BACKDROP -->
+
+<div id="drawer-backdrop" onclick="closeDrawer()"></div>
+
+<!-- DRAWER MENU -->
+
+<div id="drawer">
+  <div class="drawer-header">
+    <div class="drawer-app-logo">🏠</div>
+    <div class="drawer-app-name">Apartamenty Elegant</div>
+    <div class="drawer-app-sub">Panel zarządzania</div>
+  </div>
+  <div class="drawer-section-label">Nawigacja</div>
+  <button class="drawer-item" id="dmenu-msg"   onclick="drawerSwitchTab('msg')">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg> Wiadomości
+  </button>
+  <button class="drawer-item" id="dmenu-cal"   onclick="drawerSwitchTab('cal')">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg> Kalendarz
+  </button>
+  <button class="drawer-item" id="dmenu-res"   onclick="drawerSwitchTab('res')">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/><line x1="8" y1="14" x2="16" y2="14"/><line x1="8" y1="18" x2="12" y2="18"/></svg> Rezerwacje
+  </button>
+  <button class="drawer-item" id="dmenu-clean" onclick="drawerSwitchTab('clean')">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 22v-3l9-9"/><path d="m15 6-3 3"/><path d="M18 2l4 4-9.5 9.5-4-4z"/><path d="M9 19H5a2 2 0 0 1-2-2V7"/></svg> Sprzątanie
+  </button>
+  <button class="drawer-item" id="dmenu-apts"  onclick="drawerSwitchTab('apts')">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg> Ustawienia
+  </button>
+  <button class="drawer-item" id="dmenu-users" onclick="drawerSwitchTab('users')" style="display:none">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg> Użytkownicy
+  </button>
+  <div class="drawer-divider"></div>
+  <div class="drawer-user">
+    <div class="drawer-user-avatar" id="drawer-avatar">A</div>
+    <div>
+      <div class="drawer-user-name" id="drawer-uname">Administrator</div>
+      <div class="drawer-user-role" id="drawer-urole">ADMIN</div>
+    </div>
+  </div>
+  <button class="drawer-logout" onclick="doLogout()">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+    Wyloguj się
+  </button>
+</div>
+
 <!-- GŁÓWNA APLIKACJA -->
 
 <div class="app" id="main-app" style="display:none">
-  <div class="header">
-    <div class="logo">🏠</div>
-    <h1>Apartamenty Elegant</h1>
-    <p>Panel zarządzania</p>
-    <div class="header-user" id="header-user">
-      <span class="header-user-name" id="header-user-name"></span>
-      <span class="header-user-role" id="header-user-role"></span>
-      <button class="header-logout-btn" onclick="doLogout()">Wyloguj</button>
+  <!-- TOP BAR -->
+  <div class="topbar">
+    <div class="topbar-left">
+      <button class="topbar-hamburger" onclick="openDrawer()">
+        <span></span><span></span><span></span>
+      </button>
+      <div>
+        <div class="topbar-title" id="topbar-tab-name">Wiadomości</div>
+        <div class="topbar-subtitle">Apartamenty Elegant</div>
+      </div>
     </div>
-    <div class="header-line"></div>
+    <div class="topbar-avatar" id="topbar-avatar" onclick="openDrawer()">A</div>
   </div>
+
+  <!-- TAB STRIP -->
 
   <div class="tabs" id="main-tabs">
     <button class="tab active" id="tab-msg"   onclick="switchTab('msg')">
-      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg> Wiadomości
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg> Wiadomości
     </button>
     <button class="tab" id="tab-cal"   onclick="switchTab('cal')">
-      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg> Kalendarz
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg> Kalendarz
     </button>
     <button class="tab" id="tab-res"   onclick="switchTab('res')">
-      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/><line x1="8" y1="14" x2="16" y2="14"/><line x1="8" y1="18" x2="12" y2="18"/></svg> Rezerwacje
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/><line x1="8" y1="14" x2="16" y2="14"/><line x1="8" y1="18" x2="12" y2="18"/></svg> Rezerwacje
     </button>
     <button class="tab" id="tab-clean" onclick="switchTab('clean')">
-      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 22v-3l9-9"/><path d="m15 6-3 3"/><path d="M18 2l4 4-9.5 9.5-4-4z"/><path d="M9 19H5a2 2 0 0 1-2-2V7"/></svg> Sprzątanie
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 22v-3l9-9"/><path d="m15 6-3 3"/><path d="M18 2l4 4-9.5 9.5-4-4z"/></svg> Sprzątanie
     </button>
     <button class="tab" id="tab-apts"  onclick="switchTab('apts')">
-      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg> Ustawienia
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg> Ustawienia
     </button>
     <button class="tab" id="tab-users" onclick="switchTab('users')" style="display:none">
-      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg> Użytkownicy
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg> Użytkownicy
     </button>
   </div>
 
@@ -1262,15 +1369,25 @@ async function doLogout() {
 function startApp() {
   document.getElementById('login-screen').style.display = 'none';
   document.getElementById('main-app').style.display = '';
-  document.getElementById('header-user-name').textContent = '👤 ' + (authName || authRole);
-  document.getElementById('header-user-role').textContent = ROLE_LABELS[authRole] || authRole;
+  // Topbar & drawer user info
+  const initials = (authName || authRole || '?')[0].toUpperCase();
+  const el = document.getElementById('topbar-avatar');
+  if (el) el.textContent = initials;
+  const da = document.getElementById('drawer-avatar');
+  if (da) da.textContent = initials;
+  const du = document.getElementById('drawer-uname');
+  if (du) du.textContent = authName || authRole;
+  const dr = document.getElementById('drawer-urole');
+  if (dr) dr.textContent = ROLE_LABELS[authRole] || authRole;
+  // Show/hide tabs & drawer items based on role
   const allowed = ROLE_TABS[authRole] || [];
   ['msg','cal','res','clean','apts','users'].forEach(t => {
-    const btn = document.getElementById('tab-' + t);
-    if (btn) btn.style.display = allowed.includes(t) ? '' : 'none';
+    const btn  = document.getElementById('tab-' + t);
+    const dmenu = document.getElementById('dmenu-' + t);
+    const show = allowed.includes(t);
+    if (btn)   btn.style.display   = show ? '' : 'none';
+    if (dmenu) dmenu.style.display = show ? '' : 'none';
   });
-  const cols = allowed.length <= 3 ? allowed.length : 3;
-  document.getElementById('main-tabs').style.gridTemplateColumns = 'repeat(' + cols + ', 1fr)';
   if (authRole === 'viewer') applyViewerMode();
   const firstTab = allowed[0] || 'cal';
   switchTab(firstTab);
@@ -1631,17 +1748,36 @@ function switchMsgTab(tab) {
 }
 
 // ─── TAB SWITCHING ────────────────────────────────────
+const TAB_NAMES = { msg:'Wiadomości', cal:'Kalendarz', res:'Rezerwacje', clean:'Sprzątanie', apts:'Ustawienia', users:'Użytkownicy' };
+
+function openDrawer() {
+  document.getElementById('drawer').classList.add('open');
+  document.getElementById('drawer-backdrop').classList.add('open');
+}
+function closeDrawer() {
+  document.getElementById('drawer').classList.remove('open');
+  document.getElementById('drawer-backdrop').classList.remove('open');
+}
+function drawerSwitchTab(tab) {
+  closeDrawer();
+  switchTab(tab);
+}
+
 function switchTab(tab) {
-  // Hide all panels (including users)
   ['msg','cal','res','clean','apts','users'].forEach(t => {
     const btn   = document.getElementById('tab-' + t);
     const panel = document.getElementById('panel-' + t);
+    const dmenu = document.getElementById('dmenu-' + t);
     if (btn)   btn.classList.toggle('active', t === tab);
+    if (dmenu) dmenu.classList.toggle('active', t === tab);
     if (panel) {
       panel.classList.toggle('active', t === tab);
-      panel.style.display = '';  // reset any inline display override
+      panel.style.display = '';
     }
   });
+  // Update topbar title
+  const titleEl = document.getElementById('topbar-tab-name');
+  if (titleEl) titleEl.textContent = TAB_NAMES[tab] || tab;
   // Tab-specific init
   if (tab === 'res')   { populateResAptSelect(); renderResList(); }
   if (tab === 'cal')   {
