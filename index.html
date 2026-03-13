@@ -984,8 +984,8 @@ text-transform: uppercase; padding: 3px 9px; border-radius: 20px;
         <span></span><span></span><span></span>
       </button>
       <div>
-        <div class="topbar-title" id="topbar-tab-name">Wiadomości</div>
-        <div class="topbar-subtitle">Apartamenty Elegant</div>
+        <div class="topbar-title" id="topbar-tab-name">Apartamenty Elegant</div>
+        <div class="topbar-subtitle">Przemyśl</div>
       </div>
     </div>
     <div class="topbar-avatar" id="topbar-avatar" onclick="openDrawer()">A</div>
@@ -1863,9 +1863,8 @@ function switchTab(tab) {
       panel.style.display = '';
     }
   });
-  // Update topbar title
-  const titleEl = document.getElementById('topbar-tab-name');
-  if (titleEl) titleEl.textContent = TAB_NAMES[tab] || tab;
+  // Update topbar title — stays fixed
+  // (title is always "Apartamenty Elegant")
   // Tab-specific init
   if (tab === 'res')   { populateResAptSelect(); renderResList(); }
   if (tab === 'cal')   {
