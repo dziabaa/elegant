@@ -402,19 +402,19 @@ padding: 20px 16px; overflow-y: auto;
 }
 .modal-overlay.open { display: flex; }
 .modal {
-background: #f0ede8; border: 1px solid #d0cbc3;
+background: #ffffff; border: 1.5px solid #e4e8f0;
 border-radius: 20px; padding: 24px; width: 100%;
 max-width: 400px; position: relative; z-index: 401;
 }
-.modal h3 { font-family: ‘DM Sans’, sans-serif; font-size: 18px; font-weight: 700; color: #1a1a1a; margin-bottom: 6px; }
-.modal p { font-family: ‘DM Sans’, sans-serif; font-size: 13px; color: #666660; margin-bottom: 16px; }
-.modal label { font-family: ‘DM Sans’, sans-serif; font-size: 11px; font-weight: 600; letter-spacing: 1px; color: #666660; text-transform: uppercase; display: block; margin-bottom: 6px; }
+.modal h3 { font-family: ‘DM Sans’, sans-serif; font-size: 20px; font-weight: 700; color: #0f1e3d; margin-bottom: 4px; }
+.modal p { font-family: ‘DM Sans’, sans-serif; font-size: 13px; color: #8a95a8; margin-bottom: 16px; }
+.modal label { font-family: ‘DM Sans’, sans-serif; font-size: 13px; font-weight: 600; letter-spacing: 0; color: #0f1e3d; text-transform: none; display: block; margin-bottom: 6px; }
 
 #modal-welcome, #modal-welcome-en, #modal-welcome-uk,
 #modal-pin, #modal-pin-en, #modal-pin-uk {
-width: 100%; background: var(–card2);
-border: 1px solid var(–border); border-radius: 12px;
-padding: 13px; color: #1a1a1a; font-size: 13px;
+width: 100%; background: #f3f5f9;
+border: 1.5px solid #e4e8f0; border-radius: 12px;
+padding: 13px; color: #0f1e3d; font-size: 13px;
 line-height: 1.65; font-family: ‘DM Sans’, sans-serif;
 resize: none; outline: none; min-height: 80px;
 height: auto; margin-bottom: 14px; overflow: hidden;
@@ -422,23 +422,23 @@ box-sizing: border-box;
 }
 #modal-welcome:focus, #modal-welcome-en:focus, #modal-welcome-uk:focus,
 #modal-pin:focus, #modal-pin-en:focus, #modal-pin-uk:focus {
-border-color: #1a1a1a; box-shadow: 0 0 0 3px rgba(26,26,26,0.08);
+border-color: #3b5bdb; box-shadow: 0 0 0 3px rgba(59,91,219,0.1);
 }
 .modal-actions { display: flex; gap: 10px; }
 .btn-save {
-flex: 1; padding: 13px; background: #1a1a1a;
+flex: 1; padding: 13px; background: #1a2744;
 border: none; border-radius: 12px; color: #fff;
 font-size: 14px; font-weight: 600; cursor: pointer;
 font-family: ‘DM Sans’, sans-serif; transition: opacity 0.2s;
 }
 .btn-save:hover { opacity: 0.85; }
 .btn-cancel {
-padding: 13px 20px; background: #e8e4dd;
-border: 1px solid #d0cbc3; border-radius: 12px;
-color: #1a1a1a; font-size: 14px; cursor: pointer;
+padding: 13px 20px; background: #f0f2f7;
+border: 1.5px solid #e4e8f0; border-radius: 12px;
+color: #5a6480; font-size: 14px; cursor: pointer;
 font-family: ‘DM Sans’, sans-serif; transition: all 0.2s;
 }
-.btn-cancel:hover { background: #d0cbc3; }
+.btn-cancel:hover { background: #e4e8f0; }
 
 /* Toast */
 .toast {
@@ -587,15 +587,15 @@ padding: 8px 0; border-bottom: 1px solid #e0dbd4; font-size: 14px;
 
 .date-input, .guest-input {
 display: block; width: 100%; min-width: 0; max-width: 100%;
-box-sizing: border-box; background: #e8e4de;
-border: 1px solid #d0cbc3; border-radius: 12px;
-padding: 0 14px; height: 48px; color: #1a1a1a;
+box-sizing: border-box; background: #f3f5f9;
+border: 1.5px solid #e4e8f0; border-radius: 12px;
+padding: 0 14px; height: 48px; color: #0f1e3d;
 font-size: 14px; font-family: ‘DM Sans’, sans-serif;
 outline: none; color-scheme: light; transition: border-color 0.2s;
 -webkit-appearance: none; appearance: none; line-height: 48px;
 }
-.date-input:focus, .guest-input:focus { border-color: #1a1a1a; }
-.date-input::placeholder, .guest-input::placeholder { color: #aaa8a0; }
+.date-input:focus, .guest-input:focus { border-color: #3b5bdb; box-shadow: 0 0 0 3px rgba(59,91,219,0.1); }
+.date-input::placeholder, .guest-input::placeholder { color: #8a95a8; }
 
 /* Reservation table */
 .res-table { width: 100%; border-collapse: collapse; }
@@ -646,43 +646,49 @@ position: fixed; bottom: 0; left: 50%; transform: translateX(-50%);
 width: 100%; max-width: 420px;
 background: #fff; border-radius: 20px 20px 0 0;
 padding: 20px 20px 36px;
-box-shadow: 0 -4px 30px rgba(0,0,0,0.18);
+box-shadow: 0 -4px 30px rgba(0,0,0,0.15);
 z-index: 300; animation: slideUp 0.25s ease;
 }
 .bpop-header {
 display: flex; align-items: center; gap: 10px; margin-bottom: 16px;
-padding-bottom: 14px; border-bottom: 1px solid #f0ede8;
+padding-bottom: 14px; border-bottom: 1px solid #e4e8f0;
 }
 .bpop-source {
 font-size: 11px; font-weight: 700; letter-spacing: 0.3px;
-color: #fff; background: #1a1a1a;
+color: #fff; background: #1a2744;
 border-radius: 7px; padding: 3px 9px;
 }
 .bpop-source.airbnb { background: #e8433a; }
 .bpop-source.ical   { background: #1a3a6b; }
-.bpop-title { font-size: 16px; font-weight: 700; color: #1a1a1a; flex: 1; }
+.bpop-title { font-size: 16px; font-weight: 700; color: #0f1e3d; flex: 1; }
 .bpop-close {
-background: #f0ede8; border: none; border-radius: 50%;
+background: #f0f2f7; border: none; border-radius: 50%;
 width: 30px; height: 30px; font-size: 18px; cursor: pointer;
 display: flex; align-items: center; justify-content: center;
-color: #888; line-height: 1; flex-shrink: 0;
+color: #5a6480; line-height: 1; flex-shrink: 0;
 }
-.bpop-row { display: flex; gap: 12px; align-items: flex-start; margin-bottom: 12px; }
-.bpop-icon { font-size: 16px; width: 22px; flex-shrink: 0; margin-top: 1px; }
-.bpop-label { font-size: 10px; color: #aaa; text-transform: uppercase; letter-spacing: 0.8px; margin-bottom: 2px; }
-.bpop-val { font-size: 14px; font-weight: 600; color: #1a1a1a; }
+.bpop-row { display: flex; gap: 12px; align-items: flex-start; margin-bottom: 14px; }
+.bpop-icon {
+width: 32px; height: 32px; border-radius: 8px; background: #f0f2f7;
+display: flex; align-items: center; justify-content: center;
+flex-shrink: 0; color: #1a2744;
+}
+.bpop-label { font-size: 10px; color: #8a95a8; text-transform: uppercase; letter-spacing: 0.8px; margin-bottom: 2px; font-weight: 600; }
+.bpop-val { font-size: 14px; font-weight: 600; color: #0f1e3d; }
 .bpop-actions {
 display: flex; gap: 8px; margin-top: 16px;
-padding-top: 14px; border-top: 1px solid #f0ede8;
+padding-top: 14px; border-top: 1px solid #e4e8f0;
 }
 .bpop-btn-edit {
-flex: 1; padding: 12px; background: #1a1a1a; color: #fff;
+flex: 1; padding: 13px; background: #1a2744; color: #fff;
 border: none; border-radius: 12px; font-size: 14px; font-weight: 600;
 font-family: ‘DM Sans’, sans-serif; cursor: pointer;
+display: flex; align-items: center; justify-content: center; gap: 8px;
 }
 .bpop-btn-del {
-padding: 12px 16px; background: #fee2e2; color: #dc2626;
+padding: 13px 16px; background: #fef2f2; color: #dc2626;
 border: none; border-radius: 12px; font-size: 16px; cursor: pointer;
+display: flex; align-items: center; justify-content: center;
 }
 
 /* legacy — keep for calendar day popup */
@@ -841,7 +847,7 @@ font-family: ‘DM Sans’, sans-serif; transition: background 0.2s;
 /* User screen */
 #user-screen {
 position: fixed; inset: 0; z-index: 9998;
-background: #f0ede8; display: none;
+background: #eef1f7; display: none;
 flex-direction: column; align-items: center;
 justify-content: flex-start; overflow-y: auto;
 -webkit-overflow-scrolling: touch; font-family: ‘DM Sans’, sans-serif;
@@ -905,26 +911,26 @@ text-transform: uppercase; padding: 4px 10px; border-radius: 20px;
 <div id="user-screen">
   <div style="width:100%;max-width:420px;padding:20px 16px 60px;box-sizing:border-box;">
     <div style="display:flex;align-items:center;gap:12px;margin-bottom:24px;margin-top:8px">
-      <button onclick="closeUserModal()" style="background:#fff;border:1px solid #ede9e3;border-radius:12px;width:40px;height:40px;display:flex;align-items:center;justify-content:center;cursor:pointer;flex-shrink:0;padding:0">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#1a1a1a" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+      <button onclick="closeUserModal()" style="background:#ffffff;border:1.5px solid #e4e8f0;border-radius:12px;width:40px;height:40px;display:flex;align-items:center;justify-content:center;cursor:pointer;flex-shrink:0;padding:0">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#1a2744" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
       </button>
-      <div id="user-screen-title" style="font-size:17px;font-weight:700;color:#1a1a1a">Nowy użytkownik</div>
+      <div id="user-screen-title" style="font-size:20px;font-weight:700;color:#0f1e3d;font-family:'DM Sans',sans-serif">Nowy użytkownik</div>
     </div>
-    <div style="background:#fff;border-radius:16px;padding:20px;border:1px solid #ede9e3">
-      <label style="display:block;font-size:11px;font-weight:700;letter-spacing:0.6px;text-transform:uppercase;color:#999;margin-bottom:6px">Imię / Nazwa</label>
-      <input type="text" id="user-name" class="date-input" placeholder="np. Anna Kowalska" style="margin-bottom:16px">
-      <label style="display:block;font-size:11px;font-weight:700;letter-spacing:0.6px;text-transform:uppercase;color:#999;margin-bottom:6px">Login</label>
-      <input type="text" id="user-login" class="date-input" placeholder="np. anna" autocomplete="off" style="margin-bottom:16px">
-      <label style="display:block;font-size:11px;font-weight:700;letter-spacing:0.6px;text-transform:uppercase;color:#999;margin-bottom:6px">Hasło <span id="user-pass-hint" style="font-weight:400;color:#aaa;text-transform:none;letter-spacing:0">(zostaw puste aby nie zmieniać)</span></label>
-      <input type="password" id="user-pass" class="date-input" placeholder="••••••••" autocomplete="new-password" style="margin-bottom:16px">
-      <label style="display:block;font-size:11px;font-weight:700;letter-spacing:0.6px;text-transform:uppercase;color:#999;margin-bottom:6px">Rola</label>
-      <select id="user-role" class="date-input" style="margin-bottom:24px">
+    <div style="background:#fff;border-radius:16px;padding:20px;border:1.5px solid #e4e8f0">
+      <label style="display:block;font-size:13px;font-weight:600;color:#0f1e3d;margin-bottom:6px">Imię / Nazwa</label>
+      <input type="text" id="user-name" class="date-input" placeholder="np. Anna Kowalska" style="margin-bottom:16px;border:1.5px solid #e4e8f0;background:#f3f5f9;border-radius:12px;color:#0f1e3d">
+      <label style="display:block;font-size:13px;font-weight:600;color:#0f1e3d;margin-bottom:6px">Login</label>
+      <input type="text" id="user-login" class="date-input" placeholder="np. anna" autocomplete="off" style="margin-bottom:16px;border:1.5px solid #e4e8f0;background:#f3f5f9;border-radius:12px;color:#0f1e3d">
+      <label style="display:block;font-size:13px;font-weight:600;color:#0f1e3d;margin-bottom:6px">Hasło <span id="user-pass-hint" style="font-weight:400;color:#8a95a8;font-size:12px">(zostaw puste aby nie zmieniać)</span></label>
+      <input type="password" id="user-pass" class="date-input" placeholder="••••••••" autocomplete="new-password" style="margin-bottom:16px;border:1.5px solid #e4e8f0;background:#f3f5f9;border-radius:12px;color:#0f1e3d">
+      <label style="display:block;font-size:13px;font-weight:600;color:#0f1e3d;margin-bottom:6px">Rola</label>
+      <select id="user-role" class="date-input" style="margin-bottom:24px;border:1.5px solid #e4e8f0;background:#f3f5f9;border-radius:12px;color:#0f1e3d">
         <option value="admin">👑 Admin — pełny dostęp</option>
         <option value="reception">🛎️ Recepcja — rezerwacje + PIN</option>
         <option value="cleaner">🧹 Sprzątacz — sprzątanie + kalendarz</option>
         <option value="viewer">👁️ Podgląd — tylko odczyt</option>
       </select>
-      <button onclick="saveUser()" style="width:100%;background:#1a1a1a;color:#fff;border:none;border-radius:12px;padding:14px;font-size:15px;font-weight:600;font-family:'DM Sans',sans-serif;cursor:pointer">Zapisz</button>
+      <button onclick="saveUser()" style="width:100%;background:#1a2744;color:#fff;border:none;border-radius:12px;padding:14px;font-size:15px;font-weight:600;font-family:'DM Sans',sans-serif;cursor:pointer">Zapisz</button>
     </div>
   </div>
 </div>
@@ -1284,7 +1290,7 @@ text-transform: uppercase; padding: 4px 10px; border-radius: 20px;
 <div class="modal-overlay" id="modal">
   <div class="modal">
     <h3>Szablon wiadomości</h3>
-    <p id="modal-apt-name"></p>
+    <p id="modal-apt-name" style="color:#5a6480;font-size:13px;margin-bottom:20px"></p>
     <label>Szablon powitalny 🇵🇱 PL</label>
     <textarea id="modal-welcome"    rows="4" placeholder="Wiadomość powitalna PL..."></textarea>
     <label>Szablon powitalny 🇬🇧 EN</label>
@@ -1306,9 +1312,12 @@ text-transform: uppercase; padding: 4px 10px; border-radius: 20px;
 
 <div class="modal-overlay" id="modal-confirm">
   <div class="modal" style="max-width:320px;text-align:center">
-    <h3 style="margin-bottom:10px;font-size:17px">Usuń apartament</h3>
-    <p id="confirm-apt-name" style="margin-bottom:20px;font-size:15px;font-weight:600;color:#1a1a1a"></p>
-    <p style="margin-bottom:24px;font-size:13px;color:#666660">Tej operacji nie można cofnąć.</p>
+    <div style="width:48px;height:48px;background:#fef2f2;border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 16px">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#dc2626" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/><path d="M9 6V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/></svg>
+    </div>
+    <h3 style="margin-bottom:6px">Usuń apartament</h3>
+    <p id="confirm-apt-name" style="margin-bottom:6px;font-size:15px;font-weight:700;color:#0f1e3d"></p>
+    <p style="margin-bottom:24px;font-size:13px;color:#8a95a8">Tej operacji nie można cofnąć.</p>
     <div class="modal-actions">
       <button class="btn-cancel" onclick="closeConfirm()">Anuluj</button>
       <button class="btn-save" style="background:#dc2626" onclick="confirmRemove()">Usuń</button>
@@ -1320,20 +1329,20 @@ text-transform: uppercase; padding: 4px 10px; border-radius: 20px;
   <div class="modal" style="width:calc(100% - 32px);max-width:400px;max-height:90vh;overflow-y:auto">
     <h3>Nowa rezerwacja</h3>
     <div style="position:relative;margin-bottom:16px">
-      <select id="modal-booking-apt-select" style="width:100%;background:#e8e4de;border:1px solid #d0cbc3;border-radius:12px;padding:0 14px;height:48px;color:#1a1a1a;font-size:14px;font-family:'DM Sans',sans-serif;outline:none;-webkit-appearance:none;appearance:none;box-sizing:border-box"></select>
-      <svg style="position:absolute;right:12px;top:50%;transform:translateY(-50%);pointer-events:none" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#666660" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+      <select id="modal-booking-apt-select" style="width:100%;background:#f3f5f9;border:1.5px solid #e4e8f0;border-radius:12px;padding:0 14px;height:48px;color:#1a1a1a;font-size:14px;font-family:'DM Sans',sans-serif;outline:none;-webkit-appearance:none;appearance:none;box-sizing:border-box"></select>
+      <svg style="position:absolute;right:12px;top:50%;transform:translateY(-50%);pointer-events:none" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#8a95a8" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
     </div>
     <div style="display:flex;gap:10px;margin-bottom:4px">
       <div style="flex:1;position:relative">
-        <input type="date" id="book-from" onchange="updateNights()" style="width:100%;box-sizing:border-box;padding:20px 12px 6px;height:48px;background:#e8e4de;border:1px solid #d0cbc3;border-radius:12px;font-size:14px;font-family:'DM Sans',sans-serif;color:#1a1a1a;outline:none;appearance:none;-webkit-appearance:none">
-        <label for="book-from" style="position:absolute;top:7px;left:12px;font-size:10px;font-weight:600;letter-spacing:0.5px;color:#666660;text-transform:uppercase;pointer-events:none">Od</label>
+        <input type="date" id="book-from" onchange="updateNights()" style="width:100%;box-sizing:border-box;padding:20px 12px 6px;height:48px;background:#f3f5f9;border:1.5px solid #e4e8f0;border-radius:12px;font-size:14px;font-family:'DM Sans',sans-serif;color:#1a1a1a;outline:none;appearance:none;-webkit-appearance:none">
+        <label for="book-from" style="position:absolute;top:7px;left:12px;font-size:10px;font-weight:600;letter-spacing:0.5px;color:#0f1e3d;pointer-events:none">Od</label>
       </div>
       <div style="flex:1;position:relative">
-        <input type="date" id="book-to" onchange="updateNights()" style="width:100%;box-sizing:border-box;padding:20px 12px 6px;height:48px;background:#e8e4de;border:1px solid #d0cbc3;border-radius:12px;font-size:14px;font-family:'DM Sans',sans-serif;color:#1a1a1a;outline:none;appearance:none;-webkit-appearance:none">
-        <label for="book-to" style="position:absolute;top:7px;left:12px;font-size:10px;font-weight:600;letter-spacing:0.5px;color:#666660;text-transform:uppercase;pointer-events:none">Do</label>
+        <input type="date" id="book-to" onchange="updateNights()" style="width:100%;box-sizing:border-box;padding:20px 12px 6px;height:48px;background:#f3f5f9;border:1.5px solid #e4e8f0;border-radius:12px;font-size:14px;font-family:'DM Sans',sans-serif;color:#1a1a1a;outline:none;appearance:none;-webkit-appearance:none">
+        <label for="book-to" style="position:absolute;top:7px;left:12px;font-size:10px;font-weight:600;letter-spacing:0.5px;color:#0f1e3d;pointer-events:none">Do</label>
       </div>
     </div>
-    <div id="book-nights" style="font-size:12px;color:#666660;text-align:right;margin-bottom:10px;min-height:16px;margin-top:4px"></div>
+    <div id="book-nights" style="font-size:12px;color:#8a95a8;text-align:right;margin-bottom:10px;min-height:16px;margin-top:4px"></div>
     <input type="text"   id="book-guest"  class="date-input" placeholder="Imię i nazwisko gościa" style="margin-bottom:10px">
     <input type="tel"    id="book-phone"  class="date-input" placeholder="Telefon gościa" style="margin-bottom:10px">
     <input type="number" id="book-people" class="date-input" placeholder="Liczba gości" min="1" style="margin-bottom:10px">
@@ -1348,9 +1357,11 @@ text-transform: uppercase; padding: 4px 10px; border-radius: 20px;
 
 <div class="modal-overlay" id="modal-confirm-booking">
   <div class="modal" style="text-align:center;padding:28px 24px">
-    <div style="font-size:36px;margin-bottom:12px">🗑️</div>
-    <h3 style="margin-bottom:8px">Usunąć rezerwację?</h3>
-    <p style="font-size:14px;color:#666660;margin-bottom:20px">Tej operacji nie można cofnąć.</p>
+    <div style="width:48px;height:48px;background:#fef2f2;border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 16px">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#dc2626" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/><path d="M9 6V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/></svg>
+    </div>
+    <h3 style="margin-bottom:6px">Usunąć rezerwację?</h3>
+    <p style="font-size:13px;color:#8a95a8;margin-bottom:24px">Tej operacji nie można cofnąć.</p>
     <div class="modal-actions">
       <button class="btn-cancel" onclick="closeConfirmBooking()">Anuluj</button>
       <button class="btn-save" style="background:#dc2626" onclick="doDeleteBooking()">Usuń</button>
@@ -2089,26 +2100,37 @@ function showGanttPopup(aptId, bookingIdx, sourceType) {
   const existing = document.getElementById('gantt-popup');
   if (existing) existing.remove();
   const label = sourceType === 'ical' ? 'Booking.com' : sourceType === 'airbnb' ? 'Airbnb' : 'Rezerwacja';
-  const badgeColor = sourceType === 'ical' ? '#1a3a6b' : sourceType === 'airbnb' ? '#FF5A5F' : '#1a1a1a';
   const nights = res.from && res.to ? Math.round((new Date(res.to) - new Date(res.from)) / 86400000) : '';
   const nightsStr = nights ? `${nights} ${nights === 1 ? 'noc' : nights < 5 ? 'noce' : 'nocy'}` : '';
   const popup = document.createElement('div');
   popup.id = 'gantt-popup';
   popup.className = 'booking-popup-sheet';
+  const iconPerson = `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#1a2744" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>`;
+  const iconPhone = `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#1a2744" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12 19.79 19.79 0 0 1 1.61 3.41 2 2 0 0 1 3.6 1.23h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 8.82a16 16 0 0 0 6.29 6.29l.95-.95a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>`;
+  const iconCal = `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#1a2744" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>`;
+  const iconPrice = `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#1a2744" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>`;
+  const iconNote = `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#1a2744" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>`;
   popup.innerHTML = `
     <div class="bpop-header">
       <div class="bpop-source ${sourceType === 'airbnb' ? 'airbnb' : sourceType === 'ical' ? 'ical' : ''}">${label}</div>
-      <div class="bpop-title">${apt.emoji} ${apt.name}</div>
-      <button class="bpop-close" onclick="document.getElementById('gantt-popup').remove()">×</button>
+      <div class="bpop-title">${apt.name}</div>
+      <button class="bpop-close">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </button>
     </div>
-    ${res.guest ? `<div class="bpop-row"><div class="bpop-icon">👤</div><div><div class="bpop-label">Gość</div><div class="bpop-val">${res.guest}</div></div></div>` : ''}
-    ${res.phone ? `<div class="bpop-row"><div class="bpop-icon">📞</div><div><div class="bpop-label">Telefon</div><div class="bpop-val">${res.phone}</div></div></div>` : ''}
-    <div class="bpop-row"><div class="bpop-icon">📅</div><div><div class="bpop-label">Termin</div><div class="bpop-val">${formatDate(res.from)} — ${formatDate(res.to)}${nightsStr ? ' · ' + nightsStr : ''}</div></div></div>
-    ${res.price ? `<div class="bpop-row"><div class="bpop-icon">💰</div><div><div class="bpop-label">Cena</div><div class="bpop-val">${res.price} PLN</div></div></div>` : ''}
-    ${res.note  ? `<div class="bpop-row"><div class="bpop-icon">📝</div><div><div class="bpop-label">Notatka</div><div class="bpop-val">${res.note}</div></div></div>` : ''}
+    ${res.guest ? `<div class="bpop-row"><div class="bpop-icon">${iconPerson}</div><div><div class="bpop-label">Gość</div><div class="bpop-val">${res.guest}</div></div></div>` : ''}
+    ${res.phone ? `<div class="bpop-row"><div class="bpop-icon">${iconPhone}</div><div><div class="bpop-label">Telefon</div><div class="bpop-val">${res.phone}</div></div></div>` : ''}
+    <div class="bpop-row"><div class="bpop-icon">${iconCal}</div><div><div class="bpop-label">Termin</div><div class="bpop-val">${formatDate(res.from)} — ${formatDate(res.to)}${nightsStr ? ' · ' + nightsStr : ''}</div></div></div>
+    ${res.price ? `<div class="bpop-row"><div class="bpop-icon">${iconPrice}</div><div><div class="bpop-label">Cena</div><div class="bpop-val">${res.price} PLN</div></div></div>` : ''}
+    ${res.note  ? `<div class="bpop-row"><div class="bpop-icon">${iconNote}</div><div><div class="bpop-label">Notatka</div><div class="bpop-val">${res.note}</div></div></div>` : ''}
     ${sourceType === 'manual' ? `<div class="bpop-actions">
-      <button class="bpop-btn-edit" onclick="closeGanttPop();openEditBooking('${aptId}',${bookingIdx})">✏️ Edytuj</button>
-      <button class="bpop-btn-del" onclick="closeGanttPop();confirmDeleteBooking(()=>{deleteBookingRes('${aptId}',${bookingIdx})})">🗑</button>
+      <button class="bpop-btn-edit" onclick="closeGanttPop();openEditBooking('${aptId}',${bookingIdx})">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+        Edytuj
+      </button>
+      <button class="bpop-btn-del" onclick="closeGanttPop();confirmDeleteBooking(()=>{deleteBookingRes('${aptId}',${bookingIdx})})">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/></svg>
+      </button>
     </div>` : ''}
   `;
   // style handled by .booking-popup-sheet CSS class
@@ -2394,7 +2416,7 @@ function showCleanDetail(ds, apts) {
   const detail = document.getElementById('clean-day-detail');
   const [y, m, d] = ds.split('-');
   detail.innerHTML = `
-    <div style="font-size:12px;font-weight:700;letter-spacing:0.5px;color:#666660;text-transform:uppercase;margin-bottom:8px">🧹 Sprzątanie ${d}.${m}.${y}</div>
+    <div style="font-size:12px;font-weight:700;letter-spacing:0.5px;color:#0f1e3d;margin-bottom:8px">🧹 Sprzątanie ${d}.${m}.${y}</div>
     ${apts.map(apt => `<div class="bcard" style="margin-bottom:8px"><div style="font-size:14px;font-weight:600;color:#1a1a1a">${apt.emoji} ${apt.name}</div><div style="font-size:12px;color:#666660;margin-top:3px">Wymeldowanie</div></div>`).join('')}`;
 }
 
