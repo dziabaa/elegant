@@ -2212,7 +2212,7 @@ function renderGantt() {
       const hasCheckinCollision  = reservations.some(r => r !== res && r.to === res.from);
       const hasCheckoutCollision = reservations.some(r => r !== res && r.from === res.to);
       const ciOff = hasCheckoutCollision ? DAY_W * 0.35 : (fi >= 0 ? DAY_W * 0.15 : 0);
-      const coOff = hasCheckinCollision  ? DAY_W * 0.30 : (ti <= DAYS_SHOWN ? DAY_W * 0.20 : 0);
+      const coOff = hasCheckinCollision  ? DAY_W * 0.30 : (ti <= DAYS_SHOWN ? DAY_W * 0.35 : 0);
       const xStart = fiC * DAY_W + ciOff + GAP;
       const xEnd   = tiC * DAY_W - coOff - GAP;
       const w = xEnd - xStart; if (w <= 0) return;
@@ -2239,7 +2239,7 @@ function renderGantt() {
       <div style="display:flex;border-bottom:1px solid #e4e8f0;">
         <!-- sticky left label -->
         <div style="position:sticky;left:0;z-index:2;background:#ffffff;width:110px;min-width:110px;
-                    display:flex;align-items:center;padding:0 8px 0 10px;border-right:1px solid #e4e8f0;">
+                    display:flex;align-items:center;padding:0 8px 0 10px;border-right:1px solid #e4e8f0;border-bottom:1px solid #e4e8f0;">
           <span style="font-size:12px;font-weight:600;color:#1a2744;line-height:1.2;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${apt.name}</span>
         </div>
         <!-- grid cells + bars -->
