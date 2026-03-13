@@ -1944,7 +1944,7 @@ function renderCalendar() {
   const W = 308, CELL = W / COLS, CELL_H = CELL;
   const svgH = HDR_H + ROWS * CELL_H;
   const DAYS_SHORT = ['Pn','Wt','Śr','Cz','Pt','So','Nd'];
-  const BAR_PAD = 0.22, BAR_R = 5;
+  const BAR_PAD = 0.12, BAR_R = 5;
 
   let bg = `<rect x="0" y="0" width="${W}" height="${svgH}" fill="#ffffff" rx="12"/>`;
   for (let row = 0; row < ROWS; row++) {
