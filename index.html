@@ -2037,7 +2037,7 @@ function updatePinPreview() {
     if (!el) return;
     if (apt) {
       const tplKey = l === 'pl' ? 'pinTemplate' : l === 'en' ? 'pinTemplateEn' : 'pinTemplateUk';
-      const userTpl = apt[tplKey];
+      const userTpl = apt[tplKey] && apt[tplKey].trim() ? apt[tplKey] : null;
       if (userTpl) {
         // szablon użytkownika — zastąp {PIN}
         el.value = userTpl.replace(/\{PIN\}/g, pinToEmoji(pin) + '#️⃣').replace(/\{pin\}/g, pin);
@@ -2073,7 +2073,7 @@ function onPinInput() {
       const el = document.getElementById('pin-msg-' + l);
       if (!el) return;
       const tplKey = l === 'pl' ? 'pinTemplate' : l === 'en' ? 'pinTemplateEn' : 'pinTemplateUk';
-      const userTpl = apt[tplKey];
+      const userTpl = apt[tplKey] && apt[tplKey].trim() ? apt[tplKey] : null;
       if (userTpl) {
         el.value = userTpl.replace(/\{PIN\}/g, pinToEmoji(pin) + '#️⃣').replace(/\{pin\}/g, pin);
       } else {
@@ -2309,7 +2309,7 @@ const PIN_TEMPLATES = {
 
 function switchLang(lang, btn) {
   activePinLang = lang;
-  document.querySelectorAll('.lang-tab').forEach(b => b.classList.remove('active'));
+  document.querySelectorAll('.lang-tab:not(.wel-lang-tab)').forEach(b => b.classList.remove('active'));
   btn.classList.add('active');
   ['pl','en','uk'].forEach(l => {
     const el = document.getElementById('pin-msg-' + l);
