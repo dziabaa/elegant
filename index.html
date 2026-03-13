@@ -2595,6 +2595,11 @@ function renderCalendar() {
   // Track click areas for manual bookings
   const clickAreas = [];
 
+  // Helper: rounded rect with per-corner radius (tl, tr, br, bl)
+  function roundedRect(x, y, w, h, tl, tr, br, bl) {
+    return `M${x+tl},${y} H${x+w-tr} Q${x+w},${y} ${x+w},${y+tr} V${y+h-br} Q${x+w},${y+h} ${x+w-br},${y+h} H${x+bl} Q${x},${y+h} ${x},${y+h-bl} V${y+tl} Q${x},${y} ${x+tl},${y} Z`;
+  }
+
   for (let d = 1; d <= daysInMonth; d++) {
     const ds = dateStr(calYear, calMonth, d);
     const cellIdx = startOffset + d - 1;
@@ -2611,28 +2616,53 @@ function renderCalendar() {
 
     const barTop    = cy + CELL_H * BAR_PAD;
     const barHeight = CELL_H * (1 - 2 * BAR_PAD);
+    const R = BAR_R;
 
     if (chkRes && occRes) {
-      // Split cell: left=checkout, right=checkin
+      // Split: left half = checkout (rounded right), right half = checkin (rounded left)
       const chkCol = isActiveRes(chkRes) ? '#16a34a' : resColorHex(chkRes.color);
       const occCol = isActiveRes(occRes) ? '#16a34a' : resColorHex(occRes.color);
-      bars += `<rect x="${cx}" y="${barTop}" width="${CELL*0.38}" height="${barHeight}" rx="${BAR_R}" fill="${chkCol}"/>`;
-      bars += `<rect x="${cx + CELL*0.62}" y="${barTop}" width="${CELL*0.38}" height="${barHeight}" rx="${BAR_R}" fill="${occCol}"/>`;
+      const gap = CELL * 0.08;
+      const hw  = CELL * 0.5 - gap;
+      // checkout bar: right side rounded
+      bars += `<path d="${roundedRect(cx, barTop, hw, barHeight, R, 0, 0, R)}" fill="${chkCol}"/>`;
+      // checkin bar: left side rounded
+      bars += `<path d="${roundedRect(cx + CELL*0.5 + gap, barTop, hw, barHeight, 0, R, R, 0)}" fill="${occCol}"/>`;
       if (chkRes.color === 'manual' && chkRes.booking) clickAreas.push({ x: cx, y: cy, w: CELL*0.5, h: CELL_H, booking: chkRes.booking });
       if (occRes.color === 'manual' && occRes.booking) clickAreas.push({ x: cx+CELL*0.5, y: cy, w: CELL*0.5, h: CELL_H, booking: occRes.booking });
+
     } else if (chkRes) {
+      // Only checkout: left half, rounded on right side only
       const col2 = isActiveRes(chkRes) ? '#16a34a' : resColorHex(chkRes.color);
-      bars += `<rect x="${cx}" y="${barTop}" width="${CELL*0.4}" height="${barHeight}" rx="${BAR_R}" fill="${col2}"/>`;
+      const w = CELL * 0.5;
+      bars += `<path d="${roundedRect(cx, barTop, w, barHeight, R, 0, 0, R)}" fill="${col2}"/>`;
       if (chkRes.color === 'manual' && chkRes.booking) clickAreas.push({ x: cx, y: cy, w: CELL, h: CELL_H, booking: chkRes.booking });
+
     } else if (occRes) {
       const col2 = isActiveRes(occRes) ? '#16a34a' : resColorHex(occRes.color);
       const isStart = ds === occRes.from;
-      const bx   = isStart ? cx + CELL*0.2 : cx;
-      const bw   = isStart ? CELL*0.8       : CELL;
-      const rxL  = isStart ? BAR_R : 0;
-      const rxR  = 0; // will continue to next day
-      // Use path for asymmetric radius
-      bars += `<rect x="${bx}" y="${barTop}" width="${bw}" height="${barHeight}" rx="${isStart ? BAR_R : 0}" fill="${col2}"/>`;
+      // Check if next day is still occupied (to decide if right side is rounded)
+      const nextDs = dateStr(calYear, calMonth, d + 1);
+      const isEnd = occRes.to === nextDs; // tomorrow = checkout = last occupied day ends tonight
+
+      if (isStart && isEnd) {
+        // Solo bar: fully rounded
+        const bx = cx + CELL * 0.15;
+        const bw = CELL * 0.7;
+        bars += `<path d="${roundedRect(bx, barTop, bw, barHeight, R, R, R, R)}" fill="${col2}"/>`;
+      } else if (isStart) {
+        // Start: rounded left, flat right (continues)
+        const bx = cx + CELL * 0.2;
+        const bw = CELL * 0.8;
+        bars += `<path d="${roundedRect(bx, barTop, bw, barHeight, R, 0, 0, R)}" fill="${col2}"/>`;
+      } else if (isEnd) {
+        // Last night before checkout: flat left, rounded right
+        const bw = CELL * 0.8;
+        bars += `<path d="${roundedRect(cx, barTop, bw, barHeight, 0, R, R, 0)}" fill="${col2}"/>`;
+      } else {
+        // Middle: no rounding, full width
+        bars += `<path d="${roundedRect(cx, barTop, CELL, barHeight, 0, 0, 0, 0)}" fill="${col2}"/>`;
+      }
       if (occRes.color === 'manual' && occRes.booking) clickAreas.push({ x: cx, y: cy, w: CELL, h: CELL_H, booking: occRes.booking });
     }
 
