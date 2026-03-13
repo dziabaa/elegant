@@ -2623,7 +2623,7 @@ function renderCalendar() {
       const chkCol = isActiveRes(chkRes) ? '#16a34a' : resColorHex(chkRes.color);
       const occCol = isActiveRes(occRes) ? '#16a34a' : resColorHex(occRes.color);
       const gap     = CELL * 0.12;
-      const chkW    = CELL * 0.2;
+      const chkW    = CELL * 0.08;
       const occW    = CELL - chkW - gap;
       // checkout bar: smaller, rounded on RIGHT
       bars += `<path d="${roundedRect(cx, barTop, chkW, barHeight, 0, R, R, 0)}" fill="${chkCol}"/>`;
