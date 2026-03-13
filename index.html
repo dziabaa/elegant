@@ -1344,8 +1344,8 @@ flex: 1;
 .bcard-nights {
 font-size: 11px;
 font-weight: 600;
-color: #888;
-background: #f4f1ec;
+color: #fff;
+background: #6366f1;
 border-radius: 20px;
 padding: 2px 9px;
 white-space: nowrap;
@@ -2825,8 +2825,8 @@ function bookingCardHtml(b, deleteCall, editCall) {
   const nights = b.nights || Math.round((new Date(b.to) - new Date(b.from)) / 86400000);
   const noc = nights===1?'noc':nights<5?'noce':'nocy';
   const chips = [
-    b.people ? `<span class="bchip">👥 ${b.people} os.</span>` : '',
-    b.price  ? `<span class="bchip">💰 ${b.price} PLN</span>` : '',
+    b.people ? `<span class="bchip" style="background:#fef3c7;color:#d97706;">👥 ${b.people} os.</span>` : '',
+    b.price  ? `<span class="bchip" style="background:#dcfce7;color:#16a34a;">💰 ${b.price} PLN</span>` : '',
   ].filter(Boolean).join('');
   const hasBody = b.guest || b.phone || chips || b.note;
   return `<div class="bcard">
