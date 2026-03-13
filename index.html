@@ -1850,7 +1850,7 @@ function setCalView(view) {
 function changeGanttMonth(dir) { ganttOffset += dir * 30; renderGantt(); }
 
 function showGanttPopup(aptId, bookingIdx, sourceType) {
-  const apt = apartments.find(a => a.id === aptId); if (!apt) return;
+  const apt = apartments.find(a => a.id == aptId); if (!apt) return;
   let res;
   if (sourceType === 'manual') {
     res = (apt.bookings || [])[bookingIdx];
@@ -2176,7 +2176,7 @@ function populateResAptSelect() {
 }
 
 function showBookingPopup(aptId, bookingIdx) {
-  const apt = apartments.find(a => a.id === aptId); if (!apt) return;
+  const apt = apartments.find(a => a.id == aptId); if (!apt) return;
   const b = (apt.bookings || [])[bookingIdx]; if (!b) return;
   const existing = document.getElementById('booking-detail-popup');
   if (existing) existing.remove();
