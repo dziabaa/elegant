@@ -2031,6 +2031,7 @@ function updatePinPreview() {
   const id = parseInt(document.getElementById('pin-apt').value);
   const apt = getApt(id);
   const pin = apt ? (apt.pin || '0000') : '0000';
+  // ustaw treść wszystkich textarea
   ['pl','en','uk'].forEach(l => {
     const el = document.getElementById('pin-msg-' + l);
     if (!el) return;
@@ -2041,18 +2042,19 @@ function updatePinPreview() {
     } else {
       el.value = '';
     }
-    el.style.display = l === activePinLang ? '' : 'none';
   });
-  if (apt) {
-    document.getElementById('pin-display').value = pin;
-  } else {
-    document.getElementById('pin-display').value = '';
-  }
-  requestAnimationFrame(() => {
-    ['pl','en','uk'].forEach(l => {
-      const el = document.getElementById('pin-msg-' + l);
-      if (el) autoResize(el);
-    });
+  document.getElementById('pin-display').value = pin;
+  // ustaw wysokość wszystkich — ukryte przez klon, aktywne normalnie
+  ['pl','en','uk'].forEach(l => {
+    const el = document.getElementById('pin-msg-' + l);
+    if (!el) return;
+    if (l === activePinLang) {
+      el.style.display = 'block';
+      autoResize(el);
+    } else {
+      el.style.display = 'none';
+      autoResizeHidden(el);
+    }
   });
 }
 
@@ -2082,14 +2084,7 @@ function savePinInline() {
   if (!apt || !pin) return;
   apt.pin = pin;
   localStorage.setItem('apts', JSON.stringify(apartments));
-  ['pl','en','uk'].forEach(l => {
-    const el = document.getElementById('pin-msg-' + l);
-    if (el) el.value = PIN_TEMPLATES[l](pin);
-  });
-  requestAnimationFrame(() => {
-    const el = document.getElementById('pin-msg-' + activePinLang);
-    if (el) autoResize(el);
-  });
+  updatePinPreview();
   showToast('PIN zapisany ✓');
 }
 
@@ -2333,21 +2328,17 @@ function sendActivePinMsg(app) {
 }
 
 function autoResize(el) {
-  if (el.style.display === 'none') {
-    // measure while temporarily visible but off-screen
-    el.style.position = 'absolute';
-    el.style.visibility = 'hidden';
-    el.style.display = 'block';
-    el.style.height = 'auto';
-    const h = el.scrollHeight;
-    el.style.display = 'none';
-    el.style.position = '';
-    el.style.visibility = '';
-    el.style.height = h + 'px';
-  } else {
-    el.style.height = 'auto';
-    el.style.height = el.scrollHeight + 'px';
-  }
+  el.style.height = 'auto';
+  el.style.height = el.scrollHeight + 'px';
+}
+
+function autoResizeHidden(el) {
+  const clone = el.cloneNode(true);
+  clone.style.cssText = 'position:fixed;top:-9999px;left:-9999px;display:block;visibility:hidden;height:auto;width:' + (el.offsetWidth || 300) + 'px';
+  document.body.appendChild(clone);
+  const h = clone.scrollHeight;
+  document.body.removeChild(clone);
+  el.style.height = h + 'px';
 }
 
 function applyAutoResize() {
