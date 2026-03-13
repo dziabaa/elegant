@@ -2650,12 +2650,12 @@ function renderCalendar() {
         const bw = CELL * 0.7;
         bars += `<path d="${roundedRect(bx, barTop, bw, barHeight, R, R, R, R)}" fill="${col2}"/>`;
       } else if (isStart) {
-        // Checkin: starts mid-cell, rounded on RIGHT, flat on left (continues right)
+        // Start: rounded left, flat right
         const bx = cx + CELL * 0.2;
         const bw = CELL * 0.8;
-        bars += `<path d="${roundedRect(bx, barTop, bw, barHeight, 0, R, R, 0)}" fill="${col2}"/>`;
+        bars += `<path d="${roundedRect(bx, barTop, bw, barHeight, R, 0, 0, R)}" fill="${col2}"/>`;
       } else if (isEnd) {
-        // Last night before checkout: full width, flat both sides (checkout day has the rounded end)
+        // Last night before checkout: flat left, flat right (checkout day shows the rounded end)
         bars += `<path d="${roundedRect(cx, barTop, CELL, barHeight, 0, 0, 0, 0)}" fill="${col2}"/>`;
       } else {
         // Middle: full width, no rounding
