@@ -3750,6 +3750,11 @@ function startApp() {
     if (btn) btn.style.display = allowed.includes(t) ? '' : 'none';
   });
 
+  // Ustaw liczbę kolumn w gridzie zakładek
+  var tabCount = allowed.length;
+  var cols = tabCount <= 3 ? tabCount : (tabCount <= 4 ? 4 : (tabCount <= 6 ? 3 : tabCount));
+  document.querySelector('.tabs').style.gridTemplateColumns = 'repeat(' + cols + ', 1fr)';
+
   // Zablokuj edycję dla podglądu
   if (authRole === 'viewer') applyViewerMode();
 
