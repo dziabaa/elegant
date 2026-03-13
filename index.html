@@ -3132,7 +3132,7 @@ function renderGantt() {
 
       // Offsets: wider checkout / narrower checkin when collision
       const ciOffset = hasCheckoutCollision ? DAY_W * 0.35 : (fi >= 0 ? DAY_W * 0.20 : 0);
-      const coOffset = hasCheckinCollision  ? DAY_W * 0.30 : (ti <= DAYS_SHOWN ? DAY_W * 0.14 : 0);
+      const coOffset = hasCheckinCollision  ? DAY_W * 0.30 : (ti <= DAYS_SHOWN ? DAY_W * 0.30 : 0);
 
       const xStart = APT_W + fiC * DAY_W + ciOffset + GAP;
       const xEnd   = APT_W + tiC * DAY_W + coOffset - GAP;
