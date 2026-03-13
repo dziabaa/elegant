@@ -534,6 +534,95 @@ outline: none; color-scheme: light; transition: border-color 0.2s;
 .date-input:focus, .guest-input:focus { border-color: #1a1a1a; }
 .date-input::placeholder, .guest-input::placeholder { color: #aaa8a0; }
 
+/* Reservation table */
+.res-table { width: 100%; border-collapse: collapse; }
+.res-table-row {
+display: grid;
+grid-template-columns: 36px 1fr 90px 28px;
+align-items: center;
+padding: 11px 0;
+border-bottom: 1px solid #e8e4de;
+gap: 0 10px;
+cursor: pointer;
+transition: background 0.12s;
+}
+.res-table-row:hover { background: rgba(0,0,0,0.025); border-radius: 10px; }
+.res-table-row:last-child { border-bottom: none; }
+.res-id {
+font-size: 11px; font-weight: 700; color: #fff;
+background: #1a1a1a; border-radius: 7px;
+padding: 3px 5px; text-align: center;
+font-family: ‘DM Sans’, sans-serif; letter-spacing: 0;
+}
+.res-id.airbnb { background: #e8433a; }
+.res-id.ical   { background: #1a3a6b; }
+.res-main { min-width: 0; }
+.res-guest { font-size: 13px; font-weight: 600; color: #1a1a1a; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.res-apt   { font-size: 11px; color: #888880; margin-top: 1px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.res-dates { text-align: right; }
+.res-date-from { font-size: 12px; font-weight: 600; color: #1a1a1a; white-space: nowrap; }
+.res-date-nights { font-size: 10px; color: #aaa; margin-top: 1px; }
+.res-chevron { color: #ccc; display: flex; align-items: center; justify-content: center; }
+.res-status {
+display: inline-block; font-size: 10px; font-weight: 700;
+letter-spacing: 0.3px; border-radius: 6px; padding: 2px 7px;
+white-space: nowrap;
+}
+.res-status.active  { background: #dcfce7; color: #16a34a; }
+.res-status.future  { background: #e8e4de; color: #666660; }
+.res-status.past    { background: #f4f1ec; color: #aaa; }
+.res-section-header {
+font-size: 10px; font-weight: 700; color: #aaa;
+letter-spacing: 1px; text-transform: uppercase;
+padding: 14px 0 6px; margin-top: 4px;
+}
+
+/* Booking detail popup (shared with gantt) */
+.booking-popup-sheet {
+position: fixed; bottom: 0; left: 50%; transform: translateX(-50%);
+width: 100%; max-width: 420px;
+background: #fff; border-radius: 20px 20px 0 0;
+padding: 20px 20px 36px;
+box-shadow: 0 -4px 30px rgba(0,0,0,0.18);
+z-index: 300; animation: slideUp 0.25s ease;
+}
+.bpop-header {
+display: flex; align-items: center; gap: 10px; margin-bottom: 16px;
+padding-bottom: 14px; border-bottom: 1px solid #f0ede8;
+}
+.bpop-source {
+font-size: 11px; font-weight: 700; letter-spacing: 0.3px;
+color: #fff; background: #1a1a1a;
+border-radius: 7px; padding: 3px 9px;
+}
+.bpop-source.airbnb { background: #e8433a; }
+.bpop-source.ical   { background: #1a3a6b; }
+.bpop-title { font-size: 16px; font-weight: 700; color: #1a1a1a; flex: 1; }
+.bpop-close {
+background: #f0ede8; border: none; border-radius: 50%;
+width: 30px; height: 30px; font-size: 18px; cursor: pointer;
+display: flex; align-items: center; justify-content: center;
+color: #888; line-height: 1; flex-shrink: 0;
+}
+.bpop-row { display: flex; gap: 12px; align-items: flex-start; margin-bottom: 12px; }
+.bpop-icon { font-size: 16px; width: 22px; flex-shrink: 0; margin-top: 1px; }
+.bpop-label { font-size: 10px; color: #aaa; text-transform: uppercase; letter-spacing: 0.8px; margin-bottom: 2px; }
+.bpop-val { font-size: 14px; font-weight: 600; color: #1a1a1a; }
+.bpop-actions {
+display: flex; gap: 8px; margin-top: 16px;
+padding-top: 14px; border-top: 1px solid #f0ede8;
+}
+.bpop-btn-edit {
+flex: 1; padding: 12px; background: #1a1a1a; color: #fff;
+border: none; border-radius: 12px; font-size: 14px; font-weight: 600;
+font-family: ‘DM Sans’, sans-serif; cursor: pointer;
+}
+.bpop-btn-del {
+padding: 12px 16px; background: #fee2e2; color: #dc2626;
+border: none; border-radius: 12px; font-size: 16px; cursor: pointer;
+}
+
+/* legacy — keep for calendar day popup */
 .bcard {
 background: #fff; border-radius: 14px;
 padding: 12px 14px; font-family: ‘DM Sans’, sans-serif;
@@ -1779,23 +1868,24 @@ function showGanttPopup(aptId, bookingIdx, sourceType) {
   const nightsStr = nights ? `${nights} ${nights === 1 ? 'noc' : nights < 5 ? 'noce' : 'nocy'}` : '';
   const popup = document.createElement('div');
   popup.id = 'gantt-popup';
+  popup.className = 'booking-popup-sheet';
   popup.innerHTML = `
-    <div style="display:flex;align-items:center;gap:10px;margin-bottom:14px">
-      <div style="background:${badgeColor};color:#fff;border-radius:8px;padding:4px 10px;font-size:12px;font-weight:700">${label}</div>
-      <div style="font-size:15px;font-weight:700;color:#1a1a1a;flex:1">${apt.emoji} ${apt.name}</div>
-      <button onclick="document.getElementById('gantt-popup').remove()" style="background:none;border:none;font-size:18px;cursor:pointer;color:#888;line-height:1">×</button>
+    <div class="bpop-header">
+      <div class="bpop-source ${sourceType === 'airbnb' ? 'airbnb' : sourceType === 'ical' ? 'ical' : ''}">${label}</div>
+      <div class="bpop-title">${apt.emoji} ${apt.name}</div>
+      <button class="bpop-close" onclick="document.getElementById('gantt-popup').remove()">×</button>
     </div>
-    ${res.guest ? `<div style="display:flex;gap:8px;align-items:center;margin-bottom:8px"><span style="font-size:16px">👤</span><div><div style="font-size:11px;color:#888;text-transform:uppercase;letter-spacing:0.8px">Gość</div><div style="font-weight:600;color:#1a1a1a">${res.guest}</div></div></div>` : ''}
-    ${res.phone ? `<div style="display:flex;gap:8px;align-items:center;margin-bottom:8px"><span style="font-size:16px">📞</span><div><div style="font-size:11px;color:#888;text-transform:uppercase;letter-spacing:0.8px">Telefon</div><div style="font-weight:600;color:#1a1a1a">${res.phone}</div></div></div>` : ''}
-    <div style="display:flex;gap:8px;align-items:center;margin-bottom:8px"><span style="font-size:16px">📅</span><div><div style="font-size:11px;color:#888;text-transform:uppercase;letter-spacing:0.8px">Termin</div><div style="font-weight:600;color:#1a1a1a">${formatDate(res.from)} — ${formatDate(res.to)}${nightsStr ? ' · ' + nightsStr : ''}</div></div></div>
-    ${res.price ? `<div style="display:flex;gap:8px;align-items:center;margin-bottom:8px"><span style="font-size:16px">💰</span><div><div style="font-size:11px;color:#888;text-transform:uppercase;letter-spacing:0.8px">Cena</div><div style="font-weight:600;color:#1a1a1a">${res.price} PLN</div></div></div>` : ''}
-    ${res.note ? `<div style="display:flex;gap:8px;align-items:center;margin-bottom:8px"><span style="font-size:16px">📝</span><div><div style="font-size:11px;color:#888;text-transform:uppercase;letter-spacing:0.8px">Notatka</div><div style="font-weight:600;color:#1a1a1a">${res.note}</div></div></div>` : ''}
-    ${sourceType === 'manual' ? `<div style="display:flex;gap:8px;margin-top:14px;padding-top:12px;border-top:1px solid #e8e4de">
-      <button onclick="openEditBooking('${aptId}',${bookingIdx});document.getElementById('gantt-popup').remove()" style="flex:1;padding:10px;background:#1a1a1a;color:#fff;border:none;border-radius:10px;font-size:13px;font-weight:600;font-family:'DM Sans',sans-serif;cursor:pointer">✏️ Edytuj</button>
-      <button onclick="deleteBookingRes('${aptId}',${bookingIdx});document.getElementById('gantt-popup').remove()" style="padding:10px 14px;background:#fee2e2;color:#dc2626;border:none;border-radius:10px;font-size:13px;cursor:pointer">🗑</button>
+    ${res.guest ? `<div class="bpop-row"><div class="bpop-icon">👤</div><div><div class="bpop-label">Gość</div><div class="bpop-val">${res.guest}</div></div></div>` : ''}
+    ${res.phone ? `<div class="bpop-row"><div class="bpop-icon">📞</div><div><div class="bpop-label">Telefon</div><div class="bpop-val">${res.phone}</div></div></div>` : ''}
+    <div class="bpop-row"><div class="bpop-icon">📅</div><div><div class="bpop-label">Termin</div><div class="bpop-val">${formatDate(res.from)} — ${formatDate(res.to)}${nightsStr ? ' · ' + nightsStr : ''}</div></div></div>
+    ${res.price ? `<div class="bpop-row"><div class="bpop-icon">💰</div><div><div class="bpop-label">Cena</div><div class="bpop-val">${res.price} PLN</div></div></div>` : ''}
+    ${res.note  ? `<div class="bpop-row"><div class="bpop-icon">📝</div><div><div class="bpop-label">Notatka</div><div class="bpop-val">${res.note}</div></div></div>` : ''}
+    ${sourceType === 'manual' ? `<div class="bpop-actions">
+      <button class="bpop-btn-edit" onclick="openEditBooking('${aptId}',${bookingIdx});document.getElementById('gantt-popup').remove()">✏️ Edytuj</button>
+      <button class="bpop-btn-del" onclick="confirmDeleteBooking(()=>{deleteBookingRes('${aptId}',${bookingIdx})});document.getElementById('gantt-popup').remove()">🗑</button>
     </div>` : ''}
   `;
-  popup.style.cssText = 'position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:420px;background:#fff;border-radius:20px 20px 0 0;padding:20px 20px 32px;box-shadow:0 -4px 30px rgba(0,0,0,0.18);z-index:300;animation:slideUp 0.25s ease';
+  // style handled by .booking-popup-sheet CSS class
   document.body.appendChild(popup);
   // close on backdrop tap
   setTimeout(() => {
@@ -2077,6 +2167,43 @@ function populateResAptSelect() {
   if (cur) sel.value = cur;
 }
 
+function showBookingPopup(aptId, bookingIdx) {
+  const apt = apartments.find(a => a.id === aptId); if (!apt) return;
+  const b = (apt.bookings || [])[bookingIdx]; if (!b) return;
+  const existing = document.getElementById('booking-detail-popup');
+  if (existing) existing.remove();
+  const today = new Date().toISOString().slice(0,10);
+  const isActive = today >= b.from && today < b.to;
+  const nights = Math.round((new Date(b.to) - new Date(b.from)) / 86400000);
+  const noc = nights===1?'noc':nights<5?'noce':'nocy';
+  const popup = document.createElement('div');
+  popup.id = 'booking-detail-popup';
+  popup.className = 'booking-popup-sheet';
+  popup.innerHTML = `
+    <div class="bpop-header">
+      <div class="bpop-source">Ręczna</div>
+      <div class="bpop-title">${apt.emoji} ${apt.name}</div>
+      ${isActive ? '<span class="res-status active">Trwa teraz</span>' : ''}
+      <button class="bpop-close" onclick="document.getElementById('booking-detail-popup').remove()">×</button>
+    </div>
+    ${b.guest ? `<div class="bpop-row"><div class="bpop-icon">👤</div><div><div class="bpop-label">Gość</div><div class="bpop-val">${b.guest}</div></div></div>` : ''}
+    ${b.phone ? `<div class="bpop-row"><div class="bpop-icon">📞</div><div><div class="bpop-label">Telefon</div><div class="bpop-val"><a href="tel:${b.phone}" style="color:#1a1a1a;text-decoration:none">${b.phone}</a></div></div></div>` : ''}
+    <div class="bpop-row"><div class="bpop-icon">📅</div><div><div class="bpop-label">Termin</div><div class="bpop-val">${formatDate(b.from)} — ${formatDate(b.to)} · ${nights} ${noc}</div></div></div>
+    ${b.people ? `<div class="bpop-row"><div class="bpop-icon">👥</div><div><div class="bpop-label">Gości</div><div class="bpop-val">${b.people} os.</div></div></div>` : ''}
+    ${b.price  ? `<div class="bpop-row"><div class="bpop-icon">💰</div><div><div class="bpop-label">Cena</div><div class="bpop-val">${b.price} PLN</div></div></div>` : ''}
+    ${b.note   ? `<div class="bpop-row"><div class="bpop-icon">📝</div><div><div class="bpop-label">Notatka</div><div class="bpop-val">${b.note}</div></div></div>` : ''}
+    <div class="bpop-actions">
+      <button class="bpop-btn-edit" onclick="openEditBooking('${aptId}',${bookingIdx});document.getElementById('booking-detail-popup').remove()">✏️ Edytuj</button>
+      <button class="bpop-btn-del" onclick="confirmDeleteBooking(()=>{deleteBookingRes('${aptId}',${bookingIdx})});document.getElementById('booking-detail-popup').remove()">🗑</button>
+    </div>`;
+  document.body.appendChild(popup);
+  setTimeout(() => {
+    const close = (e) => { if (!popup.contains(e.target)) { popup.remove(); document.removeEventListener('touchstart', close); document.removeEventListener('mousedown', close); } };
+    document.addEventListener('touchstart', close);
+    document.addEventListener('mousedown', close);
+  }, 100);
+}
+
 function bookingCardHtml(b, deleteCall, editCall) {
   const nights = b.nights || Math.round((new Date(b.to) - new Date(b.from)) / 86400000);
   const noc = nights===1?'noc':nights<5?'noce':'nocy';
@@ -2118,13 +2245,45 @@ function renderResList() {
   });
   all.sort((x, y) => isArchive ? y.b.from.localeCompare(x.b.from) : x.b.from.localeCompare(y.b.from));
   if (all.length === 0) {
-    list.innerHTML = `<div style="font-size:13px;color:#999;text-align:center;padding:16px 0">${isArchive ? 'Brak archiwalnych rezerwacji' : 'Brak rezerwacji ręcznych'}</div>`;
+    list.innerHTML = `<div style="font-size:13px;color:#999;text-align:center;padding:24px 0">${isArchive ? 'Brak archiwalnych rezerwacji' : 'Brak rezerwacji ręcznych'}</div>`;
     return;
   }
-  list.innerHTML = '<div style="display:flex;flex-direction:column;gap:8px">' +
-    all.map(({ b, apt, i }) =>
-      `<div><div class="bcard-apt-label">${apt.emoji} ${apt.name}</div>${bookingCardHtml(b, `deleteBookingRes('${apt.id}',${i})`, isArchive ? null : `openEditBooking('${apt.id}',${i})`)}</div>`
-    ).join('') + '</div>';
+
+  // Group by month
+  const byMonth = {};
+  all.forEach(item => {
+    const mo = item.b.from.slice(0,7);
+    if (!byMonth[mo]) byMonth[mo] = [];
+    byMonth[mo].push(item);
+  });
+
+  let html = '<div style="background:#fff;border-radius:16px;padding:0 14px;border:1px solid #e8e4de">';
+  let firstGroup = true;
+  Object.entries(byMonth).forEach(([mo, items]) => {
+    const label = new Date(mo + '-01').toLocaleString('pl', {month:'long', year:'numeric'});
+    html += `<div class="res-section-header" style="${firstGroup ? 'padding-top:10px' : ''}">${label.charAt(0).toUpperCase()+label.slice(1)}</div>`;
+    firstGroup = false;
+    items.forEach(({ b, apt, i }) => {
+      const isActive = today >= b.from && today < b.to;
+      const nights = Math.round((new Date(b.to) - new Date(b.from)) / 86400000);
+      const noc = nights===1?'noc':nights<5?'noce':'nocy';
+      const guestName = b.guest || '—';
+      html += `<div class="res-table-row" onclick="showBookingPopup('${apt.id}',${i})">
+        <div class="res-id">✎</div>
+        <div class="res-main">
+          <div class="res-guest">${guestName}</div>
+          <div class="res-apt">${apt.emoji} ${apt.name}</div>
+        </div>
+        <div class="res-dates">
+          <div class="res-date-from">${b.from.slice(5).replace('-','.')}</div>
+          <div class="res-date-nights">${nights} ${noc}${isActive ? ' · <span class="res-status active">teraz</span>' : ''}</div>
+        </div>
+        <div class="res-chevron"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg></div>
+      </div>`;
+    });
+  });
+  html += '</div>';
+  list.innerHTML = html;
 }
 
 let _pendingDeleteBooking = null;
