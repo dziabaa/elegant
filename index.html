@@ -2285,7 +2285,7 @@ function renderResList() {
       const nights = Math.round((new Date(b.to) - new Date(b.from)) / 86400000);
       const noc = nights===1?'noc':nights<5?'noce':'nocy';
       const guestName = b.guest || '—';
-      html += `<div class="res-table-row" onclick="showBookingPopup('${apt.id}',${i})">
+      html += `<div class="res-table-row" onclick="openEditBooking('${apt.id}',${i})">
         <div class="res-id">✎</div>
         <div class="res-main">
           <div class="res-guest">${guestName}</div>
@@ -2347,8 +2347,13 @@ function updateNights() {
 let _editAptId = null, _editIndex = null;
 
 function openEditBooking(aptId, index) {
-  const apt = getApt(aptId); if (!apt) return;
-  const b = apt.bookings[index]; if (!b) return;
+  index = parseInt(index, 10);
+  const apt = getApt(aptId);
+  if (!apt) { console.error('openEditBooking: apt not found', aptId, apartments.map(a=>a.id)); return; }
+  const b = apt.bookings[index];
+  if (!b) { console.error('openEditBooking: booking not found', index, apt.bookings); return; }
+  const modal = document.getElementById('modal-booking');
+  if (!modal) { console.error('openEditBooking: modal not found'); return; }
   _editAptId = aptId; _editIndex = index;
   const sel = document.getElementById('modal-booking-apt-select');
   sel.innerHTML = apartments.map(a => `<option value="${a.id}" ${a.id == aptId ? 'selected' : ''}>${a.emoji} ${a.name}</option>`).join('');
@@ -2363,7 +2368,7 @@ function openEditBooking(aptId, index) {
   document.querySelector('#modal-booking h3').textContent = 'Edytuj rezerwację';
   document.querySelector('#modal-booking .btn-save').textContent = 'Zapisz';
   document.querySelector('#modal-booking .btn-save').onclick = saveEditBooking;
-  document.getElementById('modal-booking').classList.add('open');
+  modal.classList.add('open');
 }
 
 function saveEditBooking() {
