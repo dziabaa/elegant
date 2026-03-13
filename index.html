@@ -2651,7 +2651,7 @@ function renderCalendar() {
       if (isStart && isEnd) {
         // Solo 1-night bar: starts at 20% of checkin day, ends at 30% of checkout day (next cell)
         const bx = cx + CELL * 0.20;
-        const bw = CELL * 0.80 + CELL * 0.30; // spans into next cell
+        const bw = CELL * 0.80 + CELL * 0.18; // spans into next cell
         bars += `<path d="${roundedRect(bx, barTop, bw, barHeight, R, R, R, R)}" fill="${col2}"/>`;
       } else if (isStart) {
         // Start: rounded left, flat right
