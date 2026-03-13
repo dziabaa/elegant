@@ -412,7 +412,7 @@ max-width: 400px; position: relative; z-index: 401;
 
 #modal-welcome, #modal-welcome-en, #modal-welcome-uk,
 #modal-pin, #modal-pin-en, #modal-pin-uk {
-width: 100%; background: #f3f5f9;
+width: 100%; background: #ffffff;
 border: 1.5px solid #e4e8f0; border-radius: 12px;
 padding: 13px; color: #0f1e3d; font-size: 13px;
 line-height: 1.65; font-family: ‘DM Sans’, sans-serif;
@@ -1293,7 +1293,7 @@ text-transform: uppercase; padding: 4px 10px; border-radius: 20px;
 <div class="modal-overlay" id="modal">
   <div class="modal">
     <h3>Szablon wiadomości</h3>
-    <p id="modal-apt-name" style="color:#5a6480;font-size:13px;margin-bottom:20px"></p>
+    <p id="modal-apt-name" style="color:#8a95a8;font-size:13px;margin-bottom:20px"></p>
     <label>Szablon powitalny 🇵🇱 PL</label>
     <textarea id="modal-welcome"    rows="4" placeholder="Wiadomość powitalna PL..."></textarea>
     <label>Szablon powitalny 🇬🇧 EN</label>
@@ -1583,7 +1583,7 @@ function renderIcalSection() {
     const div = document.createElement('div');
     div.className = 'ical-apt-item';
     div.innerHTML = `
-      <div class="ical-apt-label">${apt.name}</div>
+      <div class="ical-apt-label" style="display:flex;align-items:center;gap:6px"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#1a2744" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>${apt.name}</div>
       <div class="apt-ical-row">
         <div class="apt-ical-wrap">
           <span class="apt-ical-icon"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></span>
@@ -1698,7 +1698,7 @@ function updateSelects() {
 function openModal(id) {
   editingId = id;
   const apt = getApt(id);
-  document.getElementById('modal-apt-name').textContent = apt.emoji + ' ' + apt.name;
+  document.getElementById('modal-apt-name').textContent = apt.name;
   document.getElementById('modal-welcome').value    = apt.welcomeTemplate   || '';
   document.getElementById('modal-welcome-en').value = apt.welcomeTemplateEn || '';
   document.getElementById('modal-welcome-uk').value = apt.welcomeTemplateUk || '';
@@ -2118,7 +2118,7 @@ function showGanttPopup(aptId, bookingIdx, sourceType) {
   popup.innerHTML = `
     <div class="bpop-header">
       <div class="bpop-source ${sourceType === 'airbnb' ? 'airbnb' : sourceType === 'ical' ? 'ical' : ''}">${label}</div>
-      <div class="bpop-title">${apt.name}</div>
+      <div class="bpop-title" style="display:flex;align-items:center;gap:6px"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#1a2744" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>${apt.name}</div>
       <button class="bpop-close">
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
       </button>
@@ -2290,7 +2290,7 @@ function renderGantt() {
         <!-- apt labels -->
         ${apartments.map(apt => `
           <div style="height:${ROW_H}px;display:flex;align-items:center;padding:0 8px 0 10px;border-bottom:1px solid #e4e8f0;box-sizing:border-box;">
-            <span style="font-size:12px;font-weight:600;color:#1a2744;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${apt.name}</span>
+            <span style="font-size:12px;font-weight:600;color:#1a2744;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;display:flex;align-items:center;gap:4px"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#1a2744" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>${apt.name}</span>
           </div>`).join('')}
       </div>
       <!-- Scrollable right part -->
@@ -2420,9 +2420,21 @@ function renderCleanCalendar() {
 function showCleanDetail(ds, apts) {
   const detail = document.getElementById('clean-day-detail');
   const [y, m, d] = ds.split('-');
+  const iconBroom = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#1a2744" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 22v-3l9-9"/><path d="m15 6-3 3"/><path d="M18 2l4 4-9.5 9.5-4-4z"/></svg>`;
+  const iconHome = `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#1a2744" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>`;
   detail.innerHTML = `
-    <div style="font-size:12px;font-weight:700;letter-spacing:0.5px;color:#0f1e3d;margin-bottom:8px">🧹 Sprzątanie ${d}.${m}.${y}</div>
-    ${apts.map(apt => `<div class="bcard" style="margin-bottom:8px"><div style="font-size:14px;font-weight:600;color:#1a1a1a">${apt.emoji} ${apt.name}</div><div style="font-size:12px;color:#666660;margin-top:3px">Wymeldowanie</div></div>`).join('')}`;
+    <div style="display:flex;align-items:center;gap:6px;margin-bottom:10px">
+      <div style="width:28px;height:28px;background:#eef1f7;border-radius:8px;display:flex;align-items:center;justify-content:center">${iconBroom}</div>
+      <div style="font-size:14px;font-weight:700;color:#0f1e3d">Sprzątanie ${d}.${m}.${y}</div>
+    </div>
+    ${apts.map(apt => `
+      <div style="background:#fff;border:1.5px solid #e4e8f0;border-radius:14px;padding:14px 16px;margin-bottom:8px;display:flex;align-items:center;gap:12px">
+        <div style="width:36px;height:36px;background:#eef1f7;border-radius:10px;display:flex;align-items:center;justify-content:center;flex-shrink:0">${iconHome}</div>
+        <div>
+          <div style="font-size:14px;font-weight:700;color:#0f1e3d;display:flex;align-items:center;gap:6px"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#1a2744" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>${apt.name}</div>
+          <div style="font-size:12px;color:#8a95a8;margin-top:2px">Wymeldowanie</div>
+        </div>
+      </div>`).join('')}`;
 }
 
 // ─── BOOKINGS ─────────────────────────────────────────
@@ -2458,7 +2470,7 @@ function showBookingPopup(aptId, bookingIdx) {
   popup.innerHTML = `
     <div class="bpop-header">
       <div class="bpop-source">Ręczna</div>
-      <div class="bpop-title">${apt.name}</div>
+      <div class="bpop-title" style="display:flex;align-items:center;gap:6px"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#1a2744" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>${apt.name}</div>
       ${isActive ? '<span style="font-size:11px;font-weight:700;color:#16a34a;background:#dcfce7;padding:2px 8px;border-radius:20px">Trwa teraz</span>' : ''}
       <button class="bpop-close">
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
@@ -2566,7 +2578,7 @@ function renderResList() {
               <span style="font-size:15px;font-weight:700;color:#0f1e3d">${guestName}</span>
               ${statusDot}
             </div>
-            <div style="font-size:12px;color:#8a95a8;margin-top:2px">${apt.name} · ${nights} ${noc}</div>
+            <div style="font-size:12px;color:#8a95a8;margin-top:2px;display:flex;align-items:center;gap:4px"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#8a95a8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>${apt.name} · ${nights} ${noc}</div>
           </div>
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#c0c8d8" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
         </div>
@@ -2576,7 +2588,7 @@ function renderResList() {
         <div style="padding:10px 16px;display:grid;grid-template-columns:1fr 1fr;gap:8px;">
           <div>
             <div style="font-size:10px;font-weight:600;color:#8a95a8;text-transform:uppercase;letter-spacing:0.8px;margin-bottom:2px">Apartament</div>
-            <div style="font-size:13px;font-weight:600;color:#0f1e3d">${apt.name}</div>
+            <div style="font-size:13px;font-weight:600;color:#0f1e3d;display:flex;align-items:center;gap:5px"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#1a2744" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>${apt.name}</div>
           </div>
           <div>
             <div style="font-size:10px;font-weight:600;color:#8a95a8;text-transform:uppercase;letter-spacing:0.8px;margin-bottom:2px">Przyjazd</div>
