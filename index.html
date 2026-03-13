@@ -2633,10 +2633,13 @@ function renderCalendar() {
       if (occRes.color === 'manual' && occRes.booking) clickAreas.push({ x: cx+CELL*0.5, y: cy, w: CELL*0.5, h: CELL_H, booking: occRes.booking });
 
     } else if (chkRes) {
-      // Checkout only: same width as in split view
-      const col2 = isActiveRes(chkRes) ? '#16a34a' : resColorHex(chkRes.color);
-      const w = CELL * 0.14;
-      bars += `<path d="${roundedRect(cx, barTop, w, barHeight, 0, R, R, 0)}" fill="${col2}"/>`;
+      // Skip checkout bar if it's a 1-night reservation (solo bar already drawn on checkin day)
+      const nights = Math.round((new Date(chkRes.to) - new Date(chkRes.from)) / 86400000);
+      if (nights > 1) {
+        const col2 = isActiveRes(chkRes) ? '#16a34a' : resColorHex(chkRes.color);
+        const w = CELL * 0.14;
+        bars += `<path d="${roundedRect(cx, barTop, w, barHeight, 0, R, R, 0)}" fill="${col2}"/>`;
+      }
       if (chkRes.color === 'manual' && chkRes.booking) clickAreas.push({ x: cx, y: cy, w: CELL, h: CELL_H, booking: chkRes.booking });
 
     } else if (occRes) {
