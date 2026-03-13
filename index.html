@@ -1623,7 +1623,7 @@ async function doFetchIcal(id, inputEl, btn, source) {
   btn.textContent = '⏳'; btn.disabled = true;
   const proxyUrl = WORKER_BASE + '/?url=' + encodeURIComponent(url);
   try {
-    const res = await fetch(proxyUrl);
+    const res = await authFetch(proxyUrl);
     if (!res.ok) throw new Error('HTTP ' + res.status);
     const t = await res.text();
     if (!t.includes('BEGIN:VCALENDAR')) throw new Error('Brak VCALENDAR');
@@ -1636,7 +1636,7 @@ async function doFetchIcal(id, inputEl, btn, source) {
       apt.icalSynced = new Date().toLocaleString('pl-PL', {day:'2-digit',month:'2-digit',year:'numeric',hour:'2-digit',minute:'2-digit'});
     }
     localStorage.setItem('apts', JSON.stringify(apartments));
-    renderApts(); showToast(apt.emoji + ' Pobrano ' + events.length + ' rezerwacji ✓');
+    renderApts(); renderIcalSection(); showToast('Pobrano ' + events.length + ' rezerwacji ✓');
   } catch(e) {
     btn.innerHTML = '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg>';
     btn.disabled = false; showToast('Błąd: ' + e.message);
@@ -1655,7 +1655,7 @@ let _removeId = null;
 function removeApt(id) {
   const apt = getApt(id); if (!apt) return;
   _removeId = id;
-  document.getElementById('confirm-apt-name').textContent = apt.emoji + ' ' + apt.name;
+  document.getElementById('confirm-apt-name').textContent = apt.name;
   document.getElementById('modal-confirm').classList.add('open');
 }
 function closeConfirm() { document.getElementById('modal-confirm').classList.remove('open'); _removeId = null; }
@@ -1684,7 +1684,7 @@ function updateSelects() {
     sel.innerHTML = '<option value="">— wybierz apartament —</option>';
     apartments.forEach(a => {
       const opt = document.createElement('option');
-      opt.value = a.id; opt.textContent = a.emoji + ' ' + a.name;
+      opt.value = a.id; opt.textContent = a.name;
       sel.appendChild(opt);
     });
     if (val) sel.value = val;
@@ -1920,7 +1920,7 @@ function renderCalAptPills() {
   apartments.forEach(a => {
     const btn = document.createElement('button');
     btn.className = 'cal-apt-pill' + (a.id === current ? ' active' : '');
-    btn.textContent = a.emoji + ' ' + a.name;
+    btn.textContent = a.name;
     btn.addEventListener('click', () => { setCalAptId(a.id); renderCalAptPills(); renderCalendar(); });
     container.appendChild(btn);
   });
@@ -2055,21 +2055,35 @@ function renderCalendar() {
 }
 
 async function syncAllIcal() {
-  const apts = apartments.filter(a => a.icalUrl);
+  const apts = apartments.filter(a => a.icalUrl || a.icalUrlAirbnb);
   if (apts.length === 0) return;
   showToast('🔄 Synchronizuję kalendarze...');
   let updated = 0;
   await Promise.all(apts.map(async apt => {
-    try {
-      const proxyUrl = WORKER_BASE + '/?url=' + encodeURIComponent(apt.icalUrl);
-      const res = await fetch(proxyUrl, { signal: AbortSignal.timeout(10000) });
-      if (!res.ok) return;
-      const t = await res.text();
-      if (!t.includes('BEGIN:VCALENDAR')) return;
-      apt.icalEvents = parseIcal(t);
-      apt.icalSynced = new Date().toLocaleString('pl-PL', {day:'2-digit',month:'2-digit',year:'numeric',hour:'2-digit',minute:'2-digit'});
-      updated++;
-    } catch(e) {}
+    if (apt.icalUrl) {
+      try {
+        const proxyUrl = WORKER_BASE + '/?url=' + encodeURIComponent(apt.icalUrl);
+        const res = await authFetch(proxyUrl);
+        if (!res.ok) return;
+        const t = await res.text();
+        if (!t.includes('BEGIN:VCALENDAR')) return;
+        apt.icalEvents = parseIcal(t);
+        apt.icalSynced = new Date().toLocaleString('pl-PL', {day:'2-digit',month:'2-digit',year:'numeric',hour:'2-digit',minute:'2-digit'});
+        updated++;
+      } catch(e) {}
+    }
+    if (apt.icalUrlAirbnb) {
+      try {
+        const proxyUrl = WORKER_BASE + '/?url=' + encodeURIComponent(apt.icalUrlAirbnb);
+        const res = await authFetch(proxyUrl);
+        if (!res.ok) return;
+        const t = await res.text();
+        if (!t.includes('BEGIN:VCALENDAR')) return;
+        apt.icalEventsAirbnb = parseIcal(t);
+        apt.icalSyncedAirbnb = new Date().toLocaleString('pl-PL', {day:'2-digit',month:'2-digit',year:'numeric',hour:'2-digit',minute:'2-digit'});
+        updated++;
+      } catch(e) {}
+    }
   }));
   localStorage.setItem('apts', JSON.stringify(apartments));
   renderCalendar(); renderIcalSection();
@@ -2443,7 +2457,7 @@ function populateResAptSelect() {
   const cur = sel.value;
   sel.innerHTML = '<option value="">— wszystkie apartamenty —</option><option value="__archive__">🗄 Archiwum</option>';
   apartments.forEach(a => {
-    const opt = document.createElement('option'); opt.value = a.id; opt.textContent = a.emoji + ' ' + a.name;
+    const opt = document.createElement('option'); opt.value = a.id; opt.textContent = a.name;
     sel.appendChild(opt);
   });
   if (cur) sel.value = cur;
@@ -2636,7 +2650,7 @@ function deleteBookingRes(aptId, index) {
 function openBookingModal(aptIdOverride) {
   const aptId = aptIdOverride || getCalAptId() || (apartments[0] ? apartments[0].id : '');
   const sel = document.getElementById('modal-booking-apt-select');
-  sel.innerHTML = apartments.map(a => `<option value="${a.id}" ${a.id == aptId ? 'selected' : ''}>${a.emoji} ${a.name}</option>`).join('');
+  sel.innerHTML = apartments.map(a => `<option value="${a.id}" ${a.id == aptId ? 'selected' : ''}>${a.name}</option>`).join('');
   document.getElementById('book-from').value = '';
   document.getElementById('book-to').value   = '';
   document.getElementById('book-guest').value  = '';
@@ -2675,7 +2689,7 @@ function openEditBooking(aptId, index) {
   if (!modal) { console.error('openEditBooking: modal not found'); return; }
   _editAptId = aptId; _editIndex = index;
   const sel = document.getElementById('modal-booking-apt-select');
-  sel.innerHTML = apartments.map(a => `<option value="${a.id}" ${a.id == aptId ? 'selected' : ''}>${a.emoji} ${a.name}</option>`).join('');
+  sel.innerHTML = apartments.map(a => `<option value="${a.id}" ${a.id == aptId ? 'selected' : ''}>${a.name}</option>`).join('');
   document.getElementById('book-from').value   = b.from   || '';
   document.getElementById('book-to').value     = b.to     || '';
   document.getElementById('book-guest').value  = b.guest  || '';
