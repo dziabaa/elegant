@@ -2212,7 +2212,7 @@ function renderGantt() {
       const hasCheckinCollision  = reservations.some(r => r !== res && r.to === res.from);
       const hasCheckoutCollision = reservations.some(r => r !== res && r.from === res.to);
       const ciOff = hasCheckoutCollision ? DAY_W * 0.35 : (fi >= 0 ? DAY_W * 0.15 : 0);
-      const coOff = hasCheckinCollision  ? DAY_W * 0.30 : (ti <= DAYS_SHOWN ? DAY_W * 0.20 : 0);
+      const coOff = hasCheckinCollision  ? DAY_W * 0.30 : (ti <= DAYS_SHOWN ? DAY_W * 0.50 : 0);
       const xStart = fiC * DAY_W + ciOff + GAP;
       const xEnd   = tiC * DAY_W - coOff - GAP;
       const w = xEnd - xStart; if (w <= 0) return;
