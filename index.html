@@ -2236,14 +2236,15 @@ function renderGantt() {
 
     const borderTop = '';
     rowsHTML += `
-      <div style="display:flex;border-bottom:1px solid #e4e8f0;">
+      <div style="display:flex;">
         <!-- sticky left label -->
         <div style="position:sticky;left:0;z-index:2;background:#ffffff;width:110px;min-width:110px;
-                    display:flex;align-items:center;padding:0 8px 0 10px;border-right:1px solid #e4e8f0;border-bottom:1px solid #e4e8f0;">
+                    display:flex;align-items:center;padding:0 8px 0 10px;
+                    border-right:1px solid #e4e8f0;border-bottom:2px solid #e4e8f0;box-sizing:border-box;">
           <span style="font-size:12px;font-weight:600;color:#1a2744;line-height:1.2;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${apt.name}</span>
         </div>
         <!-- grid cells + bars -->
-        <div style="position:relative;display:flex;flex:1">
+        <div style="position:relative;display:flex;flex:1;border-bottom:2px solid #e4e8f0;box-sizing:border-box;">
           ${dayCells}
           ${barsHTML}
         </div>
