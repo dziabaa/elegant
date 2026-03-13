@@ -2344,7 +2344,7 @@ function getCleanColor(count) {
 function renderCleanLegend() {
   const legend = document.getElementById('clean-legend'); if (!legend) return;
   const max = apartments.length; if (max === 0) { legend.innerHTML = ''; return; }
-  const apt_forms = (n) => n === 1 ? '1 apartament' : n < 5 ? `${n} apartamenty` : `${n} apartamentów`;
+  const apt_forms = (n) => n === 1 ? '1 sprzątanie' : n < 5 ? `${n} sprzątania` : `${n} sprzątań`;
   legend.innerHTML = Array.from({length: max}, (_, i) => {
     const n = i + 1, bg = getCleanColor(n);
     return `<span style="display:inline-flex;align-items:center;gap:5px"><span style="display:inline-flex;align-items:center;justify-content:center;width:20px;height:20px;border-radius:50%;background:${bg};color:#fff;font-size:10px;font-weight:700">${n}</span> ${apt_forms(n)}</span>`;
@@ -2395,7 +2395,7 @@ function renderCleanCalendar() {
     const circleBg = isToday ? '#D23249' : dotBg || 'none';
     if (circleBg !== 'none') nums += `<circle cx="${cx+CELL/2}" cy="${cy+CELL_H/2}" r="13" fill="${circleBg}"/>`;
     nums += `<text x="${cx+CELL/2}" y="${cy+CELL_H/2+4}" text-anchor="middle" font-size="12" font-weight="${count>0||isToday?'700':'500'}" fill="${numColor}" font-family="DM Sans,sans-serif">${d}</text>`;
-    if (count > 0) nums += `<text x="${cx+CELL-5}" y="${cy+13}" text-anchor="end" font-size="9" font-weight="800" fill="${dotBg}" font-family="DM Sans,sans-serif">${count}</text>`;
+    if (count > 0) nums += `<text x="${cx+5}" y="${cy+13}" text-anchor="start" font-size="9" font-weight="800" fill="${dotBg}" font-family="DM Sans,sans-serif">${count}</text>`;
     if (count > 0) clickAreas.push({ x: cx, y: cy, w: CELL, h: CELL_H, ds, apts });
   }
 
