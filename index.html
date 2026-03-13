@@ -2941,7 +2941,7 @@ function renderGantt() {
   const titleEl = document.getElementById('gantt-title');
   if (titleEl) titleEl.textContent = `${formatDate(startStr)} — ${formatDate(days[days.length - 1])}`;
 
-  const resColor = (c) => c === 'ical' ? '#1a3a6b' : c === 'airbnb' ? '#FF5A5F' : '#6d28d9';
+  const resColor = (c) => c === 'ical' ? '#1a3a6b' : c === 'airbnb' ? '#FF5A5F' : '#1a1a1a';
 
   // ── SVG-based render (pixel-perfect positioning) ──
   let svgH = HDR_H + apartments.length * ROW_H;
