@@ -2167,7 +2167,7 @@ function renderGantt() {
     prevMonth = mo;
     const bg = isToday ? 'background:#1a2744;border-radius:8px;' : '';
     const col = isToday ? '#fff' : isSun ? '#ef4444' : '#333';
-    hdrCells += `<div style="width:${DAY_W}px;min-width:${DAY_W}px;text-align:center;${monthBorder}padding:2px 0">
+    hdrCells += `<div style="width:${DAY_W}px;min-width:${DAY_W}px;flex-shrink:0;text-align:center;${monthBorder}padding:2px 0">
       <div style="display:inline-flex;flex-direction:column;align-items:center;justify-content:center;${bg}padding:3px 2px;width:${DAY_W-4}px">
         <span style="font-size:13px;font-weight:700;color:${col};line-height:1.2">${day}</span>
         <span style="font-size:9px;color:${col};opacity:0.7">${dow}</span>
@@ -2194,7 +2194,7 @@ function renderGantt() {
       const mo = ds.slice(0,7);
       const bg = isToday ? '#e4e8f0' : (isSun||isSat) ? '#f7f8fb' : '#ffffff';
       const borderLeft = i === 0 ? '' : 'border-left:1px solid #e4e8f0;';
-      dayCells += `<div style="width:${DAY_W}px;min-width:${DAY_W}px;height:${ROW_H}px;background:${bg};${borderLeft}"></div>`;
+      dayCells += `<div style="width:${DAY_W}px;min-width:${DAY_W}px;flex-shrink:0;height:${ROW_H}px;background:${bg};${borderLeft}"></div>`;
     });
 
     // Build bars as absolute positioned divs
@@ -2266,7 +2266,7 @@ function renderGantt() {
       <!-- Scrollable right part -->
       <div style="overflow-x:auto;-webkit-overflow-scrolling:touch;flex:1;position:relative;">
         <!-- Header -->
-        <div style="display:flex;background:#f0f2f7;border-bottom:2px solid #e4e8f0;position:sticky;top:0;z-index:3;">
+        <div style="display:flex;background:#f0f2f7;border-bottom:2px solid #e4e8f0;position:sticky;top:0;z-index:3;min-width:${DAYS_SHOWN * DAY_W}px;">
           ${hdrCells}
         </div>
         <!-- Rows -->
