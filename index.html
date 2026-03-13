@@ -1946,14 +1946,14 @@ function renderCalendar() {
   const DAYS_SHORT = ['Pn','Wt','Śr','Cz','Pt','So','Nd'];
   const BAR_PAD = 0.22, BAR_R = 5;
 
-  let bg = `<rect x="0" y="0" width="${W}" height="${svgH}" fill="#f0ede8" rx="12"/>`;
+  let bg = `<rect x="0" y="0" width="${W}" height="${svgH}" fill="#ffffff" rx="12"/>`;
   for (let row = 0; row < ROWS; row++) {
-    for (let col = 5; col <= 6; col++) bg += `<rect x="${col*CELL}" y="${HDR_H + row*CELL_H}" width="${CELL}" height="${CELL_H}" fill="#e9e4dd"/>`;
+    for (let col = 5; col <= 6; col++) bg += `<rect x="${col*CELL}" y="${HDR_H + row*CELL_H}" width="${CELL}" height="${CELL_H}" fill="#f0f2f7"/>`;
   }
-  for (let c = 1; c < COLS; c++) bg += `<line x1="${c*CELL}" y1="${HDR_H}" x2="${c*CELL}" y2="${svgH}" stroke="#ddd8d0" stroke-width="0.5"/>`;
-  for (let r = 1; r <= ROWS; r++) bg += `<line x1="0" y1="${HDR_H + r*CELL_H}" x2="${W}" y2="${HDR_H + r*CELL_H}" stroke="#ddd8d0" stroke-width="0.5"/>`;
-  bg += `<rect x="0" y="0" width="${W}" height="${svgH}" fill="none" stroke="#ddd8d0" stroke-width="1" rx="12"/>`;
-  bg += `<line x1="0" y1="${HDR_H}" x2="${W}" y2="${HDR_H}" stroke="#ddd8d0" stroke-width="1"/>`;
+  for (let c = 1; c < COLS; c++) bg += `<line x1="${c*CELL}" y1="${HDR_H}" x2="${c*CELL}" y2="${svgH}" stroke="#e4e8f0" stroke-width="0.5"/>`;
+  for (let r = 1; r <= ROWS; r++) bg += `<line x1="0" y1="${HDR_H + r*CELL_H}" x2="${W}" y2="${HDR_H + r*CELL_H}" stroke="#e4e8f0" stroke-width="0.5"/>`;
+  bg += `<rect x="0" y="0" width="${W}" height="${svgH}" fill="none" stroke="#e4e8f0" stroke-width="1" rx="12"/>`;
+  bg += `<line x1="0" y1="${HDR_H}" x2="${W}" y2="${HDR_H}" stroke="#e4e8f0" stroke-width="1"/>`;
 
   let hdr = '';
   DAYS_SHORT.forEach((name, i) => {
@@ -2328,14 +2328,14 @@ function renderCleanCalendar() {
   const svgH = HDR_H + ROWS * CELL_H;
   const DAYS_SHORT = ['Pn','Wt','Śr','Cz','Pt','So','Nd'];
 
-  let bg = `<rect x="0" y="0" width="${W}" height="${svgH}" fill="#f0ede8" rx="12"/>`;
+  let bg = `<rect x="0" y="0" width="${W}" height="${svgH}" fill="#ffffff" rx="12"/>`;
   for (let row = 0; row < ROWS; row++)
     for (let col = 5; col <= 6; col++)
-      bg += `<rect x="${col*CELL}" y="${HDR_H + row*CELL_H}" width="${CELL}" height="${CELL_H}" fill="#e9e4dd"/>`;
-  for (let c = 1; c < COLS; c++) bg += `<line x1="${c*CELL}" y1="${HDR_H}" x2="${c*CELL}" y2="${svgH}" stroke="#ddd8d0" stroke-width="0.5"/>`;
-  for (let r = 1; r <= ROWS; r++) bg += `<line x1="0" y1="${HDR_H + r*CELL_H}" x2="${W}" y2="${HDR_H + r*CELL_H}" stroke="#ddd8d0" stroke-width="0.5"/>`;
-  bg += `<rect x="0" y="0" width="${W}" height="${svgH}" fill="none" stroke="#ddd8d0" stroke-width="1" rx="12"/>`;
-  bg += `<line x1="0" y1="${HDR_H}" x2="${W}" y2="${HDR_H}" stroke="#ddd8d0" stroke-width="1"/>`;
+      bg += `<rect x="${col*CELL}" y="${HDR_H + row*CELL_H}" width="${CELL}" height="${CELL_H}" fill="#f0f2f7"/>`;
+  for (let c = 1; c < COLS; c++) bg += `<line x1="${c*CELL}" y1="${HDR_H}" x2="${c*CELL}" y2="${svgH}" stroke="#e4e8f0" stroke-width="0.5"/>`;
+  for (let r = 1; r <= ROWS; r++) bg += `<line x1="0" y1="${HDR_H + r*CELL_H}" x2="${W}" y2="${HDR_H + r*CELL_H}" stroke="#e4e8f0" stroke-width="0.5"/>`;
+  bg += `<rect x="0" y="0" width="${W}" height="${svgH}" fill="none" stroke="#e4e8f0" stroke-width="1" rx="12"/>`;
+  bg += `<line x1="0" y1="${HDR_H}" x2="${W}" y2="${HDR_H}" stroke="#e4e8f0" stroke-width="1"/>`;
 
   let hdr = '';
   DAYS_SHORT.forEach((name, i) => {
