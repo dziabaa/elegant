@@ -490,20 +490,20 @@ margin-bottom: 8px; display: flex; align-items: center; gap: 8px;
 
 /* Calendar pills */
 .cal-apt-pills {
-display: flex; gap: 4px; margin-bottom: 12px;
-background: #e8e4dd; border-radius: 14px;
-padding: 5px; flex-wrap: wrap;
+display: flex; gap: 0; margin-bottom: 12px;
+background: #e4e8f0; border-radius: 12px;
+padding: 4px; flex-wrap: wrap;
 }
 .cal-apt-pill {
 flex: 1; padding: 10px 8px; background: transparent;
-border: none; border-radius: 10px; color: #666660;
+border: none; border-radius: 9px; color: #5a6480;
 font-size: 13px; font-weight: 600; cursor: pointer;
 font-family: ‘DM Sans’, sans-serif; transition: all 0.2s;
 display: flex; align-items: center; justify-content: center;
-white-space: nowrap; gap: 6px;
+white-space: nowrap; gap: 6px; line-height: 1.2;
 }
-.cal-apt-pill.active { background: #ffffff; color: #1a1a1a; box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
-.cal-apt-pill:hover:not(.active) { background: rgba(0,0,0,0.05); color: #1a1a1a; }
+.cal-apt-pill.active { background: #ffffff; color: #1a2744; box-shadow: 0 1px 4px rgba(0,0,0,0.08); }
+.cal-apt-pill:hover:not(.active) { background: rgba(255,255,255,0.5); color: #1a2744; }
 
 /* Calendar */
 .cal-header {
@@ -757,7 +757,7 @@ padding: 16px 16px 32px;
 .panel.active .lang-tabs { background: #e4e8f0 !important; border-radius: 12px !important; padding: 4px !important; gap: 0 !important; display: flex !important; }
 .panel.active .lang-tab { color: #5a6480 !important; padding: 10px 8px !important; min-height: 0 !important; height: auto !important; border: none !important; background: transparent !important; border-radius: 9px !important; font-size: 13px !important; line-height: 1.2 !important; }
 .panel.active .lang-tab.active { background: #ffffff !important; color: #1a2744 !important; box-shadow: 0 1px 4px rgba(0,0,0,0.08) !important; }
-.panel.active .cal-apt-pills { background: #e4e8f0; }
+.panel.active .cal-apt-pills { background: #e4e8f0; border-radius: 12px; padding: 4px; gap: 0; }
 .panel.active .cal-header { background: #1a2744 !important; display: flex !important; align-items: center !important; justify-content: space-between !important; border-radius: 12px !important; }
 .panel.active .cal-nav { background: rgba(255,255,255,0.1) !important; color: #fff !important; width: 36px !important; height: 36px !important; display: flex !important; align-items: center !important; justify-content: center !important; }
 .panel.active .cal-nav:hover { background: rgba(255,255,255,0.2) !important; }
