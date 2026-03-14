@@ -608,12 +608,13 @@ document.addEventListener('click', e => {
 // ── APARTMENTS
 const WORKER_BASE = 'https://nameless-base-0f4d.dziabaa.workers.dev';
 
+const ADMIN_PHONE = '48605207857';
+const ADMIN_EMAIL = '';
+
 function getAdminPhone() {
   const phones = JSON.parse(localStorage.getItem('user_phones') || '{}');
-  const adminPhone = phones['admin'];
-  if (adminPhone) return adminPhone.replace(/\D/g,'');
-  const first = Object.values(phones)[0];
-  return first ? first.replace(/\D/g,'') : '';
+  const p = phones['admin'] || Object.values(phones)[0] || '';
+  return p ? p.replace(/\D/g,'') : ADMIN_PHONE;
 }
 
 let apartments = JSON.parse(localStorage.getItem('apts') || '[]');
@@ -787,8 +788,8 @@ function sendInquiry() {
 
   const msg = `🏠 ${t.wa_header}\n\nApartament: ${apt.name}\nTermin: ${formatDate(selStart)} – ${formatDate(selEnd)} (${nights} ${nights_str(nights)})\nGość: ${name}\nTelefon: ${phone}${email?'\nE-mail: '+email:''}\nLiczba osób: ${people}${note?'\nUwagi: '+note:''}`;
 
-  const adminPhone = getAdminPhone().replace(/\D/g,'');
-  const adminEmail = Object.values(JSON.parse(localStorage.getItem('user_emails')||'{}')).find(e=>e) || '';
+  const adminPhone = getAdminPhone();
+  const adminEmail = ADMIN_EMAIL || Object.values(JSON.parse(localStorage.getItem('user_emails')||'{}')).find(e=>e) || '';
   const encodedMsg = encodeURIComponent(msg);
   let url = '';
   if (selectedChannel === 'whatsapp')      url = `https://wa.me/${adminPhone}?text=${encodedMsg}`;
