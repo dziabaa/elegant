@@ -227,15 +227,15 @@ border-bottom: 1px solid #f0f2f7;
 .ch-btn {
 display: flex; align-items: center; gap: 6px;
 padding: 8px 12px; border-radius: 10px; border: 1.5px solid #e4e8f0;
-background: #f3f5f9 !important; color: #5a6480 !important;
+background: #f3f5f9; color: #5a6480;
 font-family: ‘DM Sans’, sans-serif; font-size: 12px; font-weight: 600;
-cursor: pointer; transition: all 0.15s;
+cursor: pointer; transition: all 0.15s; -webkit-appearance: none;
 }
-.ch-btn.active {
+button.ch-btn.active,
+button.ch-btn[data-active=“true”] {
 background: #1a2744 !important; color: #ffffff !important;
 border-color: #1a2744 !important;
 }
-.ch-btn:hover:not(.active) { border-color: #1a2744; color: #1a2744 !important; }
 </style>
 
 </head>
@@ -537,7 +537,12 @@ let selectedChannel = 'whatsapp';
 function selectChannel(ch) {
   selectedChannel = ch;
   document.querySelectorAll('.ch-btn').forEach(b => {
-    b.classList.toggle('active', b.dataset.ch === ch);
+    const isActive = b.dataset.ch === ch;
+    b.classList.toggle('active', isActive);
+    b.setAttribute('data-active', isActive ? 'true' : 'false');
+    b.style.background = isActive ? '#1a2744' : '#f3f5f9';
+    b.style.color = isActive ? '#ffffff' : '#5a6480';
+    b.style.borderColor = isActive ? '#1a2744' : '#e4e8f0';
   });
 }
 
@@ -613,14 +618,26 @@ function getAdminPhone() {
 }
 
 let apartments = JSON.parse(localStorage.getItem('apts') || '[]');
-
-// Fallback jeśli localStorage puste
 if (!apartments.length) {
   apartments = [
     { id: 1, name: 'Elegant 1', bookings: [], icalEvents: [], icalEventsAirbnb: [] },
     { id: 2, name: 'Elegant 2', bookings: [], icalEvents: [], icalEventsAirbnb: [] }
   ];
 }
+// Try to load from worker for guests who don't share localStorage
+(async () => {
+  try {
+    const res = await fetch(WORKER_BASE + '/data');
+    if (res.ok) {
+      const data = await res.json();
+      if (data.apts && data.apts.length) {
+        apartments = data.apts;
+        buildTabs();
+        renderCalendar();
+      }
+    }
+  } catch(e) {}
+})();
 
 let currentAptIdx = 0;
 let selStart = null, selEnd = null;
@@ -793,6 +810,8 @@ async function sendInquiry() {
   if (url) window.open(url, '_blank');
   showSuccess(name);
 }
+
+function showSuccess(name) {
   const t = LANGS[currentLang];
   document.getElementById('form-section').style.display = 'none';
   document.getElementById('success-screen').classList.add('visible');
@@ -819,6 +838,8 @@ function showToast(msg) {
 
 buildTabs();
 renderCalendar();
+// Init channel buttons with inline styles (iOS Safari fix)
+selectChannel('whatsapp');
 </script>
 
 </body>
