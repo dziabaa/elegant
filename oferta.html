@@ -768,7 +768,7 @@ function updateSummary() {
 
 function formatDate(ds) { return ds.split('-').reverse().join('.'); }
 
-async function sendInquiry() {
+function sendInquiry() {
   const t      = LANGS[currentLang];
   const name   = document.getElementById('f-name').value.trim();
   const phone  = document.getElementById('f-phone').value.trim();
@@ -785,27 +785,26 @@ async function sendInquiry() {
   const btn = document.getElementById('send-btn');
   btn.disabled = true; btn.textContent = t.sending;
 
-  const msg = `🏠 ${t.wa_header}\n\n${apt.name}\n${formatDate(selStart)} – ${formatDate(selEnd)} (${nights} ${nights_str(nights)})\n${name}\n${phone}${email?'\n'+email:''}\n${people}${note?'\n'+note:''}`;
+  const msg = `🏠 ${t.wa_header}\n\nApartament: ${apt.name}\nTermin: ${formatDate(selStart)} – ${formatDate(selEnd)} (${nights} ${nights_str(nights)})\nGość: ${name}\nTelefon: ${phone}${email?'\nE-mail: '+email:''}\nLiczba osób: ${people}${note?'\nUwagi: '+note:''}`;
 
-  try {
-    const res = await fetch(WORKER_BASE + '/inquiry', {
-      method: 'POST', headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ apt: apt.name, from: selStart, to: selEnd, nights, name, phone, email, people, note, lang: currentLang })
-    });
-    if (res.ok) { showSuccess(name); return; }
-  } catch(e) {}
-
-  // Route to selected channel
-  const adminPhone = getAdminPhone();
+  const adminPhone = getAdminPhone().replace(/\D/g,'');
   const adminEmail = Object.values(JSON.parse(localStorage.getItem('user_emails')||'{}')).find(e=>e) || '';
   const encodedMsg = encodeURIComponent(msg);
   let url = '';
-  if (selectedChannel === 'whatsapp') url = `https://wa.me/${adminPhone}?text=${encodedMsg}`;
-  else if (selectedChannel === 'viber') url = `viber://chat?number=%2B${adminPhone}&text=${encodedMsg}`;
-  else if (selectedChannel === 'signal') url = `https://signal.me/#p/+${adminPhone}`;
+  if (selectedChannel === 'whatsapp')      url = `https://wa.me/${adminPhone}?text=${encodedMsg}`;
+  else if (selectedChannel === 'viber')    url = `viber://chat?number=%2B${adminPhone}&text=${encodedMsg}`;
+  else if (selectedChannel === 'signal')   url = `https://signal.me/#p/+${adminPhone}`;
   else if (selectedChannel === 'telegram') url = `https://t.me/+${adminPhone}`;
-  else if (selectedChannel === 'email') url = `mailto:${adminEmail}?subject=${encodeURIComponent('Zapytanie o rezerwację')}&body=${encodedMsg}`;
-  if (url) window.open(url, '_blank');
+  else if (selectedChannel === 'email')    url = `mailto:${adminEmail}?subject=${encodeURIComponent('Zapytanie o rezerwację - '+apt.name)}&body=${encodedMsg}`;
+
+  if (url) {
+    window.location.href = url;
+  } else {
+    showToast('Brak danych kontaktowych właściciela');
+    btn.disabled = false;
+    btn.innerHTML = `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg> ${t.send}`;
+    return;
+  }
   showSuccess(name);
 }
 
