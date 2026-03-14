@@ -139,9 +139,8 @@ background: #ffffff !important;
 /* DATES SUMMARY */
 .dates-summary {
 background: #ffffff !important; border: 1.5px solid #e4e8f0 !important;
-border-radius: 14px; padding: 14px 16px; margin-bottom: 16px; display: none;
+border-radius: 14px; padding: 14px 16px; margin-bottom: 16px;
 }
-.dates-summary.visible { display: block; }
 .dates-row { display: flex; gap: 8px; }
 .dates-box { flex: 1; background: #f3f5f9 !important; border-radius: 10px; padding: 10px 12px; }
 .dates-box-label { font-size: 10px; font-weight: 700; color: #8a95a8 !important; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 3px; }
@@ -303,7 +302,7 @@ border-color: #1a2744 !important;
     </div>
   </div>
 
-  <div class="dates-summary" id="dates-summary">
+  <div class="dates-summary" id="dates-summary" style="display:none">
     <div class="dates-row">
       <div class="dates-box">
         <div class="dates-box-label" id="label-arrival">Przyjazd</div>
@@ -756,15 +755,14 @@ function dayClick(ds) {
 
 function updateSummary() {
   const el = document.getElementById('dates-summary');
-  const t = LANGS[currentLang];
   if (selStart && selEnd) {
-    el.classList.add('visible');
+    el.style.display = 'block';
     document.getElementById('sum-from').textContent = formatDate(selStart);
     document.getElementById('sum-to').textContent   = formatDate(selEnd);
     const n = Math.round((new Date(selEnd) - new Date(selStart)) / 86400000);
     document.getElementById('sum-nights').innerHTML = `<span>${n}</span> ${nights_str(n)}`;
   } else {
-    el.classList.remove('visible');
+    el.style.display = 'none';
   }
 }
 
