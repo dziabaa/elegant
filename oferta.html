@@ -213,6 +213,16 @@ border-radius: 12px; font-size: 13px; font-weight: 600;
 transition: transform 0.3s; z-index: 999; white-space: nowrap;
 }
 .toast.show { transform: translateX(-50%) translateY(0); }
+.lang-opt {
+display: block; width: 100%; padding: 10px 14px; border: none;
+background: #fff !important; color: #0f1e3d !important;
+font-family: ‘DM Sans’, sans-serif; font-size: 13px; font-weight: 500;
+cursor: pointer; text-align: left; transition: background 0.15s;
+border-bottom: 1px solid #f0f2f7;
+}
+.lang-opt:last-child { border-bottom: none; }
+.lang-opt:hover { background: #f3f5f9 !important; }
+.lang-opt.active { background: #eef1f7 !important; font-weight: 700; color: #1a2744 !important; }
 </style>
 
 </head>
@@ -233,22 +243,37 @@ transition: transform 0.3s; z-index: 999; white-space: nowrap;
     <div class="topbar-title">Apartamenty Elegant</div>
     <div class="topbar-sub">Przemyśl</div>
   </div>
+  <div style="margin-left:auto;position:relative">
+    <button id="lang-btn" onclick="toggleLangMenu()" style="background:rgba(255,255,255,0.12);border:none;border-radius:10px;padding:6px 10px;cursor:pointer;display:flex;align-items:center;gap:6px;font-family:'DM Sans',sans-serif;font-size:13px;font-weight:600;color:#fff">
+      <span id="lang-flag">🇵🇱</span>
+      <span id="lang-code">PL</span>
+      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+    </button>
+    <div id="lang-menu" style="display:none;position:absolute;top:calc(100% + 8px);right:0;background:#fff;border:1.5px solid #e4e8f0;border-radius:12px;overflow:hidden;box-shadow:0 8px 24px rgba(0,0,0,0.12);min-width:140px;z-index:200">
+      <button onclick="setLang('pl')" class="lang-opt" data-lang="pl">🇵🇱 Polski</button>
+      <button onclick="setLang('en')" class="lang-opt" data-lang="en">🇬🇧 English</button>
+      <button onclick="setLang('de')" class="lang-opt" data-lang="de">🇩🇪 Deutsch</button>
+      <button onclick="setLang('uk')" class="lang-opt" data-lang="uk">🇺🇦 Українська</button>
+      <button onclick="setLang('ru')" class="lang-opt" data-lang="ru">🇷🇺 Русский</button>
+      <button onclick="setLang('cs')" class="lang-opt" data-lang="cs">🇨🇿 Čeština</button>
+    </div>
+  </div>
 </div>
 
 <div class="container">
 
   <div class="hero">
-    <h1>Sprawdź dostępność</h1>
-    <p>Wybierz apartament i daty pobytu, a następnie wyślij zapytanie o cenę. Odpowiemy najszybciej jak to możliwe.</p>
+    <h1 id="hero-title">Sprawdź dostępność</h1>
+    <p id="hero-sub">Wybierz apartament i daty pobytu, a następnie wyślij zapytanie o cenę. Odpowiemy najszybciej jak to możliwe.</p>
   </div>
 
-  <div class="section-label">Wybierz apartament</div>
+  <div class="section-label" id="label-apt">Wybierz apartament</div>
   <div class="apt-tabs" id="apt-tabs"></div>
 
-  <div class="section-label">Wybierz termin pobytu</div>
+  <div class="section-label" id="label-dates">Wybierz termin pobytu</div>
   <div class="info-box">
     <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;margin-top:1px"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
-    Kliknij datę przyjazdu, potem datę wyjazdu. Szare dni są już zajęte.
+    <span id="info-tip">Kliknij datę przyjazdu, potem datę wyjazdu. Szare dni są już zajęte.</span>
   </div>
 
   <div class="cal-card">
@@ -259,20 +284,20 @@ transition: transform 0.3s; z-index: 999; white-space: nowrap;
     </div>
     <div class="cal-grid" id="cal-grid"></div>
     <div class="legend">
-      <span><span class="legend-dot" style="background:#f3f5f9;border:1.5px solid #c0c8d8"></span>Zajęty</span>
-      <span><span class="legend-dot" style="background:#ffffff;border:1.5px solid #e4e8f0"></span>Wolny</span>
-      <span><span class="legend-dot" style="background:#1a2744"></span>Wybrany</span>
+      <span><span class="legend-dot" style="background:#f3f5f9;border:1.5px solid #c0c8d8"></span><span id="leg-occ">Zajęty</span></span>
+      <span><span class="legend-dot" style="background:#ffffff;border:1.5px solid #e4e8f0"></span><span id="leg-free">Wolny</span></span>
+      <span><span class="legend-dot" style="background:#1a2744"></span><span id="leg-sel">Wybrany</span></span>
     </div>
   </div>
 
   <div class="dates-summary" id="dates-summary">
     <div class="dates-row">
       <div class="dates-box">
-        <div class="dates-box-label">Przyjazd</div>
+        <div class="dates-box-label" id="label-arrival">Przyjazd</div>
         <div class="dates-box-val" id="sum-from">—</div>
       </div>
       <div class="dates-box">
-        <div class="dates-box-label">Wyjazd</div>
+        <div class="dates-box-label" id="label-departure">Wyjazd</div>
         <div class="dates-box-val" id="sum-to">—</div>
       </div>
     </div>
@@ -280,25 +305,25 @@ transition: transform 0.3s; z-index: 999; white-space: nowrap;
   </div>
 
   <div class="form-card" id="form-section">
-    <h3>Zapytanie o ofertę</h3>
+    <h3 id="form-title">Zapytanie o ofertę</h3>
     <div class="field-wrap">
-      <label class="field-label">Imię i nazwisko *</label>
+      <label class="field-label" id="label-name">Imię i nazwisko *</label>
       <input class="field-input" id="f-name" type="text" placeholder="np. Jan Kowalski">
     </div>
     <div class="field-wrap">
-      <label class="field-label">Telefon *</label>
+      <label class="field-label" id="label-phone">Telefon *</label>
       <input class="field-input" id="f-phone" type="tel" placeholder="+48 600 000 000">
     </div>
     <div class="field-wrap">
-      <label class="field-label">E-mail</label>
+      <label class="field-label" id="label-email">E-mail</label>
       <input class="field-input" id="f-email" type="email" placeholder="jan@gmail.com">
     </div>
     <div class="field-wrap">
-      <label class="field-label">Liczba gości *</label>
+      <label class="field-label" id="label-people">Liczba gości *</label>
       <input class="field-input" id="f-people" type="number" min="1" max="10" placeholder="np. 2">
     </div>
     <div class="field-wrap">
-      <label class="field-label">Uwagi / pytania</label>
+      <label class="field-label" id="label-note">Uwagi / pytania</label>
       <textarea class="field-input" id="f-note" placeholder="Czy macie parking? Czy można z psem? itp."></textarea>
     </div>
     <button class="btn-primary" id="send-btn" onclick="sendInquiry()">
@@ -311,9 +336,9 @@ transition: transform 0.3s; z-index: 999; white-space: nowrap;
     <div class="success-icon">
       <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#16a34a" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
     </div>
-    <h2>Zapytanie wysłane!</h2>
+    <h2 id="success-title">Zapytanie wysłane!</h2>
     <p id="success-msg">Skontaktujemy się z Tobą najszybciej jak to możliwe.</p>
-    <button class="btn-primary" style="margin-top:24px" onclick="resetForm()">Nowe zapytanie</button>
+    <button class="btn-primary" style="margin-top:24px" id="new-inquiry-btn" onclick="resetForm()">Nowe zapytanie</button>
   </div>
 
 </div>
@@ -321,6 +346,216 @@ transition: transform 0.3s; z-index: 999; white-space: nowrap;
 <div class="toast" id="toast"></div>
 
 <script>
+// ── TRANSLATIONS
+const LANGS = {
+  pl: {
+    flag:'🇵🇱', code:'PL',
+    hero_title: 'Sprawdź dostępność',
+    hero_sub: 'Wybierz apartament i daty pobytu, a następnie wyślij zapytanie o cenę. Odpowiemy najszybciej jak to możliwe.',
+    pick_apt: 'Wybierz apartament',
+    pick_dates: 'Wybierz termin pobytu',
+    info_tip: 'Kliknij datę przyjazdu, potem datę wyjazdu. Szare dni są już zajęte.',
+    legend_occ: 'Zajęty', legend_free: 'Wolny', legend_sel: 'Wybrany',
+    arrival: 'Przyjazd', departure: 'Wyjazd',
+    noc1: 'noc', noc2: 'noce', noc5: 'nocy',
+    form_title: 'Zapytanie o ofertę',
+    f_name: 'Imię i nazwisko *', f_name_ph: 'np. Jan Kowalski',
+    f_phone: 'Telefon *', f_phone_ph: '+48 600 000 000',
+    f_email: 'E-mail', f_email_ph: 'jan@gmail.com',
+    f_people: 'Liczba gości *', f_people_ph: 'np. 2',
+    f_note: 'Uwagi / pytania', f_note_ph: 'Czy macie parking? Czy można z psem? itp.',
+    send: 'Wyślij zapytanie', sending: 'Wysyłanie...',
+    err_name: 'Wpisz imię i nazwisko', err_phone: 'Wpisz numer telefonu',
+    err_people: 'Podaj liczbę gości', err_dates: 'Wybierz daty pobytu',
+    err_range: 'W tym zakresie są zajęte dni',
+    ok_title: 'Zapytanie wysłane!', ok_msg: 'Dziękujemy {name}! Skontaktujemy się z Tobą wkrótce.',
+    new_inquiry: 'Nowe zapytanie',
+    wa_header: 'ZAPYTANIE O REZERWACJĘ',
+  },
+  en: {
+    flag:'🇬🇧', code:'EN',
+    hero_title: 'Check availability',
+    hero_sub: 'Choose an apartment and stay dates, then send a price inquiry. We will respond as soon as possible.',
+    pick_apt: 'Choose apartment',
+    pick_dates: 'Choose stay dates',
+    info_tip: 'Click the arrival date, then the departure date. Grey days are already taken.',
+    legend_occ: 'Occupied', legend_free: 'Free', legend_sel: 'Selected',
+    arrival: 'Arrival', departure: 'Departure',
+    noc1: 'night', noc2: 'nights', noc5: 'nights',
+    form_title: 'Price inquiry',
+    f_name: 'Full name *', f_name_ph: 'e.g. John Smith',
+    f_phone: 'Phone *', f_phone_ph: '+48 600 000 000',
+    f_email: 'E-mail', f_email_ph: 'john@gmail.com',
+    f_people: 'Number of guests *', f_people_ph: 'e.g. 2',
+    f_note: 'Notes / questions', f_note_ph: 'Do you have parking? Are pets allowed? etc.',
+    send: 'Send inquiry', sending: 'Sending...',
+    err_name: 'Enter your name', err_phone: 'Enter your phone number',
+    err_people: 'Enter number of guests', err_dates: 'Please select stay dates',
+    err_range: 'Some days in this range are already taken',
+    ok_title: 'Inquiry sent!', ok_msg: 'Thank you {name}! We will contact you soon.',
+    new_inquiry: 'New inquiry',
+    wa_header: 'BOOKING INQUIRY',
+  },
+  de: {
+    flag:'🇩🇪', code:'DE',
+    hero_title: 'Verfügbarkeit prüfen',
+    hero_sub: 'Wählen Sie eine Wohnung und Aufenthaltsdaten und senden Sie eine Preisanfrage. Wir antworten so schnell wie möglich.',
+    pick_apt: 'Wohnung wählen',
+    pick_dates: 'Aufenthaltsdaten wählen',
+    info_tip: 'Klicken Sie auf das Anreisedatum, dann auf das Abreisedatum. Graue Tage sind bereits belegt.',
+    legend_occ: 'Belegt', legend_free: 'Frei', legend_sel: 'Ausgewählt',
+    arrival: 'Anreise', departure: 'Abreise',
+    noc1: 'Nacht', noc2: 'Nächte', noc5: 'Nächte',
+    form_title: 'Preisanfrage',
+    f_name: 'Vor- und Nachname *', f_name_ph: 'z.B. Hans Müller',
+    f_phone: 'Telefon *', f_phone_ph: '+48 600 000 000',
+    f_email: 'E-Mail', f_email_ph: 'hans@gmail.com',
+    f_people: 'Anzahl der Gäste *', f_people_ph: 'z.B. 2',
+    f_note: 'Anmerkungen / Fragen', f_note_ph: 'Haben Sie Parkplätze? Sind Haustiere erlaubt? usw.',
+    send: 'Anfrage senden', sending: 'Senden...',
+    err_name: 'Bitte Namen eingeben', err_phone: 'Bitte Telefonnummer eingeben',
+    err_people: 'Anzahl der Gäste eingeben', err_dates: 'Bitte Aufenthaltsdaten wählen',
+    err_range: 'Einige Tage in diesem Bereich sind bereits belegt',
+    ok_title: 'Anfrage gesendet!', ok_msg: 'Danke {name}! Wir melden uns bald bei Ihnen.',
+    new_inquiry: 'Neue Anfrage',
+    wa_header: 'BUCHUNGSANFRAGE',
+  },
+  uk: {
+    flag:'🇺🇦', code:'UA',
+    hero_title: 'Перевірте наявність',
+    hero_sub: 'Оберіть апартаменти та дати перебування, а потім надішліть запит на ціну. Ми відповімо якнайшвидше.',
+    pick_apt: 'Оберіть апартаменти',
+    pick_dates: 'Оберіть дати перебування',
+    info_tip: 'Натисніть дату приїзду, потім дату від\'їзду. Сірі дні вже зайняті.',
+    legend_occ: 'Зайнято', legend_free: 'Вільно', legend_sel: 'Вибрано',
+    arrival: 'Приїзд', departure: 'Від\'їзд',
+    noc1: 'ніч', noc2: 'ночі', noc5: 'ночей',
+    form_title: 'Запит на ціну',
+    f_name: 'Ім\'я та прізвище *', f_name_ph: 'напр. Іван Коваль',
+    f_phone: 'Телефон *', f_phone_ph: '+48 600 000 000',
+    f_email: 'E-mail', f_email_ph: 'ivan@gmail.com',
+    f_people: 'Кількість гостей *', f_people_ph: 'напр. 2',
+    f_note: 'Примітки / запитання', f_note_ph: 'Чи є парковка? Чи можна з собакою? тощо.',
+    send: 'Надіслати запит', sending: 'Надсилання...',
+    err_name: 'Введіть ім\'я та прізвище', err_phone: 'Введіть номер телефону',
+    err_people: 'Вкажіть кількість гостей', err_dates: 'Будь ласка, оберіть дати',
+    err_range: 'Деякі дні в цьому діапазоні вже зайняті',
+    ok_title: 'Запит надіслано!', ok_msg: 'Дякуємо {name}! Ми зв\'яжемося з вами найближчим часом.',
+    new_inquiry: 'Новий запит',
+    wa_header: 'ЗАПИТ НА БРОНЮВАННЯ',
+  },
+  ru: {
+    flag:'🇷🇺', code:'RU',
+    hero_title: 'Проверить доступность',
+    hero_sub: 'Выберите апартаменты и даты проживания, затем отправьте запрос цены. Мы ответим как можно скорее.',
+    pick_apt: 'Выберите апартаменты',
+    pick_dates: 'Выберите даты проживания',
+    info_tip: 'Нажмите на дату приезда, затем на дату отъезда. Серые дни уже заняты.',
+    legend_occ: 'Занято', legend_free: 'Свободно', legend_sel: 'Выбрано',
+    arrival: 'Заезд', departure: 'Выезд',
+    noc1: 'ночь', noc2: 'ночи', noc5: 'ночей',
+    form_title: 'Запрос цены',
+    f_name: 'Имя и фамилия *', f_name_ph: 'напр. Иван Иванов',
+    f_phone: 'Телефон *', f_phone_ph: '+48 600 000 000',
+    f_email: 'E-mail', f_email_ph: 'ivan@gmail.com',
+    f_people: 'Количество гостей *', f_people_ph: 'напр. 2',
+    f_note: 'Заметки / вопросы', f_note_ph: 'Есть ли парковка? Можно с собакой? и т.д.',
+    send: 'Отправить запрос', sending: 'Отправка...',
+    err_name: 'Введите имя и фамилию', err_phone: 'Введите номер телефона',
+    err_people: 'Укажите количество гостей', err_dates: 'Пожалуйста, выберите даты',
+    err_range: 'Некоторые дни в этом диапазоне уже заняты',
+    ok_title: 'Запрос отправлен!', ok_msg: 'Спасибо {name}! Мы свяжемся с вами в ближайшее время.',
+    new_inquiry: 'Новый запрос',
+    wa_header: 'ЗАПРОС НА БРОНИРОВАНИЕ',
+  },
+  cs: {
+    flag:'🇨🇿', code:'CS',
+    hero_title: 'Zkontrolujte dostupnost',
+    hero_sub: 'Vyberte apartmán a data pobytu, poté odešlete cenovou poptávku. Odpovíme co nejdříve.',
+    pick_apt: 'Vyberte apartmán',
+    pick_dates: 'Vyberte data pobytu',
+    info_tip: 'Klikněte na datum příjezdu, pak na datum odjezdu. Šedé dny jsou již obsazené.',
+    legend_occ: 'Obsazeno', legend_free: 'Volno', legend_sel: 'Vybráno',
+    arrival: 'Příjezd', departure: 'Odjezd',
+    noc1: 'noc', noc2: 'noci', noc5: 'nocí',
+    form_title: 'Cenová poptávka',
+    f_name: 'Jméno a příjmení *', f_name_ph: 'např. Jan Novák',
+    f_phone: 'Telefon *', f_phone_ph: '+48 600 000 000',
+    f_email: 'E-mail', f_email_ph: 'jan@gmail.com',
+    f_people: 'Počet hostů *', f_people_ph: 'např. 2',
+    f_note: 'Poznámky / otázky', f_note_ph: 'Máte parkoviště? Lze s psem? atd.',
+    send: 'Odeslat poptávku', sending: 'Odesílání...',
+    err_name: 'Zadejte jméno', err_phone: 'Zadejte telefonní číslo',
+    err_people: 'Zadejte počet hostů', err_dates: 'Prosím vyberte data pobytu',
+    err_range: 'Některé dny v tomto rozsahu jsou již obsazeny',
+    ok_title: 'Poptávka odeslána!', ok_msg: 'Děkujeme {name}! Brzy vás kontaktujeme.',
+    new_inquiry: 'Nová poptávka',
+    wa_header: 'POPTÁVKA UBYTOVÁNÍ',
+  }
+};
+
+let currentLang = 'pl';
+
+function toggleLangMenu() {
+  const m = document.getElementById('lang-menu');
+  m.style.display = m.style.display === 'none' ? 'block' : 'none';
+}
+
+function setLang(lang) {
+  currentLang = lang;
+  const t = LANGS[lang];
+  document.getElementById('lang-flag').textContent = t.flag;
+  document.getElementById('lang-code').textContent = t.code;
+  document.getElementById('lang-menu').style.display = 'none';
+
+  // Update active state
+  document.querySelectorAll('.lang-opt').forEach(b => {
+    b.classList.toggle('active', b.dataset.lang === lang);
+  });
+
+  // Translate all elements
+  document.getElementById('hero-title').textContent    = t.hero_title;
+  document.getElementById('hero-sub').textContent      = t.hero_sub;
+  document.getElementById('label-apt').textContent     = t.pick_apt;
+  document.getElementById('label-dates').textContent   = t.pick_dates;
+  document.getElementById('info-tip').textContent      = t.info_tip;
+  document.getElementById('leg-occ').textContent       = t.legend_occ;
+  document.getElementById('leg-free').textContent      = t.legend_free;
+  document.getElementById('leg-sel').textContent       = t.legend_sel;
+  document.getElementById('label-arrival').textContent   = t.arrival;
+  document.getElementById('label-departure').textContent = t.departure;
+  document.getElementById('form-title').textContent    = t.form_title;
+  document.getElementById('label-name').textContent    = t.f_name;
+  document.getElementById('f-name').placeholder        = t.f_name_ph;
+  document.getElementById('label-phone').textContent   = t.f_phone;
+  document.getElementById('f-phone').placeholder       = t.f_phone_ph;
+  document.getElementById('label-email').textContent   = t.f_email;
+  document.getElementById('f-email').placeholder       = t.f_email_ph;
+  document.getElementById('label-people').textContent  = t.f_people;
+  document.getElementById('f-people').placeholder      = t.f_people_ph;
+  document.getElementById('label-note').textContent    = t.f_note;
+  document.getElementById('f-note').placeholder        = t.f_note_ph;
+  document.getElementById('send-btn').innerHTML        = `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg> ${t.send}`;
+  document.getElementById('new-inquiry-btn').textContent = t.new_inquiry;
+
+  updateSummary();
+}
+
+function nights_str(n) {
+  const t = LANGS[currentLang];
+  if (currentLang === 'pl') return n === 1 ? t.noc1 : n < 5 ? t.noc2 : t.noc5;
+  return n === 1 ? t.noc1 : t.noc5;
+}
+
+// Close menu when clicking outside
+document.addEventListener('click', e => {
+  if (!e.target.closest('#lang-btn') && !e.target.closest('#lang-menu')) {
+    const m = document.getElementById('lang-menu');
+    if (m) m.style.display = 'none';
+  }
+});
+
+// ── APARTMENTS
 const WORKER_BASE = 'https://nameless-base-0f4d.dziabaa.workers.dev';
 
 let apartments = JSON.parse(localStorage.getItem('apts') || '[]');
@@ -438,7 +673,7 @@ function dayClick(ds) {
     else {
       const [s, e] = ds > selStart ? [selStart, ds] : [ds, selStart];
       if (isRangeOccupied(s, e, apartments[currentAptIdx])) {
-        showToast('W tym zakresie są zajęte dni');
+        showToast(LANGS[currentLang].err_range);
         selStart = ds; selEnd = null;
       } else {
         selStart = s; selEnd = e;
@@ -450,12 +685,13 @@ function dayClick(ds) {
 
 function updateSummary() {
   const el = document.getElementById('dates-summary');
+  const t = LANGS[currentLang];
   if (selStart && selEnd) {
     el.classList.add('visible');
     document.getElementById('sum-from').textContent = formatDate(selStart);
     document.getElementById('sum-to').textContent   = formatDate(selEnd);
     const n = Math.round((new Date(selEnd) - new Date(selStart)) / 86400000);
-    document.getElementById('sum-nights').innerHTML = `<span>${n}</span> ${n===1?'noc':n<5?'noce':'nocy'}`;
+    document.getElementById('sum-nights').innerHTML = `<span>${n}</span> ${nights_str(n)}`;
   } else {
     el.classList.remove('visible');
   }
@@ -464,40 +700,42 @@ function updateSummary() {
 function formatDate(ds) { return ds.split('-').reverse().join('.'); }
 
 async function sendInquiry() {
+  const t      = LANGS[currentLang];
   const name   = document.getElementById('f-name').value.trim();
   const phone  = document.getElementById('f-phone').value.trim();
   const email  = document.getElementById('f-email').value.trim();
   const people = document.getElementById('f-people').value.trim();
   const note   = document.getElementById('f-note').value.trim();
-  if (!name)   { showToast('Wpisz imię i nazwisko'); return; }
-  if (!phone)  { showToast('Wpisz numer telefonu'); return; }
-  if (!people) { showToast('Podaj liczbę gości'); return; }
-  if (!selStart || !selEnd) { showToast('Wybierz daty pobytu'); return; }
+  if (!name)   { showToast(t.err_name);   return; }
+  if (!phone)  { showToast(t.err_phone);  return; }
+  if (!people) { showToast(t.err_people); return; }
+  if (!selStart || !selEnd) { showToast(t.err_dates); return; }
 
   const apt = apartments[currentAptIdx];
   const nights = Math.round((new Date(selEnd) - new Date(selStart)) / 86400000);
   const btn = document.getElementById('send-btn');
-  btn.disabled = true; btn.textContent = 'Wysyłanie...';
+  btn.disabled = true; btn.textContent = t.sending;
 
-  const msg = `🏠 ZAPYTANIE O REZERWACJĘ\n\nApartament: ${apt.name}\nTermin: ${formatDate(selStart)} – ${formatDate(selEnd)} (${nights} ${nights===1?'noc':nights<5?'noce':'nocy'})\nGość: ${name}\nTelefon: ${phone}${email?'\nE-mail: '+email:''}\nLiczba osób: ${people}${note?'\nUwagi: '+note:''}`;
+  const msg = `🏠 ${t.wa_header}\n\n${apt.name}\n${formatDate(selStart)} – ${formatDate(selEnd)} (${nights} ${nights_str(nights)})\n${name}\n${phone}${email?'\n'+email:''}\n${people}${note?'\n'+note:''}`;
 
   try {
     const res = await fetch(WORKER_BASE + '/inquiry', {
       method: 'POST', headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ apt: apt.name, from: selStart, to: selEnd, nights, name, phone, email, people, note })
+      body: JSON.stringify({ apt: apt.name, from: selStart, to: selEnd, nights, name, phone, email, people, note, lang: currentLang })
     });
     if (res.ok) { showSuccess(name); return; }
   } catch(e) {}
 
-  // Fallback: WhatsApp
   window.open('https://wa.me/?text=' + encodeURIComponent(msg), '_blank');
   showSuccess(name);
 }
 
 function showSuccess(name) {
+  const t = LANGS[currentLang];
   document.getElementById('form-section').style.display = 'none';
   document.getElementById('success-screen').classList.add('visible');
-  document.getElementById('success-msg').textContent = `Dziękujemy ${name}! Skontaktujemy się z Tobą wkrótce.`;
+  document.getElementById('success-title').textContent = t.ok_title;
+  document.getElementById('success-msg').textContent = t.ok_msg.replace('{name}', name);
 }
 
 function resetForm() {
