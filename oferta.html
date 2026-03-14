@@ -806,8 +806,16 @@ function sendInquiry() {
 
   if (!url) { alert('Brak danych kontaktowych'); return; }
 
+  // iOS Safari wymaga bezpośredniego kliknięcia linku
+  const a = document.createElement('a');
+  a.href = url;
+  a.target = '_blank';
+  a.rel = 'noopener';
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+
   showSuccess(name);
-  setTimeout(() => { window.location.href = url; }, 300);
 }
 
 function showSuccess(name) {
