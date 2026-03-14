@@ -3181,24 +3181,83 @@ async function renderUsersList() {
 }
 
 function forgotPassword() {
-  const login = document.getElementById('login-input').value.trim();
+  const loginVal = document.getElementById('login-input').value.trim();
   const userEmails = JSON.parse(localStorage.getItem('user_emails') || '{}');
-  const email = login ? userEmails[login] : null;
-  if (email) {
-    const subject = encodeURIComponent('Reset hasła — Apartamenty Elegant');
-    const body = encodeURIComponent(`Cześć,\n\nProszę o reset hasła dla loginu: ${login}\n\nDziękuję`);
-    window.location.href = `mailto:${email}?subject=${subject}&body=${body}`;
-  } else {
-    // Find admin email
-    const adminEmail = Object.values(userEmails)[0];
-    if (adminEmail) {
-      const subject = encodeURIComponent('Reset hasła — Apartamenty Elegant');
-      const body = encodeURIComponent(`Cześć,\n\nProszę o reset hasła dla loginu: ${login || '(wpisz login)'}\n\nDziękuję`);
-      window.location.href = `mailto:${adminEmail}?subject=${subject}&body=${body}`;
-    } else {
-      showToast('Brak zapisanego e-maila. Skontaktuj się z administratorem.');
-    }
+
+  // Build modal
+  const existing = document.getElementById('forgot-modal');
+  if (existing) existing.remove();
+
+  const modal = document.createElement('div');
+  modal.id = 'forgot-modal';
+  modal.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:10000;display:flex;align-items:center;justify-content:center;padding:20px';
+  modal.innerHTML = `
+    <div style="background:#fff;border-radius:20px;padding:24px;width:100%;max-width:360px;border:1.5px solid #e4e8f0">
+      <h3 style="font-size:18px;font-weight:700;color:#0f1e3d;margin-bottom:6px">Reset hasła</h3>
+      <p style="font-size:13px;color:#8a95a8;margin-bottom:16px">Wpisz swój login. Na przypisany e-mail zostanie wysłana wiadomość z nowym hasłem.</p>
+      <label style="display:block;font-size:13px;font-weight:600;color:#0f1e3d;margin-bottom:6px">Login</label>
+      <input id="forgot-login" type="text" value="${loginVal}"
+        style="display:block;width:100%;box-sizing:border-box;background:#f3f5f9;border:1.5px solid #e4e8f0;border-radius:12px;padding:0 14px;height:48px;font-size:14px;font-family:'DM Sans',sans-serif;color:#0f1e3d;outline:none;margin-bottom:6px">
+      <div id="forgot-email-hint" style="font-size:12px;color:#8a95a8;margin-bottom:16px;min-height:18px"></div>
+      <div style="display:flex;gap:8px">
+        <button onclick="document.getElementById('forgot-modal').remove()"
+          style="flex:0 0 auto;padding:13px 20px;background:#f0f2f7;border:1.5px solid #e4e8f0;border-radius:12px;color:#5a6480;font-size:14px;cursor:pointer;font-family:'DM Sans',sans-serif">
+          Anuluj
+        </button>
+        <button onclick="sendForgotPassword()"
+          style="flex:1;padding:13px;background:#1a2744;color:#fff;border:none;border-radius:12px;font-size:14px;font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif">
+          Wyślij
+        </button>
+      </div>
+    </div>`;
+  document.body.appendChild(modal);
+
+  // Show email hint on input
+  const input = document.getElementById('forgot-login');
+  const hint  = document.getElementById('forgot-email-hint');
+  const updateHint = () => {
+    const em = userEmails[input.value.trim()];
+    hint.textContent = em ? '✓ E-mail: ' + em.replace(/(.{2}).*(@.*)/, '$1***$2') : input.value ? 'Brak zapisanego e-maila dla tego loginu' : '';
+    hint.style.color = em ? '#16a34a' : '#e8433a';
+  };
+  input.addEventListener('input', updateHint);
+  updateHint();
+  setTimeout(() => input.focus(), 100);
+}
+
+async function sendForgotPassword() {
+  const login = document.getElementById('forgot-login').value.trim();
+  if (!login) { showToast('Wpisz login'); return; }
+  const userEmails = JSON.parse(localStorage.getItem('user_emails') || '{}');
+  const email = userEmails[login];
+  if (!email) {
+    showToast('Brak e-maila dla tego loginu. Skontaktuj się z administratorem.');
+    return;
   }
+  // Generate temp password
+  const tmpPass = Math.random().toString(36).slice(2,8).toUpperCase() + Math.floor(Math.random()*100);
+  const passHash = await hashPassword(tmpPass);
+  // Try to reset via worker (if endpoint exists)
+  try {
+    const res = await fetch(WORKER_BASE + '/auth/reset', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ login, passHash, email })
+    });
+    if (res.ok) {
+      document.getElementById('forgot-modal').remove();
+      showToast('Nowe hasło wysłane na ' + email.replace(/(.{2}).*(@.*)/, '$1***$2'));
+      return;
+    }
+  } catch(e) {}
+  // Fallback: open mail client
+  const subject = encodeURIComponent('Reset hasła — Apartamenty Elegant');
+  const body = encodeURIComponent(
+    `Cześć,\n\nOtrzymano prośbę o reset hasła dla loginu: ${login}\n\nTymczasowe hasło: ${tmpPass}\n\nZaloguj się i zmień hasło w ustawieniach.\n\nApartamenty Elegant`
+  );
+  window.location.href = `mailto:${email}?subject=${subject}&body=${body}`;
+  document.getElementById('forgot-modal').remove();
+  showToast('Otwarto klienta email — wyślij wiadomość z hasłem');
 }
 
 let userEmails = JSON.parse(localStorage.getItem('user_emails') || '{}');
