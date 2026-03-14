@@ -55,10 +55,11 @@ html, body { color-scheme: light only !important; background: #eef1f7 !important
 .cal-day.past, .cal-day.occ { color: #c0c8d8 !important; cursor: not-allowed; text-decoration: line-through; background: #f8f9fb !important; }
 .cal-day.free:hover { background: #dbe4ff !important; color: #1a2744 !important; }
 .cal-day.sel-s, .cal-day.sel-e { background: #1a2744 !important; color: #fff !important; font-weight: 700; }
-.cal-day.sel-s { border-radius: 8px 0 0 8px; }
-.cal-day.sel-e { border-radius: 0 8px 8px 0; }
+.cal-day.sel-s { border-radius: 8px 0 0 8px !important; }
+.cal-day.sel-e { border-radius: 0 8px 8px 0 !important; }
 .cal-day.sel-s.sel-e { border-radius: 8px !important; }
-.cal-day.sel-r { background: #1a2744 !important; color: #fff !important; border-radius: 0; font-weight: 500; opacity: 0.75; }
+.cal-day.sel-r { background: #1a2744 !important; color: #fff !important; border-radius: 0 !important; font-weight: 500; }
+.cal-day.sel-r.free, .cal-day.sel-s.free, .cal-day.sel-e.free { background: #1a2744 !important; color: #fff !important; }
 .legend { display: flex; gap: 14px; padding: 0 12px 12px; font-size: 11px; color: #8a95a8 !important; background: #fff !important; }
 .ldot { width: 10px; height: 10px; border-radius: 3px; display: inline-block; margin-right: 4px; flex-shrink: 0; }
 
