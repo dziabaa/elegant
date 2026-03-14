@@ -2789,7 +2789,7 @@ function renderCleanCalendar() {
     if (circleBg !== 'none') nums += `<circle cx="${cx+CELL/2}" cy="${cy+CELL_H/2}" r="13" fill="${circleBg}"/>`;
     if (isToday && dotBg) nums += `<circle cx="${cx+CELL/2}" cy="${cy+CELL_H/2}" r="16" fill="none" stroke="${dotBg}" stroke-width="2.5"/>`;
     nums += `<text x="${cx+CELL/2}" y="${cy+CELL_H/2+4}" text-anchor="middle" font-size="12" font-weight="${count>0||isToday?'700':'500'}" fill="${numColor}" font-family="DM Sans,sans-serif">${d}</text>`;
-    if (count > 0) nums += `<text x="${cx+5}" y="${cy+13}" text-anchor="start" font-size="9" font-weight="800" fill="${dotBg}" font-family="DM Sans,sans-serif">${count}</text>`;
+    if (count > 0) nums += `<text x="${cx+7}" y="${cy+14}" text-anchor="start" font-size="9" font-weight="800" fill="${dotBg}" font-family="DM Sans,sans-serif">${count}</text>`;
     if (count > 0) clickAreas.push({ x: cx, y: cy, w: CELL, h: CELL_H, ds, apts });
   }
 
