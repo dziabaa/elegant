@@ -258,8 +258,8 @@ function SEND(){
   var enc = encodeURIComponent(msg);
   var url = '';
   if(ch==='whatsapp')  url='https://wa.me/'+PHONE+'?text='+enc;
-  if(ch==='viber')     url='viber://chat?number=%2B'+PHONE+'&text='+enc;
-  if(ch==='signal')    url='sgnl://note?text='+enc;
+  if(ch==='viber')     url='viber://forward?text='+enc;
+  if(ch==='signal')    url='https://signal.me/#p/+'+PHONE;
   if(ch==='telegram')  url='https://t.me/share/url?url=&text='+enc;
   if(ch==='email')     url='mailto:'+EMAIL+'?subject='+encodeURIComponent('Zapytanie - '+apt.name)+'&body='+enc;
 
