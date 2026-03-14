@@ -1582,7 +1582,7 @@ function startApp() {
   if (dr) dr.textContent = ROLE_LABELS[authRole] || authRole;
   // Show/hide tabs & drawer items based on role
   const allowed = ROLE_TABS[authRole] || [];
-  ['dash','msg','cal','res','clean','apts','users'].forEach(t => {
+  ['dash','msg','cal','res','guests','clean','apts','users'].forEach(t => {
     const btn  = document.getElementById('tab-' + t);
     const dmenu = document.getElementById('dmenu-' + t);
     const show = allowed.includes(t);
@@ -2248,7 +2248,7 @@ function drawerSwitchTab(tab) {
 }
 
 function switchTab(tab) {
-  ['dash','msg','cal','res','clean','apts','users'].forEach(t => {
+  ['dash','msg','cal','res','guests','clean','apts','users'].forEach(t => {
     const btn   = document.getElementById('tab-' + t);
     const panel = document.getElementById('panel-' + t);
     const dmenu = document.getElementById('dmenu-' + t);
