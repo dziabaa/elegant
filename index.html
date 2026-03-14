@@ -1992,8 +1992,18 @@ function renderDashboard() {
     monthlyStats.push({ label: monthName, occ, free: total - occ, total, pct: total > 0 ? Math.round(occ/total*100) : 0 });
   }
 
-  // Wolne dni w roku
-  const freeDaysYear = monthlyStats.reduce((s, m) => s + m.free, 0);
+  // Wolne dni w roku (od 1 stycznia do dziś)
+  let freeDaysYear = 0;
+  apartments.forEach(apt => {
+    const allB = [...(apt.bookings||[]),...(apt.icalEvents||[]),...(apt.icalEventsAirbnb||[])];
+    const jan1 = new Date(year, 0, 1);
+    const daysPassed = Math.ceil((today - jan1) / 86400000) + 1;
+    for (let dd = 0; dd < daysPassed; dd++) {
+      const d2 = new Date(year, 0, 1 + dd);
+      const ds = d2.toISOString().slice(0,10);
+      if (!allB.some(b => ds >= b.from && ds < b.to)) freeDaysYear++;
+    }
+  });
 
   const card = (icon, label, value, color='#1a2744') => `
     <div style="background:#fff;border:1.5px solid #e4e8f0;border-radius:14px;padding:14px 16px;display:flex;align-items:center;gap:12px">
