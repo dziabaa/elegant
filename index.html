@@ -1318,6 +1318,35 @@ text-transform: uppercase; padding: 4px 10px; border-radius: 20px;
 
 </div><!-- /main-app -->
 
+<!-- MODAL DODAJ ZADANIE -->
+
+<div class="modal-overlay" id="modal-task">
+  <div class="modal" style="max-width:380px">
+    <h3 id="modal-task-title">Nowe zadanie</h3>
+    <textarea id="task-input" class="date-input" placeholder="Opisz zadanie..." style="height:auto;min-height:90px;line-height:1.5;resize:none;padding:12px 14px;margin-bottom:16px;margin-top:12px"></textarea>
+    <div class="modal-actions">
+      <button class="btn-cancel" onclick="closeTaskModal()">Anuluj</button>
+      <button class="btn-save" onclick="saveTask()">Zapisz</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL POTWIERDŹ USUNIĘCIE ZADANIA -->
+
+<div class="modal-overlay" id="modal-task-confirm">
+  <div class="modal" style="max-width:320px;text-align:center">
+    <div style="width:48px;height:48px;background:#fef2f2;border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 16px">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#dc2626" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/></svg>
+    </div>
+    <h3 style="margin-bottom:6px">Usuń zadanie?</h3>
+    <p style="font-size:13px;color:#8a95a8;margin-bottom:24px">Tej operacji nie można cofnąć.</p>
+    <div class="modal-actions">
+      <button class="btn-cancel" onclick="closeTaskConfirm()">Anuluj</button>
+      <button class="btn-save" style="background:#dc2626" onclick="confirmDeleteTask()">Usuń</button>
+    </div>
+  </div>
+</div>
+
 <!-- MODALS -->
 
 <div class="modal-overlay" id="modal">
@@ -2029,6 +2058,9 @@ function renderDashboard() {
             <input type="checkbox" ${t.done ? 'checked' : ''} onchange="toggleTask(${i})" style="width:16px;height:16px;cursor:pointer;accent-color:#1a2744;flex-shrink:0">
             <div style="flex:1;font-size:13px;color:${t.done ? '#8a95a8' : '#0f1e3d'};text-decoration:${t.done ? 'line-through' : 'none'};font-weight:${t.done ? '400' : '500'}">${t.text}</div>
             <div style="font-size:10px;color:#8a95a8">${t.author || ''}</div>
+            <button onclick="editTask(${i})" style="background:none;border:none;cursor:pointer;color:#8a95a8;padding:2px;flex-shrink:0">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+            </button>
             <button onclick="deleteTask(${i})" style="background:none;border:none;cursor:pointer;color:#ccc;padding:2px;flex-shrink:0">
               <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
             </button>
@@ -2062,11 +2094,40 @@ function renderDashboard() {
   `;
 }
 
+let _editTaskIdx = null;
+let _deleteTaskIdx = null;
+
 function addTask() {
-  const text = prompt('Treść zadania:');
-  if (!text || !text.trim()) return;
-  tasks.push({ text: text.trim(), done: false, author: authName || authRole, ts: Date.now() });
+  _editTaskIdx = null;
+  document.getElementById('modal-task-title').textContent = 'Nowe zadanie';
+  document.getElementById('task-input').value = '';
+  document.getElementById('modal-task').classList.add('open');
+  setTimeout(() => document.getElementById('task-input').focus(), 100);
+}
+
+function editTask(i) {
+  _editTaskIdx = i;
+  document.getElementById('modal-task-title').textContent = 'Edytuj zadanie';
+  document.getElementById('task-input').value = tasks[i].text;
+  document.getElementById('modal-task').classList.add('open');
+  setTimeout(() => document.getElementById('task-input').focus(), 100);
+}
+
+function closeTaskModal() {
+  document.getElementById('modal-task').classList.remove('open');
+  _editTaskIdx = null;
+}
+
+function saveTask() {
+  const text = document.getElementById('task-input').value.trim();
+  if (!text) return;
+  if (_editTaskIdx !== null) {
+    tasks[_editTaskIdx].text = text;
+  } else {
+    tasks.push({ text, done: false, author: authName || authRole, ts: Date.now() });
+  }
   saveTasks();
+  closeTaskModal();
   renderDashboard();
 }
 
@@ -2077,8 +2138,21 @@ function toggleTask(i) {
 }
 
 function deleteTask(i) {
-  tasks.splice(i, 1);
-  saveTasks();
+  _deleteTaskIdx = i;
+  document.getElementById('modal-task-confirm').classList.add('open');
+}
+
+function closeTaskConfirm() {
+  document.getElementById('modal-task-confirm').classList.remove('open');
+  _deleteTaskIdx = null;
+}
+
+function confirmDeleteTask() {
+  if (_deleteTaskIdx !== null) {
+    tasks.splice(_deleteTaskIdx, 1);
+    saveTasks();
+  }
+  closeTaskConfirm();
   renderDashboard();
 }
 
