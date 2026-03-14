@@ -385,7 +385,28 @@ function RC(){
 
 function DC(ds){
   if(!selS||(selS&&selE)){selS=ds;selE=null;}
-  else{ if(ds===selS){selS=null;selE=null;} else{var lo=ds>selS?selS:ds,hi=ds>selS?ds:selS;selS=lo;selE=hi;} }
+  else{
+    if(ds===selS){selS=null;selE=null;}
+    else{
+      var lo=ds>selS?selS:ds, hi=ds>selS?ds:selS;
+      // Check if range contains occupied days
+      var occupied=occ();
+      var d=new Date(lo); d.setDate(d.getDate()+1); // start from day after checkin
+      var blocked=false;
+      var end=new Date(hi);
+      while(d<end){
+        var check=d.toISOString().slice(0,10);
+        if(occupied.has(check)){blocked=true;break;}
+        d.setDate(d.getDate()+1);
+      }
+      if(blocked){
+        // Reset and start new selection from clicked date
+        selS=ds; selE=null;
+      } else {
+        selS=lo; selE=hi;
+      }
+    }
+  }
   RC(); US();
 }
 
