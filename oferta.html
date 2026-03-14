@@ -799,7 +799,7 @@ function sendInquiry() {
 
   let url = '';
   if      (selectedChannel === 'whatsapp')  url = 'https://wa.me/' + p + '?text=' + enc;
-  else if (selectedChannel === 'viber')     url = 'viber://chat?number=%2B' + p + '&text=' + enc;
+  else if (selectedChannel === 'viber')     url = 'viber://contact?number=%2B' + p + '&text=' + enc;
   else if (selectedChannel === 'signal')    url = 'https://signal.me/#p/+' + p;
   else if (selectedChannel === 'telegram')  url = 'https://t.me/+' + p;
   else if (selectedChannel === 'email')     url = 'mailto:' + em + '?subject=' + encodeURIComponent('Zapytanie - ' + apt.name) + '&body=' + enc;
