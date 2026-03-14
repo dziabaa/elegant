@@ -326,22 +326,15 @@ function showAptInfo(i) {
     addrEl.style.display = 'flex';
   } else { addrEl.style.display = 'none'; }
 
-  // Map embed
-  if (apt.address || apt.mapsUrl) {
-    mapWrap.style.display = 'block';
-    // Build embed URL from address or extract from maps URL
-    var embedSrc = '';
-    if (apt.mapsUrl) {
-      // If it's a full maps URL, use it directly in embed
-      embedSrc = 'https://maps.google.com/maps?q=' + encodeURIComponent(apt.address || '') + '&output=embed&z=16';
-      mapsLink.href = apt.mapsUrl;
-    } else if (apt.address) {
-      embedSrc = 'https://maps.google.com/maps?q=' + encodeURIComponent(apt.address) + '&output=embed&z=16';
-      mapsLink.href = 'https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent(apt.address);
-    }
-    if (mapFrame.src !== embedSrc) mapFrame.src = embedSrc;
-    mapsLink.style.display = 'flex';
-  } else { mapWrap.style.display = 'none'; }
+  // Map: use address-based embed (works without API key)
+  mapWrap.style.display = 'block';
+  var query = apt.address || apt.name;
+  var embedSrc = 'https://maps.google.com/maps?q=' + encodeURIComponent(query) + '&output=embed&z=16&hl=pl';
+  if (mapFrame.src !== embedSrc) mapFrame.src = embedSrc;
+
+  // Link button — use mapsUrl if provided, else fallback to search
+  mapsLink.href = apt.mapsUrl || ('https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent(query));
+  mapsLink.style.display = 'flex';
 }
 
 function SA(i){ aptIdx=i; selS=null; selE=null; buildTabs(); showAptInfo(i); RC(); US(); }
