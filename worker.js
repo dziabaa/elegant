@@ -5,7 +5,6 @@ const M = “GET,PUT,POST,DELETE,OPTIONS”;
 const H = “Content-Type,X-Auth-Token”;
 const kv = env.MANAGER_KV;
 
-```
 function cors() {
   return {
     "Access-Control-Allow-Origin": O,
@@ -210,7 +209,7 @@ return new Response(txt, { status: resp.status, headers: {
   "Access-Control-Allow-Origin": O,
   "Content-Type": "text/plain;charset=utf-8"
 }});
-```
+
 
 }
 };
