@@ -938,10 +938,10 @@ text-transform: uppercase; padding: 4px 10px; border-radius: 20px;
       </div>
       <label style="display:block;font-size:13px;font-weight:600;color:#0f1e3d;margin-bottom:6px">Rola</label>
       <select id="user-role" class="date-input" style="margin-bottom:24px;border:1.5px solid #e4e8f0;background:#f3f5f9;border-radius:12px;color:#0f1e3d">
-        <option value="admin">👑 Admin — pełny dostęp</option>
-        <option value="reception">🛎️ Recepcja — rezerwacje + PIN</option>
-        <option value="cleaner">🧹 Sprzątacz — sprzątanie + kalendarz</option>
-        <option value="viewer">👁️ Podgląd — tylko odczyt</option>
+        <option value="admin">Admin — pełny dostęp</option>
+        <option value="reception">Recepcja — rezerwacje + PIN</option>
+        <option value="cleaner">Sprzątacz — sprzątanie + kalendarz</option>
+        <option value="viewer">Podgląd — tylko odczyt</option>
       </select>
       <button onclick="saveUser()" style="width:100%;background:#1a2744;color:#fff;border:none;border-radius:12px;padding:14px;font-size:15px;font-weight:600;font-family:'DM Sans',sans-serif;cursor:pointer">Zapisz</button>
     </div>
@@ -2413,7 +2413,8 @@ function renderCalendar() {
     const showDark = occRes && !isToday;
     const numColor = isToday ? '#fff' : showDark ? '#fff' : isSun ? '#ef4444' : '#1a1a1a';
     const numBg = isToday ? '#1a2744' : 'none';
-    if (isToday || showDark) nums += `<circle cx="${cx+CELL/2}" cy="${cy+CELL_H/2}" r="11" fill="${numBg}"/>`;
+    if (showDark && !isToday) nums += `<circle cx="${cx+CELL/2}" cy="${cy+CELL_H/2}" r="11" fill="${numBg === 'none' ? 'transparent' : numBg}"/>`;
+    if (isToday) nums += `<circle cx="${cx+CELL/2}" cy="${cy+CELL_H/2}" r="9" fill="#1a2744"/>`;
     nums += `<text x="${cx+CELL/2}" y="${cy+CELL_H/2+4}" text-anchor="middle" font-size="12" font-weight="${hasRes||isToday?'700':'500'}" fill="${numColor}" font-family="DM Sans,sans-serif">${d}</text>`;
   }
 
