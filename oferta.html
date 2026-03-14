@@ -139,7 +139,7 @@ textarea { resize: none; min-height: 80px; line-height: 1.5; }
 
 <script>
 var PHONE = '48605207857';
-var EMAIL = '';
+var EMAIL = 'marcin.bruchal@gmail.com';
 var apts = JSON.parse(localStorage.getItem('apts') || 'null') || [
   {id:1, name:'Elegant 1', bookings:[], icalEvents:[], icalEventsAirbnb:[]},
   {id:2, name:'Elegant 2', bookings:[], icalEvents:[], icalEventsAirbnb:[]}
@@ -258,9 +258,9 @@ function SEND(){
   var enc = encodeURIComponent(msg);
   var url = '';
   if(ch==='whatsapp')  url='https://wa.me/'+PHONE+'?text='+enc;
-  if(ch==='viber')     url='viber://forward?text='+enc;
-  if(ch==='signal')    url='https://signal.me/#p/+'+PHONE;
-  if(ch==='telegram')  url='https://t.me/+'+PHONE;
+  if(ch==='viber')     url='viber://chat?number=%2B'+PHONE+'&text='+enc;
+  if(ch==='signal')    url='sgnl://note?text='+enc;
+  if(ch==='telegram')  url='https://t.me/share/url?url=&text='+enc;
   if(ch==='email')     url='mailto:'+EMAIL+'?subject='+encodeURIComponent('Zapytanie - '+apt.name)+'&body='+enc;
 
   document.getElementById('ok-msg').textContent = 'Dziękujemy '+name+'! Skontaktujemy się wkrótce.';
