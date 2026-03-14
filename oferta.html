@@ -320,19 +320,19 @@ border-color: #1a2744 !important;
     <h3 id="form-title">Zapytanie o ofertę</h3>
     <div class="field-wrap">
       <label class="field-label" id="label-name">Imię i nazwisko *</label>
-      <input class="field-input" id="f-name" type="text" placeholder="np. Jan Kowalski">
+      <input class="field-input" id="f-name" type="text" oninput="updateLink()" placeholder="np. Jan Kowalski">
     </div>
     <div class="field-wrap">
       <label class="field-label" id="label-phone">Telefon *</label>
-      <input class="field-input" id="f-phone" type="tel" placeholder="+48 600 000 000">
+      <input class="field-input" id="f-phone" type="tel" oninput="updateLink()" placeholder="+48 600 000 000">
     </div>
     <div class="field-wrap">
       <label class="field-label" id="label-email">E-mail</label>
-      <input class="field-input" id="f-email" type="email" placeholder="jan@gmail.com">
+      <input class="field-input" id="f-email" type="email" oninput="updateLink()" placeholder="jan@gmail.com">
     </div>
     <div class="field-wrap">
       <label class="field-label" id="label-people">Liczba gości *</label>
-      <input class="field-input" id="f-people" type="number" min="1" max="10" placeholder="np. 2">
+      <input class="field-input" id="f-people" type="number" oninput="updateLink()" min="1" max="10" placeholder="np. 2">
     </div>
     <div class="field-wrap">
       <label class="field-label" id="label-contact">Preferowany kontakt *</label>
@@ -361,9 +361,9 @@ border-color: #1a2744 !important;
     </div>
     <div class="field-wrap">
       <label class="field-label" id="label-note">Uwagi / pytania</label>
-      <textarea class="field-input" id="f-note" placeholder="Czy macie parking? Czy można z psem? itp."></textarea>
+      <textarea class="field-input" id="f-note" oninput="updateLink()" placeholder="Czy macie parking? Czy można z psem? itp."></textarea>
     </div>
-    <a id="send-link" href="#" style="width:100%;padding:16px;background:#1a2744;color:#fff;border-radius:14px;font-size:15px;font-weight:700;font-family:'DM Sans',sans-serif;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;box-sizing:border-box;text-decoration:none" onclick="handleSend(event)">
+    <a id="send-link" href="#" onclick="handleSend(event)" style="width:100%;padding:16px;background:#1a2744;color:#fff;border-radius:14px;font-size:15px;font-weight:700;font-family:'DM Sans',sans-serif;display:flex;align-items:center;justify-content:center;gap:8px;box-sizing:border-box;text-decoration:none">
       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
       Wyślij zapytanie
     </a>
@@ -543,6 +543,7 @@ function selectChannel(ch) {
     b.style.color = isActive ? '#ffffff' : '#5a6480';
     b.style.borderColor = isActive ? '#1a2744' : '#e4e8f0';
   });
+  updateLink();
 }
 
 function toggleLangMenu() {
@@ -751,7 +752,7 @@ function dayClick(ds) {
       }
     }
   }
-  renderCalendar(); updateSummary();
+  renderCalendar(); updateSummary(); updateLink();
 }
 
 function updateSummary() {
@@ -769,21 +770,17 @@ function updateSummary() {
 
 function formatDate(ds) { return ds.split('-').reverse().join('.'); }
 
-function handleSend(event) {
-  event.preventDefault();
-  const t     = LANGS[currentLang];
+function buildUrl() {
   const name  = document.getElementById('f-name').value.trim();
   const phone = document.getElementById('f-phone').value.trim();
   const email = document.getElementById('f-email').value.trim();
   const people= document.getElementById('f-people').value.trim();
   const note  = document.getElementById('f-note').value.trim();
-
-  if (!name)               { alert(t.err_name);  return; }
-  if (!phone)              { alert(t.err_phone); return; }
-  if (!selStart || !selEnd){ alert(t.err_dates); return; }
+  if (!name || !phone || !selStart || !selEnd) return '#';
 
   const apt    = apartments[currentAptIdx];
   const nights = Math.round((new Date(selEnd) - new Date(selStart)) / 86400000);
+  const t      = LANGS[currentLang];
 
   const msg = '🏠 ' + t.wa_header + '\n\n'
     + 'Apartament: ' + apt.name + '\n'
@@ -797,18 +794,29 @@ function handleSend(event) {
   const p   = ADMIN_PHONE;
   const enc = encodeURIComponent(msg);
 
-  let url = '';
-  if      (selectedChannel === 'whatsapp')  url = 'https://wa.me/' + p + '?text=' + enc;
-  else if (selectedChannel === 'viber')     url = 'viber://forward?text=' + enc;
-  else if (selectedChannel === 'signal')    url = 'https://signal.me/#p/+' + p;
-  else if (selectedChannel === 'telegram')  url = 'https://t.me/+' + p;
-  else if (selectedChannel === 'email')     url = 'mailto:' + ADMIN_EMAIL + '?subject=' + encodeURIComponent('Zapytanie - ' + apt.name) + '&body=' + enc;
+  if      (selectedChannel === 'whatsapp')  return 'https://wa.me/' + p + '?text=' + enc;
+  else if (selectedChannel === 'viber')     return 'viber://forward?text=' + enc;
+  else if (selectedChannel === 'signal')    return 'https://signal.me/#p/+' + p;
+  else if (selectedChannel === 'telegram')  return 'https://t.me/+' + p;
+  else if (selectedChannel === 'email')     return 'mailto:' + ADMIN_EMAIL + '?subject=' + encodeURIComponent('Zapytanie - ' + apt.name) + '&body=' + enc;
+  return '#';
+}
 
-  if (!url) { alert('Brak danych kontaktowych'); return; }
+function updateLink() {
+  const url = buildUrl();
+  const link = document.getElementById('send-link');
+  link.href = url;
+  link.style.opacity = (url === '#') ? '0.6' : '1';
+}
 
-  document.getElementById('send-link').href = url;
-  showSuccess(name);
-  document.getElementById('send-link').click();
+function handleSend(event) {
+  const t    = LANGS[currentLang];
+  const name = document.getElementById('f-name').value.trim();
+  const phone= document.getElementById('f-phone').value.trim();
+  if (!name)               { event.preventDefault(); alert(t.err_name);  return; }
+  if (!phone)              { event.preventDefault(); alert(t.err_phone); return; }
+  if (!selStart || !selEnd){ event.preventDefault(); alert(t.err_dates); return; }
+  setTimeout(function(){ showSuccess(name); }, 300);
 }
 
 function showSuccess(name) {
@@ -827,7 +835,7 @@ function resetForm() {
   btn.innerHTML = `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg> Wyślij zapytanie`;
   document.getElementById('form-section').style.display = '';
   document.getElementById('success-screen').classList.remove('visible');
-  renderCalendar(); updateSummary();
+  renderCalendar(); updateSummary(); updateLink();
 }
 
 function showToast(msg) {
