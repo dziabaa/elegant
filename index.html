@@ -1511,7 +1511,7 @@ const ROLE_TABS = {
   cleaner:   ['dash','cal','clean'],
   viewer:    ['dash','msg','cal','res','clean']
 };
-const ROLE_LABELS = { admin:'Admin', reception:'Recepcja', cleaner:'Sprzątacz', viewer:'Podgląd' };
+const ROLE_LABELS = { admin:'Admin', reception:'Recepcja', cleaner:'Obsługa', viewer:'Podgląd' };
 
 async function hashPassword(password) {
   const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(password));
@@ -3196,7 +3196,7 @@ async function renderUsersList() {
     const data = await res.json();
     if (!Array.isArray(data)) { list.innerHTML = '<div style="color:#dc2626;font-size:13px">Błąd: ' + (data.error||'nieznany') + '</div>'; return; }
     const roleClass = { admin:'role-admin', reception:'role-reception', cleaner:'role-cleaner', viewer:'role-viewer' };
-    const roleLabel = { admin:'Admin', reception:'Recepcja', cleaner:'Sprzątacz', viewer:'Podgląd' };
+    const roleLabel = { admin:'Admin', reception:'Recepcja', cleaner:'Obsługa', viewer:'Podgląd' };
     list.innerHTML = data.map(u => `
       <div class="user-card">
         <div class="user-avatar">${(u.name||u.login).charAt(0).toUpperCase()}</div>
