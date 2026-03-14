@@ -1,0 +1,7 @@
+name = "nameless-base-0f4d"
+main = "worker.js"
+compatibility_date = "2026-03-10"
+
+[[kv_namespaces]]
+binding = "MANAGER_KV"
+id = "98e5e7010b41487888fd3141bc7844a6"
