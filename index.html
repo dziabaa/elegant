@@ -905,7 +905,10 @@ text-transform: uppercase; padding: 4px 10px; border-radius: 20px;
       </div>
     </div>
     <button class="login-btn" id="login-btn" onclick="doLogin()">Zaloguj się</button>
-    <div style="text-align:center;margin-top:12px;font-size:12px;color:#8a95a8;display:flex;align-items:center;justify-content:center;gap:6px">
+    <button onclick="forgotPassword()" style="background:none;border:none;cursor:pointer;color:#3b5bdb;font-size:13px;font-family:'DM Sans',sans-serif;margin-top:12px;width:100%;text-align:center;padding:4px">
+      Zapomniałem hasła
+    </button>
+    <div style="text-align:center;margin-top:8px;font-size:12px;color:#8a95a8;display:flex;align-items:center;justify-content:center;gap:6px">
       <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#8a95a8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
       Sesja zapamiętywana automatycznie
     </div>
@@ -927,6 +930,8 @@ text-transform: uppercase; padding: 4px 10px; border-radius: 20px;
       <input type="text" id="user-name" class="date-input" placeholder="np. Anna Kowalska" style="margin-bottom:16px;border:1.5px solid #e4e8f0;background:#f3f5f9;border-radius:12px;color:#0f1e3d">
       <label style="display:block;font-size:13px;font-weight:600;color:#0f1e3d;margin-bottom:6px">Login</label>
       <input type="text" id="user-login" class="date-input" placeholder="np. anna" autocomplete="off" style="margin-bottom:16px;border:1.5px solid #e4e8f0;background:#f3f5f9;border-radius:12px;color:#0f1e3d">
+      <label style="display:block;font-size:13px;font-weight:600;color:#0f1e3d;margin-bottom:6px">E-mail <span style="font-weight:400;color:#8a95a8;font-size:12px">(do resetowania hasła)</span></label>
+      <input type="email" id="user-email" class="date-input" placeholder="np. anna@gmail.com" autocomplete="off" style="margin-bottom:16px;border:1.5px solid #e4e8f0;background:#f3f5f9;border-radius:12px;color:#0f1e3d">
       <label style="display:block;font-size:13px;font-weight:600;color:#0f1e3d;margin-bottom:6px">Hasło <span id="user-pass-hint" style="font-weight:400;color:#8a95a8;font-size:12px">(zostaw puste aby nie zmieniać)</span></label>
       <div style="position:relative">
         <input type="password" id="user-pass" class="date-input" placeholder="••••••••" autocomplete="new-password" style="margin-bottom:16px;border:1.5px solid #e4e8f0;background:#f3f5f9;border-radius:12px;color:#0f1e3d;padding-right:48px">
@@ -3175,11 +3180,36 @@ async function renderUsersList() {
   } catch(e) { list.innerHTML = '<div style="color:#dc2626;font-size:13px">Błąd połączenia</div>'; }
 }
 
+function forgotPassword() {
+  const login = document.getElementById('login-input').value.trim();
+  const userEmails = JSON.parse(localStorage.getItem('user_emails') || '{}');
+  const email = login ? userEmails[login] : null;
+  if (email) {
+    const subject = encodeURIComponent('Reset hasła — Apartamenty Elegant');
+    const body = encodeURIComponent(`Cześć,\n\nProszę o reset hasła dla loginu: ${login}\n\nDziękuję`);
+    window.location.href = `mailto:${email}?subject=${subject}&body=${body}`;
+  } else {
+    // Find admin email
+    const adminEmail = Object.values(userEmails)[0];
+    if (adminEmail) {
+      const subject = encodeURIComponent('Reset hasła — Apartamenty Elegant');
+      const body = encodeURIComponent(`Cześć,\n\nProszę o reset hasła dla loginu: ${login || '(wpisz login)'}\n\nDziękuję`);
+      window.location.href = `mailto:${adminEmail}?subject=${subject}&body=${body}`;
+    } else {
+      showToast('Brak zapisanego e-maila. Skontaktuj się z administratorem.');
+    }
+  }
+}
+
+let userEmails = JSON.parse(localStorage.getItem('user_emails') || '{}');
+function saveUserEmails() { localStorage.setItem('user_emails', JSON.stringify(userEmails)); }
+
 function openAddUser() {
   editingUserId = null;
   document.getElementById('user-screen-title').textContent = 'Nowy użytkownik';
   document.getElementById('user-name').value  = '';
   document.getElementById('user-login').value = '';
+  document.getElementById('user-email').value = '';
   document.getElementById('user-pass').value  = '';
   document.getElementById('user-role').value  = 'viewer';
   document.getElementById('user-login').readOnly = false;
@@ -3192,6 +3222,7 @@ function openEditUser(id, login, name, role) {
   document.getElementById('user-screen-title').textContent = 'Edytuj użytkownika';
   document.getElementById('user-name').value  = name;
   document.getElementById('user-login').value = login;
+  document.getElementById('user-email').value = userEmails[login] || '';
   document.getElementById('user-pass').value  = '';
   document.getElementById('user-role').value  = role;
   document.getElementById('user-login').readOnly = true;
@@ -3204,10 +3235,13 @@ function closeUserModal() { document.getElementById('user-screen').style.display
 async function saveUser() {
   const name  = document.getElementById('user-name').value.trim();
   const login = document.getElementById('user-login').value.trim();
+  const email = document.getElementById('user-email').value.trim();
   const pass  = document.getElementById('user-pass').value.trim();
   const role  = document.getElementById('user-role').value;
   if (!name || !login) { showToast('Wypełnij imię i login'); return; }
   if (!editingUserId && !pass) { showToast('Wpisz hasło dla nowego użytkownika'); return; }
+  // save email locally
+  if (email) { userEmails[login] = email; saveUserEmails(); }
   try {
     let res;
     if (editingUserId) {
