@@ -905,9 +905,6 @@ text-transform: uppercase; padding: 4px 10px; border-radius: 20px;
       </div>
     </div>
     <button class="login-btn" id="login-btn" onclick="doLogin()">Zaloguj się</button>
-    <button onclick="forgotPassword()" style="background:none;border:none;cursor:pointer;color:#3b5bdb;font-size:13px;font-family:'DM Sans',sans-serif;margin-top:12px;width:100%;text-align:center;padding:4px">
-      Zapomniałem hasła
-    </button>
     <div style="text-align:center;margin-top:8px;font-size:12px;color:#8a95a8;display:flex;align-items:center;justify-content:center;gap:6px">
       <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#8a95a8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
       Sesja zapamiętywana automatycznie
@@ -979,6 +976,9 @@ text-transform: uppercase; padding: 4px 10px; border-radius: 20px;
   <button class="drawer-item" id="dmenu-clean" onclick="drawerSwitchTab('clean')">
     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 22v-3l9-9"/><path d="m15 6-3 3"/><path d="M18 2l4 4-9.5 9.5-4-4z"/><path d="M9 19H5a2 2 0 0 1-2-2V7"/></svg> Sprzątanie
   </button>
+  <button class="drawer-item" id="dmenu-guests" onclick="drawerSwitchTab('guests')" style="display:none">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><line x1="23" y1="21" x2="23" y2="19"/><line x1="19" y1="21" x2="19" y2="19"/><line x1="21" y1="17" x2="21" y2="23"/></svg> Goście
+  </button>
   <button class="drawer-item" id="dmenu-users" onclick="drawerSwitchTab('users')" style="display:none">
     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg> Użytkownicy
   </button>
@@ -1039,6 +1039,9 @@ text-transform: uppercase; padding: 4px 10px; border-radius: 20px;
     </button>
     <button class="tab" id="tab-apts"  onclick="switchTab('apts')">
       <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg> Ustawienia
+    </button>
+    <button class="tab" id="tab-guests" onclick="switchTab('guests')" style="display:none">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg> Goście
     </button>
     <button class="tab" id="tab-users" onclick="switchTab('users')" style="display:none">
       <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg> Użytkownicy
@@ -1312,6 +1315,21 @@ text-transform: uppercase; padding: 4px 10px; border-radius: 20px;
     </div>
   </div>
 
+  <!-- GOŚCIE -->
+
+  <div class="panel" id="panel-guests">
+    <div class="panel-section-header">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+      <div class="panel-section-title">Goście</div>
+    </div>
+    <div class="panel-content">
+      <div style="display:flex;gap:8px;margin-bottom:14px">
+        <input id="guests-search" type="text" class="date-input" placeholder="Szukaj gościa..." style="flex:1;height:44px" oninput="renderGuestsList()">
+      </div>
+      <div id="guests-list"></div>
+    </div>
+  </div>
+
   <!-- UŻYTKOWNICY -->
 
   <div class="panel" id="panel-users">
@@ -1419,7 +1437,13 @@ text-transform: uppercase; padding: 4px 10px; border-radius: 20px;
       </div>
     </div>
     <div id="book-nights" style="font-size:12px;color:#8a95a8;text-align:right;margin-bottom:10px;min-height:16px;margin-top:4px"></div>
-    <input type="text"   id="book-guest"  class="date-input" placeholder="Imię i nazwisko gościa" style="margin-bottom:10px">
+    <div style="position:relative;margin-bottom:10px">
+      <input type="text" id="book-guest" class="date-input" placeholder="Imię i nazwisko gościa" style="padding-right:48px" oninput="showGuestSuggestions()">
+      <button onclick="openGuestPicker()" title="Wybierz z bazy gości" style="position:absolute;right:12px;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;color:#3b5bdb;padding:4px">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg>
+      </button>
+      <div id="guest-suggestions" style="display:none;position:absolute;top:100%;left:0;right:0;background:#fff;border:1.5px solid #e4e8f0;border-radius:12px;z-index:50;max-height:180px;overflow-y:auto;box-shadow:0 4px 16px rgba(0,0,0,0.1);margin-top:2px"></div>
+    </div>
     <input type="tel"    id="book-phone"  class="date-input" placeholder="Telefon gościa" style="margin-bottom:10px">
     <input type="number" id="book-people" class="date-input" placeholder="Liczba gości" min="1" style="margin-bottom:10px">
     <input type="number" id="book-price"  class="date-input" placeholder="Cena (PLN)" min="0" step="0.01" style="margin-bottom:10px">
@@ -1482,8 +1506,8 @@ let authRole  = localStorage.getItem('auth_role')  || null;
 let authName  = localStorage.getItem('auth_name')  || null;
 
 const ROLE_TABS = {
-  admin:     ['dash','msg','cal','res','clean','apts','users'],
-  reception: ['dash','msg','cal','res','clean'],
+  admin:     ['dash','msg','cal','res','guests','clean','apts','users'],
+  reception: ['dash','msg','cal','res','guests','clean'],
   cleaner:   ['dash','cal','clean'],
   viewer:    ['dash','msg','cal','res','clean']
 };
@@ -2248,6 +2272,7 @@ function switchTab(tab) {
   }
   if (tab === 'clean') renderCleanCalendar();
   if (tab === 'msg')   requestAnimationFrame(() => switchMsgTab(activeMsgTab));
+  if (tab === 'guests') renderGuestsList();
   if (tab === 'users') { document.getElementById('user-screen').style.display = 'none'; renderUsersList(); }
 }
 
@@ -3007,8 +3032,9 @@ function openBookingModal(aptIdOverride) {
   sel.innerHTML = apartments.map(a => `<option value="${a.id}" ${a.id == aptId ? 'selected' : ''}>${a.name}</option>`).join('');
   document.getElementById('book-from').value = '';
   document.getElementById('book-to').value   = '';
-  document.getElementById('book-guest').value  = '';
-  document.getElementById('book-phone').value  = '';
+  document.getElementById('book-guest').value  = _prefillGuest ? _prefillGuest.name : '';
+  document.getElementById('book-phone').value  = _prefillGuest ? _prefillGuest.phone : '';
+  _prefillGuest = null;
   document.getElementById('book-people').value = '';
   document.getElementById('book-price').value  = '';
   document.getElementById('book-note').value   = '';
@@ -3327,7 +3353,175 @@ async function deleteUser(id, name) {
   } catch(e) { showToast('Błąd połączenia'); }
 }
 
+// ─── GOŚCIE ──────────────────────────────────────────
+
+function getGuestsDB() {
+  // Build guest DB from all manual bookings
+  const db = {};
+  apartments.forEach(apt => {
+    (apt.bookings || []).forEach(b => {
+      if (!b.guest) return;
+      const key = b.guest.trim().toLowerCase();
+      if (!db[key]) db[key] = { name: b.guest.trim(), phone: b.phone || '', bookings: [] };
+      if (b.phone && !db[key].phone) db[key].phone = b.phone;
+      db[key].bookings.push({
+        aptName: apt.name, from: b.from, to: b.to,
+        price: b.price, people: b.people, note: b.note
+      });
+    });
+  });
+  return Object.values(db).sort((a,b) => a.name.localeCompare(b.name));
+}
+
+function renderGuestsList() {
+  const list = document.getElementById('guests-list');
+  if (!list) return;
+  const q = (document.getElementById('guests-search')?.value || '').toLowerCase();
+  const guests = getGuestsDB().filter(g =>
+    !q || g.name.toLowerCase().includes(q) || (g.phone && g.phone.includes(q))
+  );
+
+  if (guests.length === 0) {
+    list.innerHTML = `<div style="text-align:center;padding:32px;color:#8a95a8;font-size:13px">Brak gości w bazie</div>`;
+    return;
+  }
+
+  list.innerHTML = guests.map(g => {
+    const stays = g.bookings.length;
+    const lastB = g.bookings.sort((a,b) => b.from.localeCompare(a.from))[0];
+    const initials = g.name.split(' ').map(w=>w[0]).join('').slice(0,2).toUpperCase();
+    const totalSpent = g.bookings.reduce((s,b) => s + (parseFloat(b.price)||0), 0);
+    return `
+    <div style="background:#fff;border:1.5px solid #e4e8f0;border-radius:14px;padding:14px 16px;margin-bottom:10px;cursor:pointer" onclick="toggleGuestDetail(this)">
+      <div style="display:flex;align-items:center;gap:12px">
+        <div style="width:42px;height:42px;border-radius:50%;background:#1a2744;display:flex;align-items:center;justify-content:center;flex-shrink:0;color:#fff;font-size:15px;font-weight:700">${initials}</div>
+        <div style="flex:1;min-width:0">
+          <div style="font-size:15px;font-weight:700;color:#0f1e3d">${g.name}</div>
+          <div style="font-size:12px;color:#8a95a8;margin-top:2px">${g.phone || 'brak telefonu'} · ${stays} ${stays===1?'pobyt':stays<5?'pobyty':'pobytów'}</div>
+        </div>
+        <div style="text-align:right;flex-shrink:0">
+          ${totalSpent > 0 ? `<div style="font-size:13px;font-weight:700;color:#16a34a">${totalSpent.toFixed(0)} zł</div>` : ''}
+          <div style="font-size:11px;color:#8a95a8">${lastB ? lastB.from : ''}</div>
+        </div>
+      </div>
+      <div class="guest-detail" style="display:none;margin-top:12px;padding-top:12px;border-top:1px solid #e4e8f0">
+        ${g.bookings.sort((a,b) => b.from.localeCompare(a.from)).map(b => {
+          const nights = b.from && b.to ? Math.round((new Date(b.to)-new Date(b.from))/86400000) : 0;
+          return `<div style="display:flex;justify-content:space-between;align-items:center;padding:6px 0;border-bottom:1px solid #f0f2f7;font-size:13px">
+            <div>
+              <div style="font-weight:600;color:#0f1e3d">${b.aptName}</div>
+              <div style="color:#8a95a8;font-size:11px">${b.from} → ${b.to} · ${nights} nocy</div>
+            </div>
+            <div style="text-align:right">
+              ${b.price ? `<div style="font-weight:600;color:#16a34a">${b.price} zł</div>` : ''}
+              ${b.people ? `<div style="color:#8a95a8;font-size:11px">${b.people} os.</div>` : ''}
+            </div>
+          </div>`;
+        }).join('')}
+        <button onclick="fillBookingFromGuest('${g.name.replace(/'/g,"\\'")}','${(g.phone||'').replace(/'/g,"\\'")}');switchTab('res');openBookingModal()" 
+          style="margin-top:10px;width:100%;padding:10px;background:#1a2744;color:#fff;border:none;border-radius:10px;font-size:13px;font-weight:600;font-family:'DM Sans',sans-serif;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:6px">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+          Nowa rezerwacja dla tego gościa
+        </button>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function toggleGuestDetail(el) {
+  const detail = el.querySelector('.guest-detail');
+  if (detail) detail.style.display = detail.style.display === 'none' ? 'block' : 'none';
+}
+
+let _prefillGuest = null;
+function fillBookingFromGuest(name, phone) {
+  _prefillGuest = { name, phone };
+}
+
+function showGuestSuggestions() {
+  const input = document.getElementById('book-guest');
+  const box = document.getElementById('guest-suggestions');
+  if (!input || !box) return;
+  const q = input.value.trim().toLowerCase();
+  if (!q) { box.style.display = 'none'; return; }
+  const matches = getGuestsDB().filter(g => g.name.toLowerCase().includes(q)).slice(0, 6);
+  if (!matches.length) { box.style.display = 'none'; return; }
+  box.style.display = 'block';
+  box.innerHTML = matches.map(g => `
+    <div onclick="selectGuestSuggestion('${g.name.replace(/'/g,"\\'")}','${(g.phone||'').replace(/'/g,"\\'")}') "
+      style="padding:10px 14px;cursor:pointer;border-bottom:1px solid #f0f2f7;display:flex;align-items:center;gap:10px"
+      onmouseover="this.style.background='#f0f2f7'" onmouseout="this.style.background=''">
+      <div style="width:30px;height:30px;border-radius:50%;background:#1a2744;color:#fff;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;flex-shrink:0">
+        ${g.name.split(' ').map(w=>w[0]).join('').slice(0,2).toUpperCase()}
+      </div>
+      <div>
+        <div style="font-size:13px;font-weight:600;color:#0f1e3d">${g.name}</div>
+        <div style="font-size:11px;color:#8a95a8">${g.phone || ''} · ${g.bookings.length} ${g.bookings.length===1?'pobyt':'pobytów'}</div>
+      </div>
+    </div>`).join('');
+}
+
+function selectGuestSuggestion(name, phone) {
+  document.getElementById('book-guest').value = name;
+  if (phone) document.getElementById('book-phone').value = phone;
+  document.getElementById('guest-suggestions').style.display = 'none';
+}
+
+function openGuestPicker() {
+  const guests = getGuestsDB();
+  if (!guests.length) { showToast('Brak gości w bazie'); return; }
+  const existing = document.getElementById('guest-picker-modal');
+  if (existing) existing.remove();
+  const modal = document.createElement('div');
+  modal.id = 'guest-picker-modal';
+  modal.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:10000;display:flex;align-items:flex-end;justify-content:center';
+  modal.innerHTML = `
+    <div style="background:#fff;border-radius:20px 20px 0 0;padding:20px;width:100%;max-width:420px;max-height:80vh;display:flex;flex-direction:column">
+      <div style="font-size:16px;font-weight:700;color:#0f1e3d;margin-bottom:12px;display:flex;justify-content:space-between;align-items:center">
+        Wybierz gościa
+        <button onclick="document.getElementById('guest-picker-modal').remove()" style="background:#f0f2f7;border:none;border-radius:50%;width:30px;height:30px;cursor:pointer;font-size:18px;color:#5a6480;display:flex;align-items:center;justify-content:center">×</button>
+      </div>
+      <input type="text" placeholder="Szukaj..." id="gp-search"
+        style="background:#f3f5f9;border:1.5px solid #e4e8f0;border-radius:10px;padding:0 12px;height:40px;font-size:14px;font-family:'DM Sans',sans-serif;outline:none;margin-bottom:10px;color:#0f1e3d"
+        oninput="filterGuestPicker()">
+      <div id="gp-list" style="overflow-y:auto;flex:1">
+        ${guests.map(g => `
+          <div onclick="pickGuest('${g.name.replace(/'/g,"\\'")}','${(g.phone||'').replace(/'/g,"\\'")}') "
+            style="display:flex;align-items:center;gap:10px;padding:10px;border-radius:10px;cursor:pointer"
+            onmouseover="this.style.background='#f0f2f7'" onmouseout="this.style.background=''">
+            <div style="width:36px;height:36px;border-radius:50%;background:#1a2744;color:#fff;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;flex-shrink:0">
+              ${g.name.split(' ').map(w=>w[0]).join('').slice(0,2).toUpperCase()}
+            </div>
+            <div style="flex:1">
+              <div style="font-size:14px;font-weight:600;color:#0f1e3d">${g.name}</div>
+              <div style="font-size:11px;color:#8a95a8">${g.phone || ''} · ${g.bookings.length} ${g.bookings.length===1?'pobyt':'pobytów'}</div>
+            </div>
+          </div>`).join('')}
+      </div>
+    </div>`;
+  document.body.appendChild(modal);
+  setTimeout(() => document.getElementById('gp-search')?.focus(), 100);
+}
+
+function filterGuestPicker() {
+  const q = document.getElementById('gp-search').value.toLowerCase();
+  document.querySelectorAll('#gp-list > div').forEach(el => {
+    el.style.display = el.textContent.toLowerCase().includes(q) ? '' : 'none';
+  });
+}
+
+function pickGuest(name, phone) {
+  document.getElementById('book-guest').value = name;
+  if (phone) document.getElementById('book-phone').value = phone;
+  document.getElementById('guest-picker-modal')?.remove();
+  document.getElementById('guest-suggestions').style.display = 'none';
+}
+
 // ─── START ───────────────────────────────────────────
+document.addEventListener('click', e => {
+  const box = document.getElementById('guest-suggestions');
+  if (box && !box.contains(e.target) && e.target.id !== 'book-guest') box.style.display = 'none';
+});
 if (authToken && authRole) {
   startApp();
 } else {
