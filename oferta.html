@@ -1,0 +1,620 @@
+<!DOCTYPE html>
+
+<html lang="pl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Apartamenty Elegant — Sprawdź dostępność</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+color-scheme: light;
+–navy: #1a2744;
+–blue: #3b5bdb;
+–bg: #eef1f7;
+–card: #ffffff;
+–border: #e4e8f0;
+–text: #0f1e3d;
+–sub: #8a95a8;
+–green: #16a34a;
+–red: #dc2626;
+}
+
+html { color-scheme: light; }
+
+body {
+font-family: ‘DM Sans’, sans-serif;
+background: #eef1f7 !important;
+color: #0f1e3d !important;
+min-height: 100vh;
+}
+
+/* TOPBAR */
+.topbar {
+background: var(–navy);
+padding: 14px 20px;
+display: flex;
+align-items: center;
+gap: 12px;
+position: sticky;
+top: 0;
+z-index: 100;
+border-radius: 0 0 18px 18px;
+}
+.topbar-logo {
+width: 38px; height: 38px;
+background: rgba(255,255,255,0.12);
+border-radius: 10px;
+display: flex; align-items: center; justify-content: center;
+flex-shrink: 0;
+}
+.topbar-title { font-size: 16px; font-weight: 700; color: #fff; }
+.topbar-sub { font-size: 11px; color: rgba(255,255,255,0.6); }
+
+.container { max-width: 480px; margin: 0 auto; padding: 20px 16px 60px; }
+
+/* HERO */
+.hero {
+background: var(–navy);
+border-radius: 18px;
+padding: 24px 20px;
+color: #fff;
+margin-bottom: 20px;
+position: relative;
+overflow: hidden;
+}
+.hero::before {
+content: ‘’;
+position: absolute;
+top: -40px; right: -40px;
+width: 140px; height: 140px;
+border-radius: 50%;
+background: rgba(255,255,255,0.05);
+}
+.hero::after {
+content: ‘’;
+position: absolute;
+bottom: -30px; left: -20px;
+width: 100px; height: 100px;
+border-radius: 50%;
+background: rgba(255,255,255,0.04);
+}
+.hero h1 { font-size: 22px; font-weight: 800; margin-bottom: 6px; }
+.hero p { font-size: 13px; color: rgba(255,255,255,0.7); line-height: 1.5; }
+
+/* SECTION LABEL */
+.section-label {
+font-size: 11px; font-weight: 700; color: var(–sub);
+text-transform: uppercase; letter-spacing: 1px;
+margin-bottom: 10px; margin-top: 20px;
+}
+
+/* APARTMENT TABS */
+.apt-tabs {
+display: flex; gap: 8px; margin-bottom: 16px;
+background: #e4e8f0; border-radius: 12px; padding: 4px;
+}
+.apt-tab {
+flex: 1; padding: 9px 8px; border: none; border-radius: 9px;
+font-family: ‘DM Sans’, sans-serif; font-size: 13px; font-weight: 600;
+cursor: pointer; background: transparent; color: #8a95a8;
+transition: all 0.2s;
+}
+.apt-tab.active {
+background: #ffffff !important;
+color: #1a2744 !important;
+box-shadow: 0 1px 4px rgba(0,0,0,0.1);
+}
+
+/* CALENDAR */
+.cal-card {
+background: #ffffff !important;
+border: 1.5px solid #e4e8f0;
+border-radius: 16px;
+overflow: hidden;
+margin-bottom: 16px;
+}
+.cal-header {
+background: var(–navy);
+display: flex; align-items: center; justify-content: space-between;
+padding: 12px 16px;
+}
+.cal-nav {
+background: rgba(255,255,255,0.12); border: none; border-radius: 8px;
+width: 32px; height: 32px; color: #fff; font-size: 16px;
+cursor: pointer; display: flex; align-items: center; justify-content: center;
+transition: background 0.2s;
+}
+.cal-nav:hover { background: rgba(255,255,255,0.22); }
+.cal-title { font-size: 15px; font-weight: 700; color: #fff; }
+
+.cal-grid {
+display: grid; grid-template-columns: repeat(7, 1fr);
+padding: 12px;
+}
+.cal-dow {
+text-align: center; font-size: 11px; font-weight: 600;
+color: var(–sub); padding: 4px 0 8px;
+}
+.cal-dow.sun { color: #ef4444; }
+.cal-day {
+aspect-ratio: 1; display: flex; align-items: center; justify-content: center;
+font-size: 13px; font-weight: 500; border-radius: 8px;
+cursor: pointer; transition: all 0.15s; position: relative;
+margin: 1px;
+}
+.cal-day.empty { cursor: default; }
+.cal-day.occupied {
+background: #f3f5f9; color: #c0c8d8;
+cursor: not-allowed; text-decoration: line-through;
+}
+.cal-day.free:hover { background: #dbe4ff; color: var(–navy); }
+.cal-day.today {
+font-weight: 800; color: var(–navy);
+}
+.cal-day.today::after {
+content: ‘’;
+position: absolute; bottom: 2px; left: 50%; transform: translateX(-50%);
+width: 4px; height: 4px; border-radius: 50%; background: var(–navy);
+}
+.cal-day.selected-start, .cal-day.selected-end {
+background: var(–navy); color: #fff; font-weight: 700;
+}
+.cal-day.selected-range {
+background: #dbe4ff; color: var(–navy); border-radius: 0;
+}
+.cal-day.selected-start { border-radius: 8px 0 0 8px; }
+.cal-day.selected-end { border-radius: 0 8px 8px 0; }
+.cal-day.selected-start.selected-end { border-radius: 8px; }
+.cal-day.sun { color: #ef4444; }
+.cal-day.selected-start, .cal-day.selected-end { color: #fff !important; }
+.cal-day.past { color: #d0d5e0; cursor: not-allowed; }
+
+/* LEGEND */
+.legend {
+display: flex; gap: 16px; padding: 0 12px 12px;
+font-size: 11px; color: var(–sub);
+}
+.legend-dot {
+width: 10px; height: 10px; border-radius: 3px;
+display: inline-block; margin-right: 4px;
+}
+
+/* SELECTED DATES */
+.dates-summary {
+background: #ffffff !important; border: 1.5px solid #e4e8f0;
+border-radius: 14px; padding: 14px 16px; margin-bottom: 16px;
+display: none;
+}
+.dates-summary.visible { display: block; }
+.dates-row {
+display: flex; gap: 8px;
+}
+.dates-box {
+flex: 1; background: #f3f5f9 !important; border-radius: 10px; padding: 10px 12px;
+}
+.dates-box-label { font-size: 10px; font-weight: 700; color: var(–sub); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 3px; }
+.dates-box-val { font-size: 15px; font-weight: 700; color: var(–navy); }
+.nights-badge {
+text-align: center; margin-top: 10px;
+font-size: 13px; color: var(–sub);
+}
+.nights-badge span { font-weight: 700; color: var(–navy); }
+
+/* FORM */
+.form-card {
+background: #ffffff !important; border: 1.5px solid #e4e8f0;
+border-radius: 16px; padding: 20px; margin-bottom: 16px;
+}
+.form-card h3 { font-size: 15px; font-weight: 700; color: var(–navy); margin-bottom: 16px; }
+.field-label { font-size: 12px; font-weight: 600; color: var(–text); margin-bottom: 6px; }
+.field-wrap { margin-bottom: 12px; }
+.field-input {
+width: 100%; background: #f3f5f9 !important; border: 1.5px solid #e4e8f0; color: #0f1e3d !important;
+border-radius: 12px; padding: 12px 14px; font-size: 14px;
+font-family: ‘DM Sans’, sans-serif; color: var(–text); outline: none;
+transition: border-color 0.2s, box-shadow 0.2s;
+}
+.field-input:focus {
+border-color: var(–blue);
+box-shadow: 0 0 0 3px rgba(59,91,219,0.1);
+}
+.field-input::placeholder { color: var(–sub); }
+textarea.field-input { resize: none; min-height: 90px; line-height: 1.5; }
+
+/* BUTTONS */
+.btn-primary {
+width: 100%; padding: 16px; background: var(–navy); color: #fff;
+border: none; border-radius: 14px; font-size: 15px; font-weight: 700;
+font-family: ‘DM Sans’, sans-serif; cursor: pointer;
+transition: background 0.2s, transform 0.1s;
+display: flex; align-items: center; justify-content: center; gap: 8px;
+}
+.btn-primary:hover { background: #243360; }
+.btn-primary:active { transform: scale(0.98); }
+.btn-primary:disabled { background: #c0c8d8; cursor: not-allowed; }
+
+/* SUCCESS */
+.success-screen {
+display: none; text-align: center; padding: 40px 20px;
+background: #ffffff !important; border: 1.5px solid #e4e8f0;
+border-radius: 20px;
+}
+.success-screen.visible { display: block; }
+.success-icon {
+width: 64px; height: 64px; border-radius: 50%;
+background: #dcfce7; display: flex; align-items: center; justify-content: center;
+margin: 0 auto 16px;
+}
+.success-screen h2 { font-size: 20px; font-weight: 800; color: var(–navy); margin-bottom: 8px; }
+.success-screen p { font-size: 14px; color: var(–sub); line-height: 1.6; }
+
+/* INFO BOX */
+.info-box {
+background: #eff6ff; border: 1.5px solid #bfdbfe;
+border-radius: 12px; padding: 12px 14px; margin-bottom: 16px;
+font-size: 12px; color: #1e40af; display: flex; gap: 8px; align-items: flex-start;
+}
+
+/* TOAST */
+.toast {
+position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%) translateY(80px);
+background: var(–navy); color: #fff; padding: 12px 20px;
+border-radius: 12px; font-size: 13px; font-weight: 600;
+transition: transform 0.3s; z-index: 999; white-space: nowrap;
+}
+.toast.show { transform: translateX(-50%) translateY(0); }
+
+.apt-unavailable {
+background: #fff8f0; border: 1.5px solid #fed7aa;
+border-radius: 12px; padding: 14px; text-align: center;
+font-size: 13px; color: #c2410c; margin-bottom: 16px; display: none;
+}
+</style>
+
+</head>
+<body>
+
+<div class="topbar">
+  <div class="topbar-logo">
+    <svg width="22" height="22" viewBox="0 0 110 118" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <polyline points="10,46 55,12 100,46" stroke="white" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
+      <line x1="18" y1="46" x2="18" y2="64" stroke="white" stroke-width="8" stroke-linecap="round"/>
+      <line x1="92" y1="46" x2="92" y2="64" stroke="white" stroke-width="8" stroke-linecap="round"/>
+      <line x1="18" y1="64" x2="92" y2="64" stroke="white" stroke-width="8" stroke-linecap="round"/>
+      <line x1="38" y1="46" x2="38" y2="62" stroke="white" stroke-width="7" stroke-linecap="round"/>
+      <polyline points="18,74 92,74 92,83 18,83 18,93 72,93 72,103 18,103" stroke="white" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+  </div>
+  <div>
+    <div class="topbar-title">Apartamenty Elegant</div>
+    <div class="topbar-sub">Przemyśl</div>
+  </div>
+</div>
+
+<div class="container">
+
+  <div class="hero">
+    <h1>Sprawdź dostępność 🏠</h1>
+    <p>Wybierz apartament i daty pobytu, a następnie wyślij zapytanie o cenę. Odpowiemy najszybciej jak to możliwe.</p>
+  </div>
+
+  <div class="section-label">Wybierz apartament</div>
+  <div class="apt-tabs" id="apt-tabs"></div>
+
+  <div class="apt-unavailable" id="apt-unavailable">
+    Ten apartament nie jest dostępny w wybranych terminach.
+  </div>
+
+  <div class="section-label">Wybierz termin pobytu</div>
+  <div class="info-box">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;margin-top:1px"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+    Kliknij datę przyjazdu, a potem datę wyjazdu. Szare dni są już zajęte.
+  </div>
+
+  <div class="cal-card">
+    <div class="cal-header">
+      <button class="cal-nav" onclick="changeMonth(-1)">‹</button>
+      <div class="cal-title" id="cal-title"></div>
+      <button class="cal-nav" onclick="changeMonth(1)">›</button>
+    </div>
+    <div class="cal-grid" id="cal-grid"></div>
+    <div class="legend">
+      <span><span class="legend-dot" style="background:#f3f5f9;border:1.5px solid #c0c8d8"></span>Zajęty</span>
+      <span><span class="legend-dot" style="background:#fff;border:1.5px solid #e4e8f0"></span>Wolny</span>
+      <span><span class="legend-dot" style="background:#1a2744"></span>Wybrany</span>
+    </div>
+  </div>
+
+  <div class="dates-summary" id="dates-summary">
+    <div class="dates-row">
+      <div class="dates-box">
+        <div class="dates-box-label">Przyjazd</div>
+        <div class="dates-box-val" id="sum-from">—</div>
+      </div>
+      <div class="dates-box">
+        <div class="dates-box-label">Wyjazd</div>
+        <div class="dates-box-val" id="sum-to">—</div>
+      </div>
+    </div>
+    <div class="nights-badge" id="sum-nights"></div>
+  </div>
+
+  <div class="form-card" id="form-section">
+    <h3>📩 Zapytanie o ofertę</h3>
+    <div class="field-wrap">
+      <div class="field-label">Imię i nazwisko *</div>
+      <input class="field-input" id="f-name" type="text" placeholder="np. Jan Kowalski">
+    </div>
+    <div class="field-wrap">
+      <div class="field-label">Telefon *</div>
+      <input class="field-input" id="f-phone" type="tel" placeholder="+48 600 000 000">
+    </div>
+    <div class="field-wrap">
+      <div class="field-label">E-mail</div>
+      <input class="field-input" id="f-email" type="email" placeholder="jan@gmail.com">
+    </div>
+    <div class="field-wrap">
+      <div class="field-label">Liczba gości *</div>
+      <input class="field-input" id="f-people" type="number" min="1" max="10" placeholder="np. 2">
+    </div>
+    <div class="field-wrap">
+      <div class="field-label">Uwagi / pytania</div>
+      <textarea class="field-input" id="f-note" placeholder="Czy macie parking? Czy można z psem? itp."></textarea>
+    </div>
+    <button class="btn-primary" id="send-btn" onclick="sendInquiry()">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+      Wyślij zapytanie
+    </button>
+  </div>
+
+  <div class="success-screen" id="success-screen">
+    <div class="success-icon">
+      <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#16a34a" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+    </div>
+    <h2>Zapytanie wysłane! ✓</h2>
+    <p id="success-msg">Skontaktujemy się z Tobą najszybciej jak to możliwe.</p>
+    <button class="btn-primary" style="margin-top:24px" onclick="resetForm()">Nowe zapytanie</button>
+  </div>
+
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+const WORKER_BASE = 'https://nameless-base-0f4d.dziabaa.workers.dev';
+
+// ── Load apartments & bookings from localStorage (shared with main app)
+let apartments = JSON.parse(localStorage.getItem('apts') || '[]');
+let currentAptIdx = 0;
+let selStart = null, selEnd = null;
+let calYear = new Date().getFullYear();
+let calMonth = new Date().getMonth();
+
+// ── Occupied dates for current apartment
+function getOccupiedDates(apt) {
+  const occupied = new Set();
+  const allB = [...(apt.bookings||[]), ...(apt.icalEvents||[]), ...(apt.icalEventsAirbnb||[])];
+  allB.forEach(b => {
+    if (!b.from || !b.to) return;
+    let d = new Date(b.from);
+    const end = new Date(b.to);
+    while (d < end) {
+      occupied.add(d.toISOString().slice(0,10));
+      d.setDate(d.getDate() + 1);
+    }
+  });
+  return occupied;
+}
+
+function isRangeOccupied(from, to, apt) {
+  const occupied = getOccupiedDates(apt);
+  let d = new Date(from);
+  const end = new Date(to);
+  while (d < end) {
+    if (occupied.has(d.toISOString().slice(0,10))) return true;
+    d.setDate(d.getDate() + 1);
+  }
+  return false;
+}
+
+// ── Build apartment tabs
+function buildTabs() {
+  const el = document.getElementById('apt-tabs');
+  if (!apartments.length) {
+    el.innerHTML = '<div style="font-size:13px;color:#8a95a8;padding:10px">Brak apartamentów</div>';
+    return;
+  }
+  el.innerHTML = apartments.map((a, i) =>
+    `<button class="apt-tab${i===currentAptIdx?' active':''}" onclick="selectApt(${i})">${a.name}</button>`
+  ).join('');
+}
+
+function selectApt(idx) {
+  currentAptIdx = idx;
+  selStart = null; selEnd = null;
+  buildTabs();
+  renderCalendar();
+  updateSummary();
+}
+
+// ── Calendar
+function changeMonth(d) {
+  calMonth += d;
+  if (calMonth > 11) { calMonth = 0; calYear++; }
+  if (calMonth < 0)  { calMonth = 11; calYear--; }
+  renderCalendar();
+}
+
+function renderCalendar() {
+  const apt = apartments[currentAptIdx];
+  if (!apt) return;
+  const occupied = getOccupiedDates(apt);
+  const today = new Date().toISOString().slice(0,10);
+  const MONTHS = ['Styczeń','Luty','Marzec','Kwiecień','Maj','Czerwiec','Lipiec','Sierpień','Wrzesień','Październik','Listopad','Grudzień'];
+  document.getElementById('cal-title').textContent = `${MONTHS[calMonth]} ${calYear}`;
+
+  const grid = document.getElementById('cal-grid');
+  const DAYS = ['Pn','Wt','Śr','Cz','Pt','So','Nd'];
+  let html = DAYS.map((d,i) => `<div class="cal-dow${i===6?' sun':''}">${d}</div>`).join('');
+
+  const firstDay = new Date(calYear, calMonth, 1);
+  let startDow = firstDay.getDay(); // 0=Sun
+  startDow = startDow === 0 ? 6 : startDow - 1; // Mon=0
+  const daysInMonth = new Date(calYear, calMonth+1, 0).getDate();
+
+  for (let i = 0; i < startDow; i++) html += `<div class="cal-day empty"></div>`;
+
+  for (let d = 1; d <= daysInMonth; d++) {
+    const ds = `${calYear}-${String(calMonth+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
+    const isSun = (new Date(ds).getDay() === 0);
+    const isPast = ds < today;
+    const isOcc = occupied.has(ds);
+    const isToday = ds === today;
+
+    let cls = 'cal-day';
+    if (isPast) cls += ' past';
+    else if (isOcc) cls += ' occupied';
+    else cls += ' free';
+    if (isToday) cls += ' today';
+    if (isSun) cls += ' sun';
+
+    // Selection highlight
+    if (selStart && selEnd) {
+      const [s, e] = selStart <= selEnd ? [selStart, selEnd] : [selEnd, selStart];
+      if (ds === s && ds === e) cls += ' selected-start selected-end';
+      else if (ds === s) cls += ' selected-start';
+      else if (ds === e) cls += ' selected-end';
+      else if (ds > s && ds < e) cls += ' selected-range';
+    } else if (selStart && ds === selStart) {
+      cls += ' selected-start selected-end';
+    }
+
+    const clickable = !isPast && !isOcc;
+    html += `<div class="${cls}"${clickable ? ` onclick="dayClick('${ds}')"` : ''}>${d}</div>`;
+  }
+
+  grid.innerHTML = html;
+}
+
+function dayClick(ds) {
+  if (!selStart || (selStart && selEnd)) {
+    selStart = ds; selEnd = null;
+  } else {
+    if (ds === selStart) { selStart = null; selEnd = null; }
+    else {
+      const [s, e] = ds > selStart ? [selStart, ds] : [ds, selStart];
+      // Check if range has occupied days
+      const apt = apartments[currentAptIdx];
+      if (isRangeOccupied(s, e, apt)) {
+        showToast('W tym zakresie są zajęte dni');
+        selStart = ds; selEnd = null;
+      } else {
+        selStart = s; selEnd = e;
+      }
+    }
+  }
+  renderCalendar();
+  updateSummary();
+}
+
+function updateSummary() {
+  const el = document.getElementById('dates-summary');
+  const unavail = document.getElementById('apt-unavailable');
+  unavail.style.display = 'none';
+  if (selStart && selEnd) {
+    el.classList.add('visible');
+    document.getElementById('sum-from').textContent = formatDate(selStart);
+    document.getElementById('sum-to').textContent = formatDate(selEnd);
+    const nights = Math.round((new Date(selEnd) - new Date(selStart)) / 86400000);
+    document.getElementById('sum-nights').innerHTML = `<span>${nights}</span> ${nights===1?'noc':nights<5?'noce':'nocy'}`;
+  } else {
+    el.classList.remove('visible');
+  }
+}
+
+function formatDate(ds) {
+  return ds.split('-').reverse().join('.');
+}
+
+// ── Send inquiry
+async function sendInquiry() {
+  const name   = document.getElementById('f-name').value.trim();
+  const phone  = document.getElementById('f-phone').value.trim();
+  const email  = document.getElementById('f-email').value.trim();
+  const people = document.getElementById('f-people').value.trim();
+  const note   = document.getElementById('f-note').value.trim();
+
+  if (!name)   { showToast('Wpisz imię i nazwisko'); return; }
+  if (!phone)  { showToast('Wpisz numer telefonu'); return; }
+  if (!people) { showToast('Podaj liczbę gości'); return; }
+  if (!selStart || !selEnd) { showToast('Wybierz daty pobytu'); return; }
+
+  const apt = apartments[currentAptIdx];
+  const nights = Math.round((new Date(selEnd) - new Date(selStart)) / 86400000);
+  const btn = document.getElementById('send-btn');
+  btn.disabled = true;
+  btn.textContent = 'Wysyłanie...';
+
+  // Build WhatsApp message as fallback
+  const msg = `🏠 NOWE ZAPYTANIE\n\nApartament: ${apt.name}\nTermin: ${formatDate(selStart)} – ${formatDate(selEnd)} (${nights} nocy)\nGość: ${name}\nTelefon: ${phone}${email?'\nE-mail: '+email:''}\nLiczba osób: ${people}${note?'\nUwagi: '+note:''}`;
+
+  // Try to send via worker
+  try {
+    const res = await fetch(WORKER_BASE + '/inquiry', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ apt: apt.name, from: selStart, to: selEnd, nights, name, phone, email, people, note })
+    });
+    if (res.ok) {
+      showSuccess(name);
+      return;
+    }
+  } catch(e) {}
+
+  // Fallback: WhatsApp
+  const wa = 'https://wa.me/?text=' + encodeURIComponent(msg);
+  window.open(wa, '_blank');
+  showSuccess(name);
+}
+
+function showSuccess(name) {
+  document.getElementById('form-section').style.display = 'none';
+  const s = document.getElementById('success-screen');
+  s.classList.add('visible');
+  document.getElementById('success-msg').textContent =
+    `Dziękujemy ${name}! Skontaktujemy się z Tobą wkrótce.`;
+}
+
+function resetForm() {
+  selStart = null; selEnd = null;
+  document.getElementById('f-name').value = '';
+  document.getElementById('f-phone').value = '';
+  document.getElementById('f-email').value = '';
+  document.getElementById('f-people').value = '';
+  document.getElementById('f-note').value = '';
+  document.getElementById('send-btn').disabled = false;
+  document.getElementById('send-btn').innerHTML = `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg> Wyślij zapytanie`;
+  document.getElementById('form-section').style.display = '';
+  document.getElementById('success-screen').classList.remove('visible');
+  document.getElementById('dates-summary').classList.remove('visible');
+  renderCalendar();
+  updateSummary();
+}
+
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 2800);
+}
+
+// ── Init
+buildTabs();
+renderCalendar();
+</script>
+
+</body>
+</html>
