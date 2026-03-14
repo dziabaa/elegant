@@ -140,6 +140,20 @@ textarea.field-input { resize: none; min-height: 80px; line-height: 1.5; }
   <div class="sec-label" id="t-apt">Wybierz apartament</div>
   <div class="apt-tabs" id="apt-tabs"></div>
 
+  <div id="apt-info" style="display:none;background:#fff;border:1.5px solid #e4e8f0;border-radius:14px;overflow:hidden;margin-bottom:16px">
+    <div id="apt-address" style="display:none;align-items:center;gap:8px;font-size:13px;color:#0f1e3d;font-weight:500;padding:12px 14px 10px">
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#8a95a8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+      <span id="apt-address-text"></span>
+    </div>
+    <div id="apt-map-wrap" style="display:none;position:relative;width:100%;height:200px">
+      <iframe id="apt-map-frame" src="" style="width:100%;height:200px;border:none;display:block" loading="lazy" allowfullscreen referrerpolicy="no-referrer-when-downgrade"></iframe>
+      <a id="apt-maps-link" href="#" target="_blank" style="position:absolute;bottom:10px;right:10px;background:#fff;border:1.5px solid #e4e8f0;border-radius:8px;padding:7px 11px;font-size:12px;font-weight:600;color:#1a2744;text-decoration:none;display:flex;align-items:center;gap:5px;box-shadow:0 2px 8px rgba(0,0,0,0.12)">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+        Nawiguj
+      </a>
+    </div>
+  </div>
+
   <div class="sec-label" id="t-dates">Wybierz termin pobytu</div>
   <div class="info-box">
     <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;margin-top:1px"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
@@ -292,7 +306,45 @@ function buildTabs(){
   }).join('');
 }
 
-function SA(i){ aptIdx=i; selS=null; selE=null; buildTabs(); RC(); US(); }
+function showAptInfo(i) {
+  var apt = apts[i];
+  var infoEl   = document.getElementById('apt-info');
+  var addrEl   = document.getElementById('apt-address');
+  var addrText = document.getElementById('apt-address-text');
+  var mapWrap  = document.getElementById('apt-map-wrap');
+  var mapFrame = document.getElementById('apt-map-frame');
+  var mapsLink = document.getElementById('apt-maps-link');
+
+  if (!apt || (!apt.address && !apt.mapsUrl)) {
+    infoEl.style.display = 'none'; return;
+  }
+  infoEl.style.display = 'block';
+
+  // Address text
+  if (apt.address) {
+    addrText.textContent = apt.address;
+    addrEl.style.display = 'flex';
+  } else { addrEl.style.display = 'none'; }
+
+  // Map embed
+  if (apt.address || apt.mapsUrl) {
+    mapWrap.style.display = 'block';
+    // Build embed URL from address or extract from maps URL
+    var embedSrc = '';
+    if (apt.mapsUrl) {
+      // If it's a full maps URL, use it directly in embed
+      embedSrc = 'https://maps.google.com/maps?q=' + encodeURIComponent(apt.address || '') + '&output=embed&z=16';
+      mapsLink.href = apt.mapsUrl;
+    } else if (apt.address) {
+      embedSrc = 'https://maps.google.com/maps?q=' + encodeURIComponent(apt.address) + '&output=embed&z=16';
+      mapsLink.href = 'https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent(apt.address);
+    }
+    if (mapFrame.src !== embedSrc) mapFrame.src = embedSrc;
+    mapsLink.style.display = 'flex';
+  } else { mapWrap.style.display = 'none'; }
+}
+
+function SA(i){ aptIdx=i; selS=null; selE=null; buildTabs(); showAptInfo(i); RC(); US(); }
 
 function CM(d){ CM2+=d; if(CM2>11){CM2=0;CY++;} if(CM2<0){CM2=11;CY--;} RC(); }
 
@@ -405,6 +457,7 @@ function RESET(){
 }
 
 buildTabs();
+showAptInfo(0);
 RC();
 SCH(document.querySelector('.ch-btn.on'));
 </script>
