@@ -363,10 +363,10 @@ border-color: #1a2744 !important;
       <label class="field-label" id="label-note">Uwagi / pytania</label>
       <textarea class="field-input" id="f-note" placeholder="Czy macie parking? Czy można z psem? itp."></textarea>
     </div>
-    <button class="btn-primary" id="send-btn" onclick="sendInquiry()">
+    <a id="send-btn" href="#" onclick="return sendInquiry()" style="width:100%;padding:16px;background:#1a2744 !important;color:#fff !important;border-radius:14px;font-size:15px;font-weight:700;font-family:'DM Sans',sans-serif;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;text-decoration:none;box-sizing:border-box">
       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
       Wyślij zapytanie
-    </button>
+    </a>
   </div>
 
   <div class="success-screen" id="success-screen">
@@ -770,52 +770,47 @@ function updateSummary() {
 function formatDate(ds) { return ds.split('-').reverse().join('.'); }
 
 function sendInquiry() {
-  const t      = LANGS[currentLang];
-  const name   = document.getElementById('f-name').value.trim();
-  const phone  = document.getElementById('f-phone').value.trim();
-  const email  = document.getElementById('f-email').value.trim();
-  const people = document.getElementById('f-people').value.trim();
-  const note   = document.getElementById('f-note').value.trim();
+  const t     = LANGS[currentLang];
+  const name  = document.getElementById('f-name').value.trim();
+  const phone = document.getElementById('f-phone').value.trim();
+  const email = document.getElementById('f-email').value.trim();
+  const people= document.getElementById('f-people').value.trim();
+  const note  = document.getElementById('f-note').value.trim();
 
-  if (!name)  { alert(t.err_name);  return; }
-  if (!phone) { alert(t.err_phone); return; }
-  if (!selStart || !selEnd) { alert(t.err_dates); return; }
+  if (!name)               { alert(t.err_name);  return false; }
+  if (!phone)              { alert(t.err_phone); return false; }
+  if (!selStart || !selEnd){ alert(t.err_dates); return false; }
 
   const apt    = apartments[currentAptIdx];
-  const nights = (selStart && selEnd) ? Math.round((new Date(selEnd) - new Date(selStart)) / 86400000) : 0;
+  const nights = Math.round((new Date(selEnd) - new Date(selStart)) / 86400000);
 
   const msg = '🏠 ' + t.wa_header + '\n\n'
     + 'Apartament: ' + apt.name + '\n'
-    + (selStart ? 'Termin: ' + formatDate(selStart) + ' – ' + formatDate(selEnd) + ' (' + nights + ' ' + nights_str(nights) + ')\n' : '')
+    + 'Termin: ' + formatDate(selStart) + ' \u2013 ' + formatDate(selEnd) + ' (' + nights + ' ' + nights_str(nights) + ')\n'
     + 'Gość: ' + name + '\n'
     + 'Telefon: ' + phone
     + (email  ? '\nE-mail: '      + email  : '')
     + (people ? '\nLiczba osób: ' + people : '')
     + (note   ? '\nUwagi: '       + note   : '');
 
-  const adminPhone = getAdminPhone();
-  const adminEmail = ADMIN_EMAIL || Object.values(JSON.parse(localStorage.getItem('user_emails')||'{}')).find(e=>e) || '';
-  const encodedMsg = encodeURIComponent(msg);
+  const p  = ADMIN_PHONE;
+  const em = ADMIN_EMAIL || Object.values(JSON.parse(localStorage.getItem('user_emails')||'{}')).find(x=>x) || '';
+  const enc = encodeURIComponent(msg);
 
   let url = '';
-  if      (selectedChannel === 'whatsapp')  url = 'https://wa.me/' + adminPhone + '?text=' + encodedMsg;
-  else if (selectedChannel === 'viber')     url = 'viber://chat?number=%2B' + adminPhone + '&text=' + encodedMsg;
-  else if (selectedChannel === 'signal')    url = 'https://signal.me/#p/+' + adminPhone;
-  else if (selectedChannel === 'telegram')  url = 'https://t.me/+' + adminPhone;
-  else if (selectedChannel === 'email')     url = 'mailto:' + adminEmail + '?subject=' + encodeURIComponent('Zapytanie o rezerwację - ' + apt.name) + '&body=' + encodedMsg;
+  if      (selectedChannel === 'whatsapp')  url = 'https://wa.me/' + p + '?text=' + enc;
+  else if (selectedChannel === 'viber')     url = 'viber://chat?number=%2B' + p + '&text=' + enc;
+  else if (selectedChannel === 'signal')    url = 'https://signal.me/#p/+' + p;
+  else if (selectedChannel === 'telegram')  url = 'https://t.me/+' + p;
+  else if (selectedChannel === 'email')     url = 'mailto:' + em + '?subject=' + encodeURIComponent('Zapytanie - ' + apt.name) + '&body=' + enc;
 
-  if (!url) { alert('Brak danych kontaktowych'); return; }
+  if (!url) { alert('Brak numeru kontaktowego'); return false; }
 
-  // iOS Safari wymaga bezpośredniego kliknięcia linku
-  const a = document.createElement('a');
-  a.href = url;
-  a.target = '_blank';
-  a.rel = 'noopener';
-  document.body.appendChild(a);
-  a.click();
-  document.body.removeChild(a);
-
+  // Ustaw href na linku i otwórz
+  const btn = document.getElementById('send-btn');
+  btn.href = url;
   showSuccess(name);
+  return true;
 }
 
 function showSuccess(name) {
