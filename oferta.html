@@ -254,7 +254,7 @@ border-bottom: 1px solid #f0f2f7;
       <button onclick="setLang('en')" class="lang-opt" data-lang="en">🇬🇧 English</button>
       <button onclick="setLang('de')" class="lang-opt" data-lang="de">🇩🇪 Deutsch</button>
       <button onclick="setLang('uk')" class="lang-opt" data-lang="uk">🇺🇦 Українська</button>
-      <button onclick="setLang('ru')" class="lang-opt" data-lang="ru">🇷🇺 Русский</button>
+      <button onclick="setLang('es')" class="lang-opt" data-lang="es">🇪🇸 Español</button>
       <button onclick="setLang('cs')" class="lang-opt" data-lang="cs">🇨🇿 Čeština</button>
     </div>
   </div>
@@ -444,29 +444,29 @@ const LANGS = {
     new_inquiry: 'Новий запит',
     wa_header: 'ЗАПИТ НА БРОНЮВАННЯ',
   },
-  ru: {
-    flag:'🇷🇺', code:'RU',
-    hero_title: 'Проверить доступность',
-    hero_sub: 'Выберите апартаменты и даты проживания, затем отправьте запрос цены. Мы ответим как можно скорее.',
-    pick_apt: 'Выберите апартаменты',
-    pick_dates: 'Выберите даты проживания',
-    info_tip: 'Нажмите на дату приезда, затем на дату отъезда. Серые дни уже заняты.',
-    legend_occ: 'Занято', legend_free: 'Свободно', legend_sel: 'Выбрано',
-    arrival: 'Заезд', departure: 'Выезд',
-    noc1: 'ночь', noc2: 'ночи', noc5: 'ночей',
-    form_title: 'Запрос цены',
-    f_name: 'Имя и фамилия *', f_name_ph: 'напр. Иван Иванов',
-    f_phone: 'Телефон *', f_phone_ph: '+48 600 000 000',
-    f_email: 'E-mail', f_email_ph: 'ivan@gmail.com',
-    f_people: 'Количество гостей *', f_people_ph: 'напр. 2',
-    f_note: 'Заметки / вопросы', f_note_ph: 'Есть ли парковка? Можно с собакой? и т.д.',
-    send: 'Отправить запрос', sending: 'Отправка...',
-    err_name: 'Введите имя и фамилию', err_phone: 'Введите номер телефона',
-    err_people: 'Укажите количество гостей', err_dates: 'Пожалуйста, выберите даты',
-    err_range: 'Некоторые дни в этом диапазоне уже заняты',
-    ok_title: 'Запрос отправлен!', ok_msg: 'Спасибо {name}! Мы свяжемся с вами в ближайшее время.',
-    new_inquiry: 'Новый запрос',
-    wa_header: 'ЗАПРОС НА БРОНИРОВАНИЕ',
+  es: {
+    flag:'🇪🇸', code:'ES',
+    hero_title: 'Consultar disponibilidad',
+    hero_sub: 'Elige un apartamento y las fechas de estancia, luego envía una consulta de precio. Responderemos lo antes posible.',
+    pick_apt: 'Elige apartamento',
+    pick_dates: 'Elige las fechas de estancia',
+    info_tip: 'Haz clic en la fecha de llegada, luego en la de salida. Los días grises ya están ocupados.',
+    legend_occ: 'Ocupado', legend_free: 'Libre', legend_sel: 'Seleccionado',
+    arrival: 'Llegada', departure: 'Salida',
+    noc1: 'noche', noc2: 'noches', noc5: 'noches',
+    form_title: 'Consulta de precio',
+    f_name: 'Nombre y apellidos *', f_name_ph: 'p.ej. Juan García',
+    f_phone: 'Teléfono *', f_phone_ph: '+48 600 000 000',
+    f_email: 'E-mail', f_email_ph: 'juan@gmail.com',
+    f_people: 'Número de huéspedes *', f_people_ph: 'p.ej. 2',
+    f_note: 'Notas / preguntas', f_note_ph: '¿Hay aparcamiento? ¿Se admiten mascotas? etc.',
+    send: 'Enviar consulta', sending: 'Enviando...',
+    err_name: 'Introduce tu nombre', err_phone: 'Introduce tu número de teléfono',
+    err_people: 'Indica el número de huéspedes', err_dates: 'Por favor selecciona las fechas',
+    err_range: 'Algunos días en este rango ya están ocupados',
+    ok_title: '¡Consulta enviada!', ok_msg: '¡Gracias {name}! Nos pondremos en contacto contigo pronto.',
+    new_inquiry: 'Nueva consulta',
+    wa_header: 'CONSULTA DE RESERVA',
   },
   cs: {
     flag:'🇨🇿', code:'CS',
@@ -557,6 +557,14 @@ document.addEventListener('click', e => {
 
 // ── APARTMENTS
 const WORKER_BASE = 'https://nameless-base-0f4d.dziabaa.workers.dev';
+
+function getAdminPhone() {
+  const phones = JSON.parse(localStorage.getItem('user_phones') || '{}');
+  const adminPhone = phones['admin'];
+  if (adminPhone) return adminPhone.replace(/\D/g,'');
+  const first = Object.values(phones)[0];
+  return first ? first.replace(/\D/g,'') : '';
+}
 
 let apartments = JSON.parse(localStorage.getItem('apts') || '[]');
 
@@ -726,7 +734,7 @@ async function sendInquiry() {
     if (res.ok) { showSuccess(name); return; }
   } catch(e) {}
 
-  window.open('https://wa.me/?text=' + encodeURIComponent(msg), '_blank');
+  window.open('https://wa.me/' + getAdminPhone() + '?text=' + encodeURIComponent(msg), '_blank');
   showSuccess(name);
 }
 

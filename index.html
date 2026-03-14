@@ -930,6 +930,8 @@ width: 76px; text-align: center; flex-shrink: 0; box-sizing: border-box;
       <input type="text" id="user-name" class="date-input" placeholder="np. Anna Kowalska" style="margin-bottom:16px;border:1.5px solid #e4e8f0;background:#f3f5f9;border-radius:12px;color:#0f1e3d">
       <label style="display:block;font-size:13px;font-weight:600;color:#0f1e3d;margin-bottom:6px">Login</label>
       <input type="text" id="user-login" class="date-input" placeholder="np. anna" autocomplete="off" style="margin-bottom:16px;border:1.5px solid #e4e8f0;background:#f3f5f9;border-radius:12px;color:#0f1e3d">
+      <label style="display:block;font-size:13px;font-weight:600;color:#0f1e3d;margin-bottom:6px">Telefon <span style="font-weight:400;color:#8a95a8;font-size:12px">(do zapytań od gości)</span></label>
+      <input type="tel" id="user-phone" class="date-input" placeholder="np. +48600000000" autocomplete="off" style="margin-bottom:16px;border:1.5px solid #e4e8f0;background:#f3f5f9;border-radius:12px;color:#0f1e3d">
       <label style="display:block;font-size:13px;font-weight:600;color:#0f1e3d;margin-bottom:6px">E-mail <span style="font-weight:400;color:#8a95a8;font-size:12px">(do resetowania hasła)</span></label>
       <input type="email" id="user-email" class="date-input" placeholder="np. anna@gmail.com" autocomplete="off" style="margin-bottom:16px;border:1.5px solid #e4e8f0;background:#f3f5f9;border-radius:12px;color:#0f1e3d">
       <label style="display:block;font-size:13px;font-weight:600;color:#0f1e3d;margin-bottom:6px">Hasło <span id="user-pass-hint" style="font-weight:400;color:#8a95a8;font-size:12px">(zostaw puste aby nie zmieniać)</span></label>
@@ -3323,11 +3325,23 @@ async function sendForgotPassword() {
 let userEmails = JSON.parse(localStorage.getItem('user_emails') || '{}');
 function saveUserEmails() { localStorage.setItem('user_emails', JSON.stringify(userEmails)); }
 
+let userPhones = JSON.parse(localStorage.getItem('user_phones') || '{}');
+function saveUserPhones() { localStorage.setItem('user_phones', JSON.stringify(userPhones)); }
+
+function getAdminPhone() {
+  const phones = JSON.parse(localStorage.getItem('user_phones') || '{}');
+  const adminPhone = phones['admin'];
+  if (adminPhone) return adminPhone.replace(/\D/g,'');
+  const first = Object.values(phones)[0];
+  return first ? first.replace(/\D/g,'') : '';
+}
+
 function openAddUser() {
   editingUserId = null;
   document.getElementById('user-screen-title').textContent = 'Nowy użytkownik';
   document.getElementById('user-name').value  = '';
   document.getElementById('user-login').value = '';
+  document.getElementById('user-phone').value = '';
   document.getElementById('user-email').value = '';
   document.getElementById('user-pass').value  = '';
   document.getElementById('user-role').value  = 'viewer';
@@ -3341,6 +3355,7 @@ function openEditUser(id, login, name, role) {
   document.getElementById('user-screen-title').textContent = 'Edytuj użytkownika';
   document.getElementById('user-name').value  = name;
   document.getElementById('user-login').value = login;
+  document.getElementById('user-phone').value = userPhones[login] || '';
   document.getElementById('user-email').value = userEmails[login] || '';
   document.getElementById('user-pass').value  = '';
   document.getElementById('user-role').value  = role;
@@ -3354,12 +3369,13 @@ function closeUserModal() { document.getElementById('user-screen').style.display
 async function saveUser() {
   const name  = document.getElementById('user-name').value.trim();
   const login = document.getElementById('user-login').value.trim();
+  const phone = document.getElementById('user-phone').value.trim();
   const email = document.getElementById('user-email').value.trim();
   const pass  = document.getElementById('user-pass').value.trim();
   const role  = document.getElementById('user-role').value;
   if (!name || !login) { showToast('Wypełnij imię i login'); return; }
   if (!editingUserId && !pass) { showToast('Wpisz hasło dla nowego użytkownika'); return; }
-  // save email locally
+  if (phone) { userPhones[login] = phone; saveUserPhones(); }
   if (email) { userEmails[login] = email; saveUserEmails(); }
   try {
     let res;
