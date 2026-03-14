@@ -5,849 +5,280 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="color-scheme" content="light only">
-<title>Apartamenty Elegant — Sprawdź dostępność</title>
-<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<title>Apartamenty Elegant — Zapytanie</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
 <style>
-  :root { color-scheme: light only; }
-  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
-html, body {
-color-scheme: light only !important;
-background: #eef1f7 !important;
-color: #0f1e3d !important;
-font-family: ‘DM Sans’, sans-serif !important;
-min-height: 100vh;
--webkit-text-size-adjust: 100%;
-}
-
-/* TOPBAR */
-.topbar {
-background: #1a2744 !important;
-padding: 14px 20px;
-display: flex; align-items: center; gap: 12px;
-position: sticky; top: 0; z-index: 100;
-border-radius: 0 0 18px 18px;
-}
-.topbar-logo {
-width: 38px; height: 38px;
-background: rgba(255,255,255,0.12) !important;
-border-radius: 10px;
-display: flex; align-items: center; justify-content: center; flex-shrink: 0;
-}
-.topbar-title { font-size: 16px; font-weight: 700; color: #ffffff !important; }
-.topbar-sub   { font-size: 11px; color: rgba(255,255,255,0.6) !important; }
-
-.container { max-width: 480px; margin: 0 auto; padding: 20px 16px 60px; }
-
-/* HERO */
-.hero {
-background: #1a2744 !important;
-border-radius: 18px; padding: 24px 20px;
-color: #ffffff !important; margin-bottom: 20px;
-position: relative; overflow: hidden;
-}
-.hero h1 { font-size: 22px; font-weight: 800; color: #ffffff !important; margin-bottom: 6px; }
-.hero p  { font-size: 13px; color: rgba(255,255,255,0.75) !important; line-height: 1.5; }
-
-/* SECTION LABEL */
-.section-label {
-font-size: 11px; font-weight: 700; color: #8a95a8 !important;
-text-transform: uppercase; letter-spacing: 1px;
-margin-bottom: 10px; margin-top: 20px;
-}
-
-/* TABS */
-.apt-tabs {
-display: flex; gap: 8px; margin-bottom: 16px;
-background: #e4e8f0 !important; border-radius: 12px; padding: 4px;
-}
-.apt-tab {
-flex: 1; padding: 9px 8px; border: none; border-radius: 9px;
-font-family: ‘DM Sans’, sans-serif; font-size: 13px; font-weight: 600;
-cursor: pointer; background: transparent !important; color: #8a95a8 !important;
-transition: all 0.2s;
-}
-.apt-tab.active {
-background: #ffffff !important; color: #1a2744 !important;
-box-shadow: 0 1px 4px rgba(0,0,0,0.1);
-}
-
-/* CALENDAR CARD */
-.cal-card {
-background: #ffffff !important; border: 1.5px solid #e4e8f0 !important;
-border-radius: 16px; overflow: hidden; margin-bottom: 16px;
-}
-.cal-header {
-background: #1a2744 !important;
-display: flex; align-items: center; justify-content: space-between;
-padding: 12px 16px;
-}
-.cal-nav {
-background: rgba(255,255,255,0.12) !important; border: none; border-radius: 8px;
-width: 32px; height: 32px; color: #ffffff !important; font-size: 18px;
-cursor: pointer; display: flex; align-items: center; justify-content: center;
-}
-.cal-title { font-size: 15px; font-weight: 700; color: #ffffff !important; }
-
-.cal-grid {
-display: grid; grid-template-columns: repeat(7, 1fr);
-padding: 12px; background: #ffffff !important;
-}
-.cal-dow {
-text-align: center; font-size: 11px; font-weight: 600;
-color: #8a95a8 !important; padding: 4px 0 8px;
-}
-.cal-dow.sun { color: #ef4444 !important; }
-.cal-day {
-aspect-ratio: 1; display: flex; align-items: center; justify-content: center;
-font-size: 13px; font-weight: 500; border-radius: 8px;
-cursor: pointer; transition: all 0.15s; position: relative; margin: 1px;
-color: #0f1e3d !important; background: transparent !important;
-}
-.cal-day.empty { cursor: default; }
-.cal-day.past  { color: #c0c8d8 !important; cursor: not-allowed; }
-.cal-day.occupied {
-background: #f3f5f9 !important; color: #c0c8d8 !important;
-cursor: not-allowed; text-decoration: line-through;
-}
-.cal-day.free:hover { background: #dbe4ff !important; color: #1a2744 !important; }
-.cal-day.sun  { color: #ef4444 !important; }
+html, body { color-scheme: light only !important; background: #eef1f7 !important; color: #0f1e3d !important; font-family: 'DM Sans', sans-serif; margin: 0; padding: 0; }
+.topbar { background: #1a2744; padding: 14px 20px; display: flex; align-items: center; gap: 12px; border-radius: 0 0 18px 18px; }
+.topbar-logo { width: 36px; height: 36px; background: rgba(255,255,255,0.15); border-radius: 10px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+.topbar-title { font-size: 16px; font-weight: 700; color: #fff; }
+.topbar-sub { font-size: 11px; color: rgba(255,255,255,0.6); }
+.wrap { max-width: 480px; margin: 0 auto; padding: 20px 16px 60px; }
+.hero { background: #1a2744; border-radius: 16px; padding: 22px 20px; margin-bottom: 20px; }
+.hero h1 { font-size: 22px; font-weight: 800; color: #fff; margin: 0 0 6px; }
+.hero p { font-size: 13px; color: rgba(255,255,255,0.75); margin: 0; line-height: 1.5; }
+.card { background: #fff; border: 1.5px solid #e4e8f0; border-radius: 16px; padding: 16px; margin-bottom: 14px; }
+.lbl { font-size: 11px; font-weight: 700; color: #8a95a8; text-transform: uppercase; letter-spacing: 1px; margin: 0 0 8px; }
+.tabs { display: flex; background: #e4e8f0; border-radius: 10px; padding: 3px; gap: 6px; margin-bottom: 14px; }
+.tab { flex: 1; padding: 9px 6px; border: none; border-radius: 8px; font-family: 'DM Sans', sans-serif; font-size: 13px; font-weight: 600; cursor: pointer; background: transparent; color: #8a95a8; transition: all 0.2s; }
+.tab.on { background: #fff; color: #1a2744; }
+.cal-hdr { background: #1a2744; display: flex; align-items: center; justify-content: space-between; padding: 12px 14px; border-radius: 12px 12px 0 0; }
+.cal-nav { background: rgba(255,255,255,0.15); border: none; border-radius: 7px; width: 30px; height: 30px; color: #fff; font-size: 16px; cursor: pointer; }
+.cal-title { font-size: 15px; font-weight: 700; color: #fff; }
+.cal-body { background: #fff; border-radius: 0 0 12px 12px; padding: 10px; border: 1.5px solid #e4e8f0; border-top: none; }
+.cal-grid { display: grid; grid-template-columns: repeat(7,1fr); gap: 2px; }
+.cal-dow { text-align: center; font-size: 11px; font-weight: 600; color: #8a95a8; padding: 4px 0 6px; }
+.cal-dow.sun { color: #ef4444; }
+.cal-day { aspect-ratio: 1; display: flex; align-items: center; justify-content: center; font-size: 13px; border-radius: 7px; cursor: pointer; font-weight: 500; color: #0f1e3d; }
+.cal-day.sun { color: #ef4444; }
+.cal-day.past, .cal-day.occ { color: #ccc; cursor: default; text-decoration: line-through; background: #f8f9fb; }
+.cal-day.free:hover { background: #dbe4ff; }
 .cal-day.today { font-weight: 800; }
-.cal-day.today::after {
-content: ‘’; position: absolute; bottom: 2px; left: 50%; transform: translateX(-50%);
-width: 4px; height: 4px; border-radius: 50%; background: #1a2744 !important;
-}
-.cal-day.selected-start, .cal-day.selected-end {
-background: #1a2744 !important; color: #ffffff !important; font-weight: 700;
-border-radius: 8px;
-}
-.cal-day.selected-range {
-background: #dbe4ff !important; color: #1a2744 !important; border-radius: 0;
-}
-.cal-day.selected-start { border-radius: 8px 0 0 8px !important; }
-.cal-day.selected-end   { border-radius: 0 8px 8px 0 !important; }
-.cal-day.selected-start.selected-end { border-radius: 8px !important; }
-
-/* LEGEND */
-.legend {
-display: flex; gap: 16px; padding: 0 12px 12px;
-font-size: 11px; color: #8a95a8 !important;
-background: #ffffff !important;
-}
-.legend-dot { width: 10px; height: 10px; border-radius: 3px; display: inline-block; margin-right: 4px; }
-
-/* DATES SUMMARY */
-.dates-summary {
-background: #ffffff !important; border: 1.5px solid #e4e8f0 !important;
-border-radius: 14px; padding: 14px 16px; margin-bottom: 16px;
-}
-.dates-row { display: flex; gap: 8px; }
-.dates-box { flex: 1; background: #f3f5f9 !important; border-radius: 10px; padding: 10px 12px; }
-.dates-box-label { font-size: 10px; font-weight: 700; color: #8a95a8 !important; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 3px; }
-.dates-box-val   { font-size: 15px; font-weight: 700; color: #1a2744 !important; }
-.nights-badge    { text-align: center; margin-top: 10px; font-size: 13px; color: #8a95a8 !important; }
-.nights-badge span { font-weight: 700; color: #1a2744 !important; }
-
-/* FORM */
-.form-card {
-background: #ffffff !important; border: 1.5px solid #e4e8f0 !important;
-border-radius: 16px; padding: 20px; margin-bottom: 16px;
-}
-.form-card h3 { font-size: 15px; font-weight: 700; color: #1a2744 !important; margin-bottom: 16px; }
-.field-label { font-size: 12px; font-weight: 600; color: #0f1e3d !important; margin-bottom: 6px; display: block; }
-.field-wrap  { margin-bottom: 12px; }
-.field-input {
-width: 100%; background: #f3f5f9 !important; border: 1.5px solid #e4e8f0 !important;
-border-radius: 12px; padding: 12px 14px; font-size: 14px;
-font-family: ‘DM Sans’, sans-serif; color: #0f1e3d !important; outline: none;
-transition: border-color 0.2s, box-shadow 0.2s; display: block;
--webkit-appearance: none; appearance: none;
-}
-.field-input:focus {
-border-color: #3b5bdb !important;
-box-shadow: 0 0 0 3px rgba(59,91,219,0.1) !important;
-background: #ffffff !important;
-}
-.field-input::placeholder { color: #8a95a8 !important; }
-textarea.field-input { resize: none; min-height: 90px; line-height: 1.5; }
-
-/* INFO BOX */
-.info-box {
-background: #eff6ff !important; border: 1.5px solid #bfdbfe !important;
-border-radius: 12px; padding: 12px 14px; margin-bottom: 16px;
-font-size: 12px; color: #1e40af !important; display: flex; gap: 8px; align-items: flex-start;
-}
-
-/* BUTTON */
-.btn-primary {
-width: 100%; padding: 16px; background: #1a2744 !important; color: #ffffff !important;
-border: none; border-radius: 14px; font-size: 15px; font-weight: 700;
-font-family: ‘DM Sans’, sans-serif; cursor: pointer;
-display: flex; align-items: center; justify-content: center; gap: 8px;
-transition: background 0.2s;
-}
-.btn-primary:hover { background: #243360 !important; }
-.btn-primary:disabled { background: #c0c8d8 !important; cursor: not-allowed; }
-
-/* SUCCESS */
-.success-screen {
-display: none; text-align: center; padding: 40px 20px;
-background: #ffffff !important; border: 1.5px solid #e4e8f0 !important;
-border-radius: 20px;
-}
-.success-screen.visible { display: block; }
-.success-icon {
-width: 64px; height: 64px; border-radius: 50%;
-background: #dcfce7 !important;
-display: flex; align-items: center; justify-content: center; margin: 0 auto 16px;
-}
-.success-screen h2 { font-size: 20px; font-weight: 800; color: #1a2744 !important; margin-bottom: 8px; }
-.success-screen p  { font-size: 14px; color: #8a95a8 !important; line-height: 1.6; }
-
-/* TOAST */
-.toast {
-position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%) translateY(80px);
-background: #1a2744 !important; color: #ffffff !important; padding: 12px 20px;
-border-radius: 12px; font-size: 13px; font-weight: 600;
-transition: transform 0.3s; z-index: 999; white-space: nowrap;
-}
-.toast.show { transform: translateX(-50%) translateY(0); }
-.lang-opt {
-display: block; width: 100%; padding: 10px 14px; border: none;
-background: #fff !important; color: #0f1e3d !important;
-font-family: ‘DM Sans’, sans-serif; font-size: 13px; font-weight: 500;
-cursor: pointer; text-align: left; transition: background 0.15s;
-border-bottom: 1px solid #f0f2f7;
-}
-.lang-opt:last-child { border-bottom: none; }
-.lang-opt:hover { background: #f3f5f9 !important; }
-.lang-opt.active { background: #eef1f7 !important; font-weight: 700; color: #1a2744 !important; }
-
-.ch-btn {
-display: flex; align-items: center; gap: 6px;
-padding: 8px 12px; border-radius: 10px; border: 1.5px solid #e4e8f0;
-background: #f3f5f9; color: #5a6480;
-font-family: ‘DM Sans’, sans-serif; font-size: 12px; font-weight: 600;
-cursor: pointer; transition: all 0.15s; -webkit-appearance: none;
-}
-button.ch-btn.active,
-button.ch-btn[data-active=“true”] {
-background: #1a2744 !important; color: #ffffff !important;
-border-color: #1a2744 !important;
-}
+.cal-day.sel-s, .cal-day.sel-e { background: #1a2744 !important; color: #fff !important; }
+.cal-day.sel-s { border-radius: 7px 0 0 7px; }
+.cal-day.sel-e { border-radius: 0 7px 7px 0; }
+.cal-day.sel-s.sel-e { border-radius: 7px; }
+.cal-day.sel-r { background: #dbe4ff; border-radius: 0; }
+.legend { display: flex; gap: 12px; padding: 8px 2px 2px; font-size: 11px; color: #8a95a8; }
+.ldot { width: 10px; height: 10px; border-radius: 3px; display: inline-block; margin-right: 4px; }
+.sum { background: #fff; border: 1.5px solid #e4e8f0; border-radius: 12px; padding: 12px 14px; margin-bottom: 14px; display: none; }
+.sum-row { display: flex; gap: 8px; }
+.sum-box { flex: 1; background: #f3f5f9; border-radius: 8px; padding: 8px 10px; }
+.sum-lbl { font-size: 10px; font-weight: 700; color: #8a95a8; text-transform: uppercase; }
+.sum-val { font-size: 15px; font-weight: 700; color: #1a2744; }
+.sum-nights { text-align: center; margin-top: 8px; font-size: 13px; color: #8a95a8; }
+.sum-nights b { color: #1a2744; }
+input, textarea { display: block; width: 100%; box-sizing: border-box; background: #f3f5f9 !important; border: 1.5px solid #e4e8f0 !important; border-radius: 10px; padding: 11px 13px; font-size: 14px; font-family: 'DM Sans', sans-serif; color: #0f1e3d !important; outline: none; margin-bottom: 10px; -webkit-appearance: none; }
+input:focus, textarea:focus { border-color: #3b5bdb !important; }
+textarea { resize: none; min-height: 80px; line-height: 1.5; }
+.field-lbl { font-size: 12px; font-weight: 600; color: #0f1e3d; margin-bottom: 5px; display: block; }
+.ch-wrap { display: flex; flex-wrap: wrap; gap: 7px; margin-bottom: 12px; }
+.ch { padding: 8px 11px; border-radius: 9px; border: 1.5px solid #e4e8f0; background: #f3f5f9; color: #5a6480; font-family: 'DM Sans', sans-serif; font-size: 12px; font-weight: 600; cursor: pointer; display: flex; align-items: center; gap: 5px; }
+.ch.on { background: #1a2744; color: #fff; border-color: #1a2744; }
+.btn-send { display: block; width: 100%; box-sizing: border-box; padding: 15px; background: #1a2744; color: #fff; border: none; border-radius: 13px; font-size: 15px; font-weight: 700; font-family: 'DM Sans', sans-serif; cursor: pointer; text-align: center; margin-top: 4px; }
+.ok { display: none; text-align: center; padding: 32px 16px; background: #fff; border: 1.5px solid #e4e8f0; border-radius: 16px; }
+.ok h2 { font-size: 20px; font-weight: 800; color: #1a2744; margin: 12px 0 6px; }
+.ok p { color: #8a95a8; font-size: 14px; }
 </style>
-
 </head>
 <body>
 
 <div class="topbar">
   <div class="topbar-logo">
-    <svg width="22" height="22" viewBox="0 0 110 118" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <polyline points="10,46 55,12 100,46" stroke="white" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
-      <line x1="18" y1="46" x2="18" y2="64" stroke="white" stroke-width="8" stroke-linecap="round"/>
-      <line x1="92" y1="46" x2="92" y2="64" stroke="white" stroke-width="8" stroke-linecap="round"/>
-      <line x1="18" y1="64" x2="92" y2="64" stroke="white" stroke-width="8" stroke-linecap="round"/>
-      <line x1="38" y1="46" x2="38" y2="62" stroke="white" stroke-width="7" stroke-linecap="round"/>
-      <polyline points="18,74 92,74 92,83 18,83 18,93 72,93 72,103 18,103" stroke="white" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/>
-    </svg>
+    <svg width="20" height="20" viewBox="0 0 110 118" fill="none"><polyline points="10,46 55,12 100,46" stroke="white" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"/><line x1="18" y1="46" x2="18" y2="64" stroke="white" stroke-width="9" stroke-linecap="round"/><line x1="92" y1="46" x2="92" y2="64" stroke="white" stroke-width="9" stroke-linecap="round"/><line x1="18" y1="64" x2="92" y2="64" stroke="white" stroke-width="9" stroke-linecap="round"/><line x1="38" y1="46" x2="38" y2="62" stroke="white" stroke-width="7" stroke-linecap="round"/><polyline points="18,74 92,74 92,83 18,83 18,93 72,93 72,103 18,103" stroke="white" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/></svg>
   </div>
   <div>
     <div class="topbar-title">Apartamenty Elegant</div>
     <div class="topbar-sub">Przemyśl</div>
   </div>
-  <div style="margin-left:auto;position:relative">
-    <button id="lang-btn" onclick="toggleLangMenu()" style="background:rgba(255,255,255,0.12);border:none;border-radius:10px;padding:6px 10px;cursor:pointer;display:flex;align-items:center;gap:6px;font-family:'DM Sans',sans-serif;font-size:13px;font-weight:600;color:#fff">
-      <span id="lang-flag">🇵🇱</span>
-      <span id="lang-code">PL</span>
-      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
-    </button>
-    <div id="lang-menu" style="display:none;position:absolute;top:calc(100% + 8px);right:0;background:#fff;border:1.5px solid #e4e8f0;border-radius:12px;overflow:hidden;box-shadow:0 8px 24px rgba(0,0,0,0.12);min-width:140px;z-index:200">
-      <button onclick="setLang('pl')" class="lang-opt" data-lang="pl">🇵🇱 Polski</button>
-      <button onclick="setLang('en')" class="lang-opt" data-lang="en">🇬🇧 English</button>
-      <button onclick="setLang('de')" class="lang-opt" data-lang="de">🇩🇪 Deutsch</button>
-      <button onclick="setLang('uk')" class="lang-opt" data-lang="uk">🇺🇦 Українська</button>
-      <button onclick="setLang('es')" class="lang-opt" data-lang="es">🇪🇸 Español</button>
-      <button onclick="setLang('cs')" class="lang-opt" data-lang="cs">🇨🇿 Čeština</button>
-    </div>
-  </div>
 </div>
 
-<div class="container">
-
+<div class="wrap">
   <div class="hero">
-    <h1 id="hero-title">Sprawdź dostępność</h1>
-    <p id="hero-sub">Wybierz apartament i daty pobytu, a następnie wyślij zapytanie o cenę. Odpowiemy najszybciej jak to możliwe.</p>
+    <h1>Sprawdź dostępność</h1>
+    <p>Wybierz apartament i daty, wyślij zapytanie o cenę.</p>
   </div>
 
-  <div class="section-label" id="label-apt">Wybierz apartament</div>
-  <div class="apt-tabs" id="apt-tabs"></div>
+  <div class="lbl">Apartament</div>
+  <div class="tabs" id="apt-tabs"></div>
 
-  <div class="section-label" id="label-dates">Wybierz termin pobytu</div>
-  <div class="info-box">
-    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;margin-top:1px"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
-    <span id="info-tip">Kliknij datę przyjazdu, potem datę wyjazdu. Szare dni są już zajęte.</span>
-  </div>
-
-  <div class="cal-card">
-    <div class="cal-header">
-      <button class="cal-nav" onclick="changeMonth(-1)">‹</button>
+  <div class="lbl">Termin pobytu</div>
+  <div style="border-radius:12px;overflow:hidden;margin-bottom:10px">
+    <div class="cal-hdr">
+      <button class="cal-nav" onclick="CM(-1)">‹</button>
       <div class="cal-title" id="cal-title"></div>
-      <button class="cal-nav" onclick="changeMonth(1)">›</button>
+      <button class="cal-nav" onclick="CM(1)">›</button>
     </div>
-    <div class="cal-grid" id="cal-grid"></div>
-    <div class="legend">
-      <span><span class="legend-dot" style="background:#f3f5f9;border:1.5px solid #c0c8d8"></span><span id="leg-occ">Zajęty</span></span>
-      <span><span class="legend-dot" style="background:#ffffff;border:1.5px solid #e4e8f0"></span><span id="leg-free">Wolny</span></span>
-      <span><span class="legend-dot" style="background:#1a2744"></span><span id="leg-sel">Wybrany</span></span>
-    </div>
-  </div>
-
-  <div class="dates-summary" id="dates-summary" style="display:none">
-    <div class="dates-row">
-      <div class="dates-box">
-        <div class="dates-box-label" id="label-arrival">Przyjazd</div>
-        <div class="dates-box-val" id="sum-from">—</div>
-      </div>
-      <div class="dates-box">
-        <div class="dates-box-label" id="label-departure">Wyjazd</div>
-        <div class="dates-box-val" id="sum-to">—</div>
+    <div class="cal-body">
+      <div class="cal-grid" id="cal-grid"></div>
+      <div class="legend">
+        <span><span class="ldot" style="background:#f8f9fb;border:1.5px solid #ccc"></span>Zajęty</span>
+        <span><span class="ldot" style="background:#1a2744"></span>Wybrany</span>
       </div>
     </div>
-    <div class="nights-badge" id="sum-nights"></div>
   </div>
 
-  <div class="form-card" id="form-section">
-    <h3 id="form-title">Zapytanie o ofertę</h3>
-    <div class="field-wrap">
-      <label class="field-label" id="label-name">Imię i nazwisko *</label>
-      <input class="field-input" id="f-name" type="text" oninput="updateLink()" placeholder="np. Jan Kowalski">
+  <div class="sum" id="sum">
+    <div class="sum-row">
+      <div class="sum-box"><div class="sum-lbl">Przyjazd</div><div class="sum-val" id="s-from"></div></div>
+      <div class="sum-box"><div class="sum-lbl">Wyjazd</div><div class="sum-val" id="s-to"></div></div>
     </div>
-    <div class="field-wrap">
-      <label class="field-label" id="label-phone">Telefon *</label>
-      <input class="field-input" id="f-phone" type="tel" oninput="updateLink()" placeholder="+48 600 000 000">
-    </div>
-    <div class="field-wrap">
-      <label class="field-label" id="label-email">E-mail</label>
-      <input class="field-input" id="f-email" type="email" oninput="updateLink()" placeholder="jan@gmail.com">
-    </div>
-    <div class="field-wrap">
-      <label class="field-label" id="label-people">Liczba gości *</label>
-      <input class="field-input" id="f-people" type="number" oninput="updateLink()" min="1" max="10" placeholder="np. 2">
-    </div>
-    <div class="field-wrap">
-      <label class="field-label" id="label-contact">Preferowany kontakt *</label>
-      <div id="contact-channels" style="display:flex;flex-wrap:wrap;gap:8px;margin-top:4px">
-        <button type="button" class="ch-btn active" data-ch="whatsapp" onclick="selectChannel('whatsapp')">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
-          WhatsApp
-        </button>
-        <button type="button" class="ch-btn" data-ch="viber" onclick="selectChannel('viber')">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M11.4 0C7.54.17 3.74 2.26 1.64 5.67.34 7.75-.14 10.24.04 12.69c.17 2.17.9 4.33 2.29 6.02.44.54.96 1.02 1.38 1.58.29.39.31.91.36 1.38.12 1.03.2 2.06.34 3.09.05.35.24.28.47.13 1.22-.8 2.43-1.62 3.64-2.44.42-.28.83-.28 1.31-.2 1.32.22 2.66.33 4 .26 3.35-.17 6.56-1.47 8.82-3.97 2.01-2.22 3.03-5.14 3.11-8.09.14-4.64-1.96-9.5-5.89-12.04C17.64.55 14.51-.14 11.4 0zm3.56 16.77c-.49.5-1.11.77-1.77.83-.47.04-.96-.09-1.4-.28-1.46-.63-2.76-1.55-3.88-2.67-1.08-1.08-1.97-2.32-2.61-3.7-.28-.6-.49-1.24-.46-1.91.04-.72.33-1.38.86-1.88.43-.41.91-.35 1.26.1.46.58.88 1.18 1.29 1.79.27.4.23.84-.11 1.17-.14.13-.29.25-.43.38-.27.24-.3.53-.13.83.7 1.22 1.67 2.19 2.89 2.9.34.2.63.17.87-.12.14-.17.27-.34.41-.51.31-.37.75-.42 1.15-.16.59.38 1.17.78 1.74 1.19.43.3.48.78.12 1.14zm-1.53-5.49c-.08.42-.52.69-.93.59-.38-.09-.61-.44-.55-.85.23-1.52-.76-3.08-2.27-3.54-.38-.12-.6-.51-.5-.9.1-.38.49-.61.88-.5 2.13.65 3.55 2.8 3.37 5.2zm1.75.32c-.08.41-.47.68-.89.61-.37-.06-.63-.42-.58-.82.28-2.71-1.49-5.29-4.14-6.01-.38-.1-.61-.49-.51-.88.1-.38.49-.61.88-.51 3.34.9 5.6 4.11 5.24 7.61zm1.77.29c-.07.41-.46.69-.88.62-.37-.06-.64-.42-.58-.83.44-4.2-2.3-8.12-6.44-9.07-.38-.09-.63-.47-.54-.85.09-.38.47-.63.86-.54 4.87 1.1 8.1 5.76 7.58 10.67z"/></svg>
-          Viber
-        </button>
-        <button type="button" class="ch-btn" data-ch="signal" onclick="selectChannel('signal')">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm0 4a8 8 0 110 16A8 8 0 0112 4zm0 2a6 6 0 100 12A6 6 0 0012 6zm-1 3h2v4h-2zm0 5h2v2h-2z"/></svg>
-          Signal
-        </button>
-        <button type="button" class="ch-btn" data-ch="telegram" onclick="selectChannel('telegram')">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M11.944 0A12 12 0 000 12a12 12 0 0012 12 12 12 0 0012-12A12 12 0 0012 0a12 12 0 00-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 01.171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/></svg>
-          Telegram
-        </button>
-        <button type="button" class="ch-btn" data-ch="email" onclick="selectChannel('email')">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
-          E-mail
-        </button>
-      </div>
-    </div>
-    <div class="field-wrap">
-      <label class="field-label" id="label-note">Uwagi / pytania</label>
-      <textarea class="field-input" id="f-note" oninput="updateLink()" placeholder="Czy macie parking? Czy można z psem? itp."></textarea>
-    </div>
-    <a id="send-link" href="#" onclick="handleSend(event)" style="width:100%;padding:16px;background:#1a2744;color:#fff;border-radius:14px;font-size:15px;font-weight:700;font-family:'DM Sans',sans-serif;display:flex;align-items:center;justify-content:center;gap:8px;box-sizing:border-box;text-decoration:none">
-      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
-      Wyślij zapytanie
-    </a>
+    <div class="sum-nights" id="s-nights"></div>
   </div>
 
-  <div class="success-screen" id="success-screen">
-    <div class="success-icon">
-      <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#16a34a" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+  <div class="card" id="form-card">
+    <div style="font-size:15px;font-weight:700;color:#1a2744;margin-bottom:14px">Zapytanie o ofertę</div>
+    <label class="field-lbl">Imię i nazwisko *</label>
+    <input type="text" id="fn" placeholder="np. Jan Kowalski">
+    <label class="field-lbl">Telefon *</label>
+    <input type="tel" id="fp" placeholder="+48 600 000 000">
+    <label class="field-lbl">E-mail</label>
+    <input type="email" id="fe" placeholder="jan@gmail.com">
+    <label class="field-lbl">Liczba gości</label>
+    <input type="number" id="fg" placeholder="np. 2" min="1">
+    <label class="field-lbl">Preferowany kontakt *</label>
+    <div class="ch-wrap">
+      <button class="ch on" data-ch="whatsapp" onclick="SCH(this)">💬 WhatsApp</button>
+      <button class="ch" data-ch="viber" onclick="SCH(this)">📱 Viber</button>
+      <button class="ch" data-ch="signal" onclick="SCH(this)">🔒 Signal</button>
+      <button class="ch" data-ch="telegram" onclick="SCH(this)">✈️ Telegram</button>
+      <button class="ch" data-ch="email" onclick="SCH(this)">📧 E-mail</button>
     </div>
-    <h2 id="success-title">Zapytanie wysłane!</h2>
-    <p id="success-msg">Skontaktujemy się z Tobą najszybciej jak to możliwe.</p>
-    <button class="btn-primary" style="margin-top:24px" id="new-inquiry-btn" onclick="resetForm()">Nowe zapytanie</button>
+    <label class="field-lbl">Uwagi</label>
+    <textarea id="fnote" placeholder="Pytania, uwagi..."></textarea>
+    <button class="btn-send" onclick="SEND()">Wyślij zapytanie →</button>
   </div>
 
+  <div class="ok" id="ok-card">
+    <div style="font-size:48px">✅</div>
+    <h2>Wysłano!</h2>
+    <p id="ok-msg">Dziękujemy! Odpowiemy najszybciej jak to możliwe.</p>
+    <button class="btn-send" style="margin-top:20px" onclick="RESET()">Nowe zapytanie</button>
+  </div>
 </div>
-
-<div class="toast" id="toast"></div>
 
 <script>
-// ── TRANSLATIONS
-const LANGS = {
-  pl: {
-    flag:'🇵🇱', code:'PL',
-    hero_title: 'Sprawdź dostępność',
-    hero_sub: 'Wybierz apartament i daty pobytu, a następnie wyślij zapytanie o cenę. Odpowiemy najszybciej jak to możliwe.',
-    pick_apt: 'Wybierz apartament',
-    pick_dates: 'Wybierz termin pobytu',
-    info_tip: 'Kliknij datę przyjazdu, potem datę wyjazdu. Szare dni są już zajęte.',
-    legend_occ: 'Zajęty', legend_free: 'Wolny', legend_sel: 'Wybrany',
-    arrival: 'Przyjazd', departure: 'Wyjazd',
-    noc1: 'noc', noc2: 'noce', noc5: 'nocy',
-    form_title: 'Zapytanie o ofertę',
-    f_name: 'Imię i nazwisko *', f_name_ph: 'np. Jan Kowalski',
-    f_phone: 'Telefon *', f_phone_ph: '+48 600 000 000',
-    f_email: 'E-mail', f_email_ph: 'jan@gmail.com',
-    f_people: 'Liczba gości *', f_people_ph: 'np. 2',
-    f_contact: 'Preferowany kontakt *', f_note: 'Uwagi / pytania', f_note_ph: 'Czy macie parking? Czy można z psem? itp.',
-    send: 'Wyślij zapytanie', sending: 'Wysyłanie...',
-    err_name: 'Wpisz imię i nazwisko', err_phone: 'Wpisz numer telefonu',
-    err_people: 'Podaj liczbę gości', err_dates: 'Wybierz daty pobytu',
-    err_range: 'W tym zakresie są zajęte dni',
-    ok_title: 'Zapytanie wysłane!', ok_msg: 'Dziękujemy {name}! Skontaktujemy się z Tobą wkrótce.',
-    new_inquiry: 'Nowe zapytanie',
-    wa_header: 'ZAPYTANIE O REZERWACJĘ',
-  },
-  en: {
-    flag:'🇬🇧', code:'EN',
-    hero_title: 'Check availability',
-    hero_sub: 'Choose an apartment and stay dates, then send a price inquiry. We will respond as soon as possible.',
-    pick_apt: 'Choose apartment',
-    pick_dates: 'Choose stay dates',
-    info_tip: 'Click the arrival date, then the departure date. Grey days are already taken.',
-    legend_occ: 'Occupied', legend_free: 'Free', legend_sel: 'Selected',
-    arrival: 'Arrival', departure: 'Departure',
-    noc1: 'night', noc2: 'nights', noc5: 'nights',
-    form_title: 'Price inquiry',
-    f_name: 'Full name *', f_name_ph: 'e.g. John Smith',
-    f_phone: 'Phone *', f_phone_ph: '+48 600 000 000',
-    f_email: 'E-mail', f_email_ph: 'john@gmail.com',
-    f_people: 'Number of guests *', f_people_ph: 'e.g. 2',
-    f_contact: 'Preferred contact *', f_note: 'Notes / questions', f_note_ph: 'Do you have parking? Are pets allowed? etc.',
-    send: 'Send inquiry', sending: 'Sending...',
-    err_name: 'Enter your name', err_phone: 'Enter your phone number',
-    err_people: 'Enter number of guests', err_dates: 'Please select stay dates',
-    err_range: 'Some days in this range are already taken',
-    ok_title: 'Inquiry sent!', ok_msg: 'Thank you {name}! We will contact you soon.',
-    new_inquiry: 'New inquiry',
-    wa_header: 'BOOKING INQUIRY',
-  },
-  de: {
-    flag:'🇩🇪', code:'DE',
-    hero_title: 'Verfügbarkeit prüfen',
-    hero_sub: 'Wählen Sie eine Wohnung und Aufenthaltsdaten und senden Sie eine Preisanfrage. Wir antworten so schnell wie möglich.',
-    pick_apt: 'Wohnung wählen',
-    pick_dates: 'Aufenthaltsdaten wählen',
-    info_tip: 'Klicken Sie auf das Anreisedatum, dann auf das Abreisedatum. Graue Tage sind bereits belegt.',
-    legend_occ: 'Belegt', legend_free: 'Frei', legend_sel: 'Ausgewählt',
-    arrival: 'Anreise', departure: 'Abreise',
-    noc1: 'Nacht', noc2: 'Nächte', noc5: 'Nächte',
-    form_title: 'Preisanfrage',
-    f_name: 'Vor- und Nachname *', f_name_ph: 'z.B. Hans Müller',
-    f_phone: 'Telefon *', f_phone_ph: '+48 600 000 000',
-    f_email: 'E-Mail', f_email_ph: 'hans@gmail.com',
-    f_people: 'Anzahl der Gäste *', f_people_ph: 'z.B. 2',
-    f_note: 'Anmerkungen / Fragen', f_note_ph: 'Haben Sie Parkplätze? Sind Haustiere erlaubt? usw.',
-    send: 'Anfrage senden', sending: 'Senden...',
-    err_name: 'Bitte Namen eingeben', err_phone: 'Bitte Telefonnummer eingeben',
-    err_people: 'Anzahl der Gäste eingeben', err_dates: 'Bitte Aufenthaltsdaten wählen',
-    err_range: 'Einige Tage in diesem Bereich sind bereits belegt',
-    ok_title: 'Anfrage gesendet!', ok_msg: 'Danke {name}! Wir melden uns bald bei Ihnen.',
-    new_inquiry: 'Neue Anfrage',
-    wa_header: 'BUCHUNGSANFRAGE',
-  },
-  uk: {
-    flag:'🇺🇦', code:'UA',
-    hero_title: 'Перевірте наявність',
-    hero_sub: 'Оберіть апартаменти та дати перебування, а потім надішліть запит на ціну. Ми відповімо якнайшвидше.',
-    pick_apt: 'Оберіть апартаменти',
-    pick_dates: 'Оберіть дати перебування',
-    info_tip: 'Натисніть дату приїзду, потім дату від\'їзду. Сірі дні вже зайняті.',
-    legend_occ: 'Зайнято', legend_free: 'Вільно', legend_sel: 'Вибрано',
-    arrival: 'Приїзд', departure: 'Від\'їзд',
-    noc1: 'ніч', noc2: 'ночі', noc5: 'ночей',
-    form_title: 'Запит на ціну',
-    f_name: 'Ім\'я та прізвище *', f_name_ph: 'напр. Іван Коваль',
-    f_phone: 'Телефон *', f_phone_ph: '+48 600 000 000',
-    f_email: 'E-mail', f_email_ph: 'ivan@gmail.com',
-    f_people: 'Кількість гостей *', f_people_ph: 'напр. 2',
-    f_contact: 'Бажаний контакт *', f_note: 'Примітки / запитання', f_note_ph: 'Чи є парковка? Чи можна з собакою? тощо.',
-    send: 'Надіслати запит', sending: 'Надсилання...',
-    err_name: 'Введіть ім\'я та прізвище', err_phone: 'Введіть номер телефону',
-    err_people: 'Вкажіть кількість гостей', err_dates: 'Будь ласка, оберіть дати',
-    err_range: 'Деякі дні в цьому діапазоні вже зайняті',
-    ok_title: 'Запит надіслано!', ok_msg: 'Дякуємо {name}! Ми зв\'яжемося з вами найближчим часом.',
-    new_inquiry: 'Новий запит',
-    wa_header: 'ЗАПИТ НА БРОНЮВАННЯ',
-  },
-  es: {
-    flag:'🇪🇸', code:'ES',
-    hero_title: 'Consultar disponibilidad',
-    hero_sub: 'Elige un apartamento y las fechas de estancia, luego envía una consulta de precio. Responderemos lo antes posible.',
-    pick_apt: 'Elige apartamento',
-    pick_dates: 'Elige las fechas de estancia',
-    info_tip: 'Haz clic en la fecha de llegada, luego en la de salida. Los días grises ya están ocupados.',
-    legend_occ: 'Ocupado', legend_free: 'Libre', legend_sel: 'Seleccionado',
-    arrival: 'Llegada', departure: 'Salida',
-    noc1: 'noche', noc2: 'noches', noc5: 'noches',
-    form_title: 'Consulta de precio',
-    f_name: 'Nombre y apellidos *', f_name_ph: 'p.ej. Juan García',
-    f_phone: 'Teléfono *', f_phone_ph: '+48 600 000 000',
-    f_email: 'E-mail', f_email_ph: 'juan@gmail.com',
-    f_people: 'Número de huéspedes *', f_people_ph: 'p.ej. 2',
-    f_contact: 'Contacto preferido *', f_note: 'Notas / preguntas', f_note_ph: '¿Hay aparcamiento? ¿Se admiten mascotas? etc.',
-    send: 'Enviar consulta', sending: 'Enviando...',
-    err_name: 'Introduce tu nombre', err_phone: 'Introduce tu número de teléfono',
-    err_people: 'Indica el número de huéspedes', err_dates: 'Por favor selecciona las fechas',
-    err_range: 'Algunos días en este rango ya están ocupados',
-    ok_title: '¡Consulta enviada!', ok_msg: '¡Gracias {name}! Nos pondremos en contacto contigo pronto.',
-    new_inquiry: 'Nueva consulta',
-    wa_header: 'CONSULTA DE RESERVA',
-  },
-  cs: {
-    flag:'🇨🇿', code:'CS',
-    hero_title: 'Zkontrolujte dostupnost',
-    hero_sub: 'Vyberte apartmán a data pobytu, poté odešlete cenovou poptávku. Odpovíme co nejdříve.',
-    pick_apt: 'Vyberte apartmán',
-    pick_dates: 'Vyberte data pobytu',
-    info_tip: 'Klikněte na datum příjezdu, pak na datum odjezdu. Šedé dny jsou již obsazené.',
-    legend_occ: 'Obsazeno', legend_free: 'Volno', legend_sel: 'Vybráno',
-    arrival: 'Příjezd', departure: 'Odjezd',
-    noc1: 'noc', noc2: 'noci', noc5: 'nocí',
-    form_title: 'Cenová poptávka',
-    f_name: 'Jméno a příjmení *', f_name_ph: 'např. Jan Novák',
-    f_phone: 'Telefon *', f_phone_ph: '+48 600 000 000',
-    f_email: 'E-mail', f_email_ph: 'jan@gmail.com',
-    f_people: 'Počet hostů *', f_people_ph: 'např. 2',
-    f_contact: 'Preferovaný kontakt *', f_note: 'Poznámky / otázky', f_note_ph: 'Máte parkoviště? Lze s psem? atd.',
-    send: 'Odeslat poptávku', sending: 'Odesílání...',
-    err_name: 'Zadejte jméno', err_phone: 'Zadejte telefonní číslo',
-    err_people: 'Zadejte počet hostů', err_dates: 'Prosím vyberte data pobytu',
-    err_range: 'Některé dny v tomto rozsahu jsou již obsazeny',
-    ok_title: 'Poptávka odeslána!', ok_msg: 'Děkujeme {name}! Brzy vás kontaktujeme.',
-    new_inquiry: 'Nová poptávka',
-    wa_header: 'POPTÁVKA UBYTOVÁNÍ',
-  }
-};
+var PHONE = '48605207857';
+var EMAIL = '';
+var apts = JSON.parse(localStorage.getItem('apts') || 'null') || [
+  {id:1, name:'Elegant 1', bookings:[], icalEvents:[], icalEventsAirbnb:[]},
+  {id:2, name:'Elegant 2', bookings:[], icalEvents:[], icalEventsAirbnb:[]}
+];
+var aptIdx = 0;
+var selS = null, selE = null;
+var CY = new Date().getFullYear(), CM2 = new Date().getMonth();
+var ch = 'whatsapp';
+var MONTHS = ['Styczeń','Luty','Marzec','Kwiecień','Maj','Czerwiec','Lipiec','Sierpień','Wrzesień','Październik','Listopad','Grudzień'];
 
-let selectedChannel = 'whatsapp';
-
-function selectChannel(ch) {
-  selectedChannel = ch;
-  document.querySelectorAll('.ch-btn').forEach(b => {
-    const isActive = b.dataset.ch === ch;
-    b.classList.toggle('active', isActive);
-    b.setAttribute('data-active', isActive ? 'true' : 'false');
-    b.style.background = isActive ? '#1a2744' : '#f3f5f9';
-    b.style.color = isActive ? '#ffffff' : '#5a6480';
-    b.style.borderColor = isActive ? '#1a2744' : '#e4e8f0';
+function occ() {
+  var s = new Set();
+  var a = apts[aptIdx];
+  var all = (a.bookings||[]).concat(a.icalEvents||[]).concat(a.icalEventsAirbnb||[]);
+  all.forEach(function(b){
+    if(!b.from||!b.to) return;
+    var d = new Date(b.from), e = new Date(b.to);
+    while(d<e){ s.add(d.toISOString().slice(0,10)); d.setDate(d.getDate()+1); }
   });
-  updateLink();
-}
-
-function toggleLangMenu() {
-  const m = document.getElementById('lang-menu');
-  m.style.display = m.style.display === 'none' ? 'block' : 'none';
-}
-
-function setLang(lang) {
-  currentLang = lang;
-  const t = LANGS[lang];
-  document.getElementById('lang-flag').textContent = t.flag;
-  document.getElementById('lang-code').textContent = t.code;
-  document.getElementById('lang-menu').style.display = 'none';
-
-  // Update active state
-  document.querySelectorAll('.lang-opt').forEach(b => {
-    b.classList.toggle('active', b.dataset.lang === lang);
-  });
-
-  // Translate all elements
-  document.getElementById('hero-title').textContent    = t.hero_title;
-  document.getElementById('hero-sub').textContent      = t.hero_sub;
-  document.getElementById('label-apt').textContent     = t.pick_apt;
-  document.getElementById('label-dates').textContent   = t.pick_dates;
-  document.getElementById('info-tip').textContent      = t.info_tip;
-  document.getElementById('leg-occ').textContent       = t.legend_occ;
-  document.getElementById('leg-free').textContent      = t.legend_free;
-  document.getElementById('leg-sel').textContent       = t.legend_sel;
-  document.getElementById('label-arrival').textContent   = t.arrival;
-  document.getElementById('label-departure').textContent = t.departure;
-  document.getElementById('form-title').textContent    = t.form_title;
-  document.getElementById('label-name').textContent    = t.f_name;
-  document.getElementById('f-name').placeholder        = t.f_name_ph;
-  document.getElementById('label-phone').textContent   = t.f_phone;
-  document.getElementById('f-phone').placeholder       = t.f_phone_ph;
-  document.getElementById('label-email').textContent   = t.f_email;
-  document.getElementById('f-email').placeholder       = t.f_email_ph;
-  document.getElementById('label-people').textContent  = t.f_people;
-  document.getElementById('f-people').placeholder      = t.f_people_ph;
-  document.getElementById('label-contact').textContent = t.f_contact;
-  document.getElementById('label-note').textContent    = t.f_note;
-  document.getElementById('f-note').placeholder        = t.f_note_ph;
-  document.getElementById('send-btn').innerHTML        = `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg> ${t.send}`;
-  document.getElementById('new-inquiry-btn').textContent = t.new_inquiry;
-
-  updateSummary();
-}
-
-function nights_str(n) {
-  const t = LANGS[currentLang];
-  if (currentLang === 'pl') return n === 1 ? t.noc1 : n < 5 ? t.noc2 : t.noc5;
-  return n === 1 ? t.noc1 : t.noc5;
-}
-
-// Close menu when clicking outside
-document.addEventListener('click', e => {
-  if (!e.target.closest('#lang-btn') && !e.target.closest('#lang-menu')) {
-    const m = document.getElementById('lang-menu');
-    if (m) m.style.display = 'none';
-  }
-});
-
-// ── APARTMENTS
-const WORKER_BASE = 'https://nameless-base-0f4d.dziabaa.workers.dev';
-
-const ADMIN_PHONE = '48605207857';
-const ADMIN_EMAIL = '';
-
-function getAdminPhone() {
-  const phones = JSON.parse(localStorage.getItem('user_phones') || '{}');
-  const p = phones['admin'] || Object.values(phones)[0] || '';
-  return p ? p.replace(/\D/g,'') : ADMIN_PHONE;
-}
-
-let apartments = JSON.parse(localStorage.getItem('apts') || '[]');
-if (!apartments.length) {
-  apartments = [
-    { id: 1, name: 'Elegant 1', bookings: [], icalEvents: [], icalEventsAirbnb: [] },
-    { id: 2, name: 'Elegant 2', bookings: [], icalEvents: [], icalEventsAirbnb: [] }
-  ];
-}
-// Try to load from worker for guests who don't share localStorage
-(async () => {
-  try {
-    const res = await fetch(WORKER_BASE + '/data');
-    if (res.ok) {
-      const data = await res.json();
-      if (data.apts && data.apts.length) {
-        apartments = data.apts;
-        buildTabs();
-        renderCalendar();
-      }
-    }
-  } catch(e) {}
-})();
-
-let currentAptIdx = 0;
-let selStart = null, selEnd = null;
-let calYear  = new Date().getFullYear();
-let calMonth = new Date().getMonth();
-
-function getOccupiedDates(apt) {
-  const occupied = new Set();
-  const allB = [...(apt.bookings||[]), ...(apt.icalEvents||[]), ...(apt.icalEventsAirbnb||[])];
-  allB.forEach(b => {
-    if (!b.from || !b.to) return;
-    let d = new Date(b.from);
-    const end = new Date(b.to);
-    while (d < end) {
-      occupied.add(d.toISOString().slice(0,10));
-      d.setDate(d.getDate() + 1);
-    }
-  });
-  return occupied;
-}
-
-function isRangeOccupied(from, to, apt) {
-  const occupied = getOccupiedDates(apt);
-  let d = new Date(from);
-  const end = new Date(to);
-  while (d < end) {
-    if (occupied.has(d.toISOString().slice(0,10))) return true;
-    d.setDate(d.getDate() + 1);
-  }
-  return false;
+  return s;
 }
 
 function buildTabs() {
-  const el = document.getElementById('apt-tabs');
-  el.innerHTML = apartments.map((a, i) =>
-    `<button class="apt-tab${i===currentAptIdx?' active':''}" onclick="selectApt(${i})">${a.name}</button>`
-  ).join('');
+  document.getElementById('apt-tabs').innerHTML = apts.map(function(a,i){
+    return '<button class="tab'+(i===aptIdx?' on':'')+'" onclick="SA('+i+')">'+a.name+'</button>';
+  }).join('');
 }
 
-function selectApt(idx) {
-  currentAptIdx = idx; selStart = null; selEnd = null;
-  buildTabs(); renderCalendar(); updateSummary();
-}
+function SA(i){ aptIdx=i; selS=null; selE=null; buildTabs(); RC(); US(); }
 
-function changeMonth(d) {
-  calMonth += d;
-  if (calMonth > 11) { calMonth = 0; calYear++; }
-  if (calMonth < 0)  { calMonth = 11; calYear--; }
-  renderCalendar();
-}
+function CM(d){ CM2+=d; if(CM2>11){CM2=0;CY++;} if(CM2<0){CM2=11;CY--;} RC(); }
 
-function renderCalendar() {
-  const apt = apartments[currentAptIdx];
-  if (!apt) return;
-  const occupied = getOccupiedDates(apt);
-  const today = new Date().toISOString().slice(0,10);
-  const MONTHS = ['Styczeń','Luty','Marzec','Kwiecień','Maj','Czerwiec','Lipiec','Sierpień','Wrzesień','Październik','Listopad','Grudzień'];
-  document.getElementById('cal-title').textContent = `${MONTHS[calMonth]} ${calYear}`;
+function fmtD(ds){ return ds.split('-').reverse().join('.'); }
 
-  const DAYS = ['Pn','Wt','Śr','Cz','Pt','So','Nd'];
-  let html = DAYS.map((d,i) => `<div class="cal-dow${i===6?' sun':''}">${d}</div>`).join('');
-
-  let startDow = new Date(calYear, calMonth, 1).getDay();
-  startDow = startDow === 0 ? 6 : startDow - 1;
-  const daysInMonth = new Date(calYear, calMonth+1, 0).getDate();
-
-  for (let i = 0; i < startDow; i++) html += `<div class="cal-day empty"></div>`;
-
-  for (let d = 1; d <= daysInMonth; d++) {
-    const ds = `${calYear}-${String(calMonth+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
-    const isSun = new Date(ds).getDay() === 0;
-    const isPast = ds < today;
-    const isOcc  = occupied.has(ds);
-    const isToday = ds === today;
-
-    let cls = 'cal-day';
-    if (isPast)      cls += ' past';
-    else if (isOcc)  cls += ' occupied';
-    else             cls += ' free';
-    if (isToday) cls += ' today';
-    if (isSun)   cls += ' sun';
-
-    if (selStart && selEnd) {
-      const [s, e] = selStart <= selEnd ? [selStart, selEnd] : [selEnd, selStart];
-      if (ds === s && ds === e)   cls += ' selected-start selected-end';
-      else if (ds === s)          cls += ' selected-start';
-      else if (ds === e)          cls += ' selected-end';
-      else if (ds > s && ds < e)  cls += ' selected-range';
-    } else if (selStart && ds === selStart) {
-      cls += ' selected-start selected-end';
-    }
-
-    const clickable = !isPast && !isOcc;
-    html += `<div class="${cls}"${clickable?` onclick="dayClick('${ds}')"`:''}>${d}</div>`;
+function RC() {
+  document.getElementById('cal-title').textContent = MONTHS[CM2]+' '+CY;
+  var today = new Date().toISOString().slice(0,10);
+  var occupied = occ();
+  var DAYS = ['Pn','Wt','Śr','Cz','Pt','So','Nd'];
+  var h = DAYS.map(function(d,i){ return '<div class="cal-dow'+(i===6?' sun':'')+'">'+(d)+'</div>'; }).join('');
+  var sd = new Date(CY,CM2,1).getDay(); sd = sd===0?6:sd-1;
+  var dim = new Date(CY,CM2+1,0).getDate();
+  for(var i=0;i<sd;i++) h+='<div></div>';
+  for(var d=1;d<=dim;d++){
+    var ds = CY+'-'+String(CM2+1).padStart(2,'0')+'-'+String(d).padStart(2,'0');
+    var sun = new Date(ds).getDay()===0;
+    var past = ds<today, oc = occupied.has(ds);
+    var cls = 'cal-day';
+    if(past||oc) cls+=' '+(past?'past':'occ');
+    else cls+=' free';
+    if(sun) cls+=' sun';
+    if(selS&&selE){
+      var lo=selS<=selE?selS:selE, hi=selS<=selE?selE:selS;
+      if(ds===lo&&ds===hi) cls+=' sel-s sel-e';
+      else if(ds===lo) cls+=' sel-s';
+      else if(ds===hi) cls+=' sel-e';
+      else if(ds>lo&&ds<hi) cls+=' sel-r';
+    } else if(selS&&ds===selS) cls+=' sel-s sel-e';
+    var click = (!past&&!oc) ? ' onclick="DC(\''+ds+'\')"' : '';
+    h+='<div class="'+cls+'"'+click+'>'+d+'</div>';
   }
-  document.getElementById('cal-grid').innerHTML = html;
+  document.getElementById('cal-grid').innerHTML = h;
 }
 
-function dayClick(ds) {
-  if (!selStart || (selStart && selEnd)) {
-    selStart = ds; selEnd = null;
-  } else {
-    if (ds === selStart) { selStart = null; selEnd = null; }
-    else {
-      const [s, e] = ds > selStart ? [selStart, ds] : [ds, selStart];
-      if (isRangeOccupied(s, e, apartments[currentAptIdx])) {
-        showToast(LANGS[currentLang].err_range);
-        selStart = ds; selEnd = null;
-      } else {
-        selStart = s; selEnd = e;
-      }
-    }
+function DC(ds){
+  if(!selS||(selS&&selE)){ selS=ds; selE=null; }
+  else {
+    if(ds===selS){ selS=null; selE=null; }
+    else { var lo=ds>selS?selS:ds, hi=ds>selS?ds:selS; selS=lo; selE=hi; }
   }
-  renderCalendar(); updateSummary(); updateLink();
+  RC(); US();
 }
 
-function updateSummary() {
-  const el = document.getElementById('dates-summary');
-  if (selStart && selEnd) {
-    el.style.display = 'block';
-    document.getElementById('sum-from').textContent = formatDate(selStart);
-    document.getElementById('sum-to').textContent   = formatDate(selEnd);
-    const n = Math.round((new Date(selEnd) - new Date(selStart)) / 86400000);
-    document.getElementById('sum-nights').innerHTML = `<span>${n}</span> ${nights_str(n)}`;
-  } else {
-    el.style.display = 'none';
-  }
+function US(){
+  var el = document.getElementById('sum');
+  if(selS&&selE){
+    el.style.display='block';
+    document.getElementById('s-from').textContent = fmtD(selS);
+    document.getElementById('s-to').textContent = fmtD(selE);
+    var n = Math.round((new Date(selE)-new Date(selS))/86400000);
+    document.getElementById('s-nights').innerHTML = '<b>'+n+'</b> '+(n===1?'noc':n<5?'noce':'nocy');
+  } else { el.style.display='none'; }
 }
 
-function formatDate(ds) { return ds.split('-').reverse().join('.'); }
-
-function buildUrl() {
-  const name  = document.getElementById('f-name').value.trim();
-  const phone = document.getElementById('f-phone').value.trim();
-  const email = document.getElementById('f-email').value.trim();
-  const people= document.getElementById('f-people').value.trim();
-  const note  = document.getElementById('f-note').value.trim();
-  if (!name || !phone || !selStart || !selEnd) return '#';
-
-  const apt    = apartments[currentAptIdx];
-  const nights = Math.round((new Date(selEnd) - new Date(selStart)) / 86400000);
-  const t      = LANGS[currentLang];
-
-  const msg = '🏠 ' + t.wa_header + '\n\n'
-    + 'Apartament: ' + apt.name + '\n'
-    + 'Termin: ' + formatDate(selStart) + ' – ' + formatDate(selEnd) + ' (' + nights + ' ' + nights_str(nights) + ')\n'
-    + 'Gość: ' + name + '\n'
-    + 'Telefon: ' + phone
-    + (email  ? '\nE-mail: '      + email  : '')
-    + (people ? '\nLiczba osób: ' + people : '')
-    + (note   ? '\nUwagi: '       + note   : '');
-
-  const p   = ADMIN_PHONE;
-  const enc = encodeURIComponent(msg);
-
-  if      (selectedChannel === 'whatsapp')  return 'https://wa.me/' + p + '?text=' + enc;
-  else if (selectedChannel === 'viber')     return 'viber://forward?text=' + enc;
-  else if (selectedChannel === 'signal')    return 'https://signal.me/#p/+' + p;
-  else if (selectedChannel === 'telegram')  return 'https://t.me/+' + p;
-  else if (selectedChannel === 'email')     return 'mailto:' + ADMIN_EMAIL + '?subject=' + encodeURIComponent('Zapytanie - ' + apt.name) + '&body=' + enc;
-  return '#';
+function SCH(btn){
+  ch = btn.dataset.ch;
+  document.querySelectorAll('.ch').forEach(function(b){
+    b.classList.toggle('on', b===btn);
+    b.style.background = b===btn ? '#1a2744' : '#f3f5f9';
+    b.style.color = b===btn ? '#fff' : '#5a6480';
+    b.style.borderColor = b===btn ? '#1a2744' : '#e4e8f0';
+  });
 }
 
-function updateLink() {
-  const url = buildUrl();
-  const link = document.getElementById('send-link');
-  link.href = url;
-  link.style.opacity = (url === '#') ? '0.6' : '1';
+function SEND(){
+  var name = document.getElementById('fn').value.trim();
+  var phone = document.getElementById('fp').value.trim();
+  var email = document.getElementById('fe').value.trim();
+  var people = document.getElementById('fg').value.trim();
+  var note = document.getElementById('fnote').value.trim();
+  if(!name){ alert('Wpisz imię i nazwisko'); return; }
+  if(!phone){ alert('Wpisz numer telefonu'); return; }
+  if(!selS||!selE){ alert('Wybierz daty pobytu'); return; }
+
+  var apt = apts[aptIdx];
+  var n = Math.round((new Date(selE)-new Date(selS))/86400000);
+  var msg = '🏠 ZAPYTANIE O REZERWACJĘ\n\n'
+    +'Apartament: '+apt.name+'\n'
+    +'Termin: '+fmtD(selS)+' – '+fmtD(selE)+' ('+n+' '+(n===1?'noc':n<5?'noce':'nocy')+')\n'
+    +'Gość: '+name+'\n'
+    +'Telefon: '+phone
+    +(email?'\nE-mail: '+email:'')
+    +(people?'\nLiczba osób: '+people:'')
+    +(note?'\nUwagi: '+note:'');
+
+  var enc = encodeURIComponent(msg);
+  var url = '';
+  if(ch==='whatsapp')  url='https://wa.me/'+PHONE+'?text='+enc;
+  if(ch==='viber')     url='viber://forward?text='+enc;
+  if(ch==='signal')    url='https://signal.me/#p/+'+PHONE;
+  if(ch==='telegram')  url='https://t.me/+'+PHONE;
+  if(ch==='email')     url='mailto:'+EMAIL+'?subject='+encodeURIComponent('Zapytanie - '+apt.name)+'&body='+enc;
+
+  document.getElementById('ok-msg').textContent = 'Dziękujemy '+name+'! Skontaktujemy się wkrótce.';
+  document.getElementById('form-card').style.display='none';
+  document.getElementById('ok-card').style.display='block';
+  window.location.href = url;
 }
 
-function handleSend(event) {
-  const t    = LANGS[currentLang];
-  const name = document.getElementById('f-name').value.trim();
-  const phone= document.getElementById('f-phone').value.trim();
-  if (!name)               { event.preventDefault(); alert(t.err_name);  return; }
-  if (!phone)              { event.preventDefault(); alert(t.err_phone); return; }
-  if (!selStart || !selEnd){ event.preventDefault(); alert(t.err_dates); return; }
-  setTimeout(function(){ showSuccess(name); }, 300);
-}
-
-function showSuccess(name) {
-  const t = LANGS[currentLang];
-  document.getElementById('form-section').style.display = 'none';
-  document.getElementById('success-screen').classList.add('visible');
-  document.getElementById('success-title').textContent = t.ok_title;
-  document.getElementById('success-msg').textContent = t.ok_msg.replace('{name}', name);
-}
-
-function resetForm() {
-  selStart = null; selEnd = null;
-  ['f-name','f-phone','f-email','f-people','f-note'].forEach(id => document.getElementById(id).value = '');
-  const btn = document.getElementById('send-btn');
-  btn.disabled = false;
-  btn.innerHTML = `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg> Wyślij zapytanie`;
-  document.getElementById('form-section').style.display = '';
-  document.getElementById('success-screen').classList.remove('visible');
-  renderCalendar(); updateSummary(); updateLink();
-}
-
-function showToast(msg) {
-  const t = document.getElementById('toast');
-  t.textContent = msg; t.classList.add('show');
-  setTimeout(() => t.classList.remove('show'), 2800);
+function RESET(){
+  selS=null; selE=null;
+  ['fn','fp','fe','fg','fnote'].forEach(function(id){ document.getElementById(id).value=''; });
+  document.getElementById('form-card').style.display='block';
+  document.getElementById('ok-card').style.display='none';
+  RC(); US();
 }
 
 buildTabs();
-renderCalendar();
-// Init channel buttons with inline styles (iOS Safari fix)
-selectChannel('whatsapp');
+RC();
 </script>
 
 </body>
