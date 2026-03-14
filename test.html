@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+
+<html>
+<head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Test</title></head>
+<body style="padding:40px;font-family:sans-serif">
+<h2>Test linków</h2>
+
+<p><a href="https://wa.me/48605207857?text=Test" style="display:block;padding:16px;background:#25D366;color:white;border-radius:12px;text-decoration:none;margin-bottom:12px;text-align:center;font-weight:bold">
+  ✅ WhatsApp (link bezpośredni)
+</a></p>
+
+<p><a href="viber://chat?number=%2B48605207857&text=Test" style="display:block;padding:16px;background:#7360F2;color:white;border-radius:12px;text-decoration:none;margin-bottom:12px;text-align:center;font-weight:bold">
+  ✅ Viber (link bezpośredni)
+</a></p>
+
+<p><a href="https://t.me/+48605207857" style="display:block;padding:16px;background:#229ED9;color:white;border-radius:12px;text-decoration:none;margin-bottom:12px;text-align:center;font-weight:bold">
+  ✅ Telegram (link bezpośredni)
+</a></p>
+
+<hr>
+<p id="result" style="color:red;font-weight:bold"></p>
+
+<p><button onclick="testWA()" style="padding:16px;background:#25D366;color:white;border:none;border-radius:12px;font-size:16px;width:100%">
+  JS → WhatsApp
+</button></p>
+
+<script>
+function testWA() {
+  document.getElementById('result').textContent = 'Kliknięto! Próba otwarcia...';
+  window.location.href = 'https://wa.me/48605207857?text=Test+JS';
+}
+</script>
+
+</body>
+</html>
