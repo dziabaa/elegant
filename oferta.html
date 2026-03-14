@@ -223,6 +223,19 @@ border-bottom: 1px solid #f0f2f7;
 .lang-opt:last-child { border-bottom: none; }
 .lang-opt:hover { background: #f3f5f9 !important; }
 .lang-opt.active { background: #eef1f7 !important; font-weight: 700; color: #1a2744 !important; }
+
+.ch-btn {
+display: flex; align-items: center; gap: 6px;
+padding: 8px 12px; border-radius: 10px; border: 1.5px solid #e4e8f0;
+background: #f3f5f9 !important; color: #5a6480 !important;
+font-family: ‘DM Sans’, sans-serif; font-size: 12px; font-weight: 600;
+cursor: pointer; transition: all 0.15s;
+}
+.ch-btn.active {
+background: #1a2744 !important; color: #ffffff !important;
+border-color: #1a2744 !important;
+}
+.ch-btn:hover:not(.active) { border-color: #1a2744; color: #1a2744 !important; }
 </style>
 
 </head>
@@ -323,6 +336,31 @@ border-bottom: 1px solid #f0f2f7;
       <input class="field-input" id="f-people" type="number" min="1" max="10" placeholder="np. 2">
     </div>
     <div class="field-wrap">
+      <label class="field-label" id="label-contact">Preferowany kontakt *</label>
+      <div id="contact-channels" style="display:flex;flex-wrap:wrap;gap:8px;margin-top:4px">
+        <button type="button" class="ch-btn active" data-ch="whatsapp" onclick="selectChannel('whatsapp')">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+          WhatsApp
+        </button>
+        <button type="button" class="ch-btn" data-ch="viber" onclick="selectChannel('viber')">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M11.4 0C7.54.17 3.74 2.26 1.64 5.67.34 7.75-.14 10.24.04 12.69c.17 2.17.9 4.33 2.29 6.02.44.54.96 1.02 1.38 1.58.29.39.31.91.36 1.38.12 1.03.2 2.06.34 3.09.05.35.24.28.47.13 1.22-.8 2.43-1.62 3.64-2.44.42-.28.83-.28 1.31-.2 1.32.22 2.66.33 4 .26 3.35-.17 6.56-1.47 8.82-3.97 2.01-2.22 3.03-5.14 3.11-8.09.14-4.64-1.96-9.5-5.89-12.04C17.64.55 14.51-.14 11.4 0zm3.56 16.77c-.49.5-1.11.77-1.77.83-.47.04-.96-.09-1.4-.28-1.46-.63-2.76-1.55-3.88-2.67-1.08-1.08-1.97-2.32-2.61-3.7-.28-.6-.49-1.24-.46-1.91.04-.72.33-1.38.86-1.88.43-.41.91-.35 1.26.1.46.58.88 1.18 1.29 1.79.27.4.23.84-.11 1.17-.14.13-.29.25-.43.38-.27.24-.3.53-.13.83.7 1.22 1.67 2.19 2.89 2.9.34.2.63.17.87-.12.14-.17.27-.34.41-.51.31-.37.75-.42 1.15-.16.59.38 1.17.78 1.74 1.19.43.3.48.78.12 1.14zm-1.53-5.49c-.08.42-.52.69-.93.59-.38-.09-.61-.44-.55-.85.23-1.52-.76-3.08-2.27-3.54-.38-.12-.6-.51-.5-.9.1-.38.49-.61.88-.5 2.13.65 3.55 2.8 3.37 5.2zm1.75.32c-.08.41-.47.68-.89.61-.37-.06-.63-.42-.58-.82.28-2.71-1.49-5.29-4.14-6.01-.38-.1-.61-.49-.51-.88.1-.38.49-.61.88-.51 3.34.9 5.6 4.11 5.24 7.61zm1.77.29c-.07.41-.46.69-.88.62-.37-.06-.64-.42-.58-.83.44-4.2-2.3-8.12-6.44-9.07-.38-.09-.63-.47-.54-.85.09-.38.47-.63.86-.54 4.87 1.1 8.1 5.76 7.58 10.67z"/></svg>
+          Viber
+        </button>
+        <button type="button" class="ch-btn" data-ch="signal" onclick="selectChannel('signal')">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm0 4a8 8 0 110 16A8 8 0 0112 4zm0 2a6 6 0 100 12A6 6 0 0012 6zm-1 3h2v4h-2zm0 5h2v2h-2z"/></svg>
+          Signal
+        </button>
+        <button type="button" class="ch-btn" data-ch="telegram" onclick="selectChannel('telegram')">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M11.944 0A12 12 0 000 12a12 12 0 0012 12 12 12 0 0012-12A12 12 0 0012 0a12 12 0 00-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 01.171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/></svg>
+          Telegram
+        </button>
+        <button type="button" class="ch-btn" data-ch="email" onclick="selectChannel('email')">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+          E-mail
+        </button>
+      </div>
+    </div>
+    <div class="field-wrap">
       <label class="field-label" id="label-note">Uwagi / pytania</label>
       <textarea class="field-input" id="f-note" placeholder="Czy macie parking? Czy można z psem? itp."></textarea>
     </div>
@@ -363,7 +401,7 @@ const LANGS = {
     f_phone: 'Telefon *', f_phone_ph: '+48 600 000 000',
     f_email: 'E-mail', f_email_ph: 'jan@gmail.com',
     f_people: 'Liczba gości *', f_people_ph: 'np. 2',
-    f_note: 'Uwagi / pytania', f_note_ph: 'Czy macie parking? Czy można z psem? itp.',
+    f_contact: 'Preferowany kontakt *', f_note: 'Uwagi / pytania', f_note_ph: 'Czy macie parking? Czy można z psem? itp.',
     send: 'Wyślij zapytanie', sending: 'Wysyłanie...',
     err_name: 'Wpisz imię i nazwisko', err_phone: 'Wpisz numer telefonu',
     err_people: 'Podaj liczbę gości', err_dates: 'Wybierz daty pobytu',
@@ -387,7 +425,7 @@ const LANGS = {
     f_phone: 'Phone *', f_phone_ph: '+48 600 000 000',
     f_email: 'E-mail', f_email_ph: 'john@gmail.com',
     f_people: 'Number of guests *', f_people_ph: 'e.g. 2',
-    f_note: 'Notes / questions', f_note_ph: 'Do you have parking? Are pets allowed? etc.',
+    f_contact: 'Preferred contact *', f_note: 'Notes / questions', f_note_ph: 'Do you have parking? Are pets allowed? etc.',
     send: 'Send inquiry', sending: 'Sending...',
     err_name: 'Enter your name', err_phone: 'Enter your phone number',
     err_people: 'Enter number of guests', err_dates: 'Please select stay dates',
@@ -435,7 +473,7 @@ const LANGS = {
     f_phone: 'Телефон *', f_phone_ph: '+48 600 000 000',
     f_email: 'E-mail', f_email_ph: 'ivan@gmail.com',
     f_people: 'Кількість гостей *', f_people_ph: 'напр. 2',
-    f_note: 'Примітки / запитання', f_note_ph: 'Чи є парковка? Чи можна з собакою? тощо.',
+    f_contact: 'Бажаний контакт *', f_note: 'Примітки / запитання', f_note_ph: 'Чи є парковка? Чи можна з собакою? тощо.',
     send: 'Надіслати запит', sending: 'Надсилання...',
     err_name: 'Введіть ім\'я та прізвище', err_phone: 'Введіть номер телефону',
     err_people: 'Вкажіть кількість гостей', err_dates: 'Будь ласка, оберіть дати',
@@ -459,7 +497,7 @@ const LANGS = {
     f_phone: 'Teléfono *', f_phone_ph: '+48 600 000 000',
     f_email: 'E-mail', f_email_ph: 'juan@gmail.com',
     f_people: 'Número de huéspedes *', f_people_ph: 'p.ej. 2',
-    f_note: 'Notas / preguntas', f_note_ph: '¿Hay aparcamiento? ¿Se admiten mascotas? etc.',
+    f_contact: 'Contacto preferido *', f_note: 'Notas / preguntas', f_note_ph: '¿Hay aparcamiento? ¿Se admiten mascotas? etc.',
     send: 'Enviar consulta', sending: 'Enviando...',
     err_name: 'Introduce tu nombre', err_phone: 'Introduce tu número de teléfono',
     err_people: 'Indica el número de huéspedes', err_dates: 'Por favor selecciona las fechas',
@@ -483,7 +521,7 @@ const LANGS = {
     f_phone: 'Telefon *', f_phone_ph: '+48 600 000 000',
     f_email: 'E-mail', f_email_ph: 'jan@gmail.com',
     f_people: 'Počet hostů *', f_people_ph: 'např. 2',
-    f_note: 'Poznámky / otázky', f_note_ph: 'Máte parkoviště? Lze s psem? atd.',
+    f_contact: 'Preferovaný kontakt *', f_note: 'Poznámky / otázky', f_note_ph: 'Máte parkoviště? Lze s psem? atd.',
     send: 'Odeslat poptávku', sending: 'Odesílání...',
     err_name: 'Zadejte jméno', err_phone: 'Zadejte telefonní číslo',
     err_people: 'Zadejte počet hostů', err_dates: 'Prosím vyberte data pobytu',
@@ -494,7 +532,14 @@ const LANGS = {
   }
 };
 
-let currentLang = 'pl';
+let selectedChannel = 'whatsapp';
+
+function selectChannel(ch) {
+  selectedChannel = ch;
+  document.querySelectorAll('.ch-btn').forEach(b => {
+    b.classList.toggle('active', b.dataset.ch === ch);
+  });
+}
 
 function toggleLangMenu() {
   const m = document.getElementById('lang-menu');
@@ -533,6 +578,7 @@ function setLang(lang) {
   document.getElementById('f-email').placeholder       = t.f_email_ph;
   document.getElementById('label-people').textContent  = t.f_people;
   document.getElementById('f-people').placeholder      = t.f_people_ph;
+  document.getElementById('label-contact').textContent = t.f_contact;
   document.getElementById('label-note').textContent    = t.f_note;
   document.getElementById('f-note').placeholder        = t.f_note_ph;
   document.getElementById('send-btn').innerHTML        = `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg> ${t.send}`;
@@ -734,11 +780,19 @@ async function sendInquiry() {
     if (res.ok) { showSuccess(name); return; }
   } catch(e) {}
 
-  window.open('https://wa.me/' + getAdminPhone() + '?text=' + encodeURIComponent(msg), '_blank');
+  // Route to selected channel
+  const adminPhone = getAdminPhone();
+  const adminEmail = Object.values(JSON.parse(localStorage.getItem('user_emails')||'{}')).find(e=>e) || '';
+  const encodedMsg = encodeURIComponent(msg);
+  let url = '';
+  if (selectedChannel === 'whatsapp') url = `https://wa.me/${adminPhone}?text=${encodedMsg}`;
+  else if (selectedChannel === 'viber') url = `viber://chat?number=%2B${adminPhone}&text=${encodedMsg}`;
+  else if (selectedChannel === 'signal') url = `https://signal.me/#p/+${adminPhone}`;
+  else if (selectedChannel === 'telegram') url = `https://t.me/+${adminPhone}`;
+  else if (selectedChannel === 'email') url = `mailto:${adminEmail}?subject=${encodeURIComponent('Zapytanie o rezerwację')}&body=${encodedMsg}`;
+  if (url) window.open(url, '_blank');
   showSuccess(name);
 }
-
-function showSuccess(name) {
   const t = LANGS[currentLang];
   document.getElementById('form-section').style.display = 'none';
   document.getElementById('success-screen').classList.add('visible');
