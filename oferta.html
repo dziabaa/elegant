@@ -363,10 +363,10 @@ border-color: #1a2744 !important;
       <label class="field-label" id="label-note">Uwagi / pytania</label>
       <textarea class="field-input" id="f-note" placeholder="Czy macie parking? Czy można z psem? itp."></textarea>
     </div>
-    <button id="send-btn" onclick="sendInquiry(event)" style="width:100%;padding:16px;background:#1a2744;color:#fff;border:none;border-radius:14px;font-size:15px;font-weight:700;font-family:'DM Sans',sans-serif;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;box-sizing:border-box">
+    <a id="send-link" href="#" target="_blank" onclick="return prepareLink(this)" style="width:100%;padding:16px;background:#1a2744;color:#fff;border-radius:14px;font-size:15px;font-weight:700;font-family:'DM Sans',sans-serif;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;box-sizing:border-box;text-decoration:none">
       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
       Wyślij zapytanie
-    </button>
+    </a>
   </div>
 
   <div class="success-screen" id="success-screen">
@@ -769,7 +769,7 @@ function updateSummary() {
 
 function formatDate(ds) { return ds.split('-').reverse().join('.'); }
 
-function sendInquiry(event) {
+function prepareLink(el) {
   const t     = LANGS[currentLang];
   const name  = document.getElementById('f-name').value.trim();
   const phone = document.getElementById('f-phone').value.trim();
@@ -777,16 +777,16 @@ function sendInquiry(event) {
   const people= document.getElementById('f-people').value.trim();
   const note  = document.getElementById('f-note').value.trim();
 
-  if (!name)               { alert(t.err_name);  return; }
-  if (!phone)              { alert(t.err_phone); return; }
-  if (!selStart || !selEnd){ alert(t.err_dates); return; }
+  if (!name)               { alert(t.err_name);  return false; }
+  if (!phone)              { alert(t.err_phone); return false; }
+  if (!selStart || !selEnd){ alert(t.err_dates); return false; }
 
   const apt    = apartments[currentAptIdx];
   const nights = Math.round((new Date(selEnd) - new Date(selStart)) / 86400000);
 
   const msg = '🏠 ' + t.wa_header + '\n\n'
     + 'Apartament: ' + apt.name + '\n'
-    + 'Termin: ' + formatDate(selStart) + ' \u2013 ' + formatDate(selEnd) + ' (' + nights + ' ' + nights_str(nights) + ')\n'
+    + 'Termin: ' + formatDate(selStart) + ' – ' + formatDate(selEnd) + ' (' + nights + ' ' + nights_str(nights) + ')\n'
     + 'Gość: ' + name + '\n'
     + 'Telefon: ' + phone
     + (email  ? '\nE-mail: '      + email  : '')
@@ -794,7 +794,7 @@ function sendInquiry(event) {
     + (note   ? '\nUwagi: '       + note   : '');
 
   const p   = ADMIN_PHONE;
-  const em  = ADMIN_EMAIL || Object.values(JSON.parse(localStorage.getItem('user_emails')||'{}')).find(x=>x) || '';
+  const em  = ADMIN_EMAIL || '';
   const enc = encodeURIComponent(msg);
 
   let url = '';
@@ -804,10 +804,11 @@ function sendInquiry(event) {
   else if (selectedChannel === 'telegram')  url = 'https://t.me/+' + p;
   else if (selectedChannel === 'email')     url = 'mailto:' + em + '?subject=' + encodeURIComponent('Zapytanie - ' + apt.name) + '&body=' + enc;
 
-  if (!url) { alert('Brak danych kontaktowych'); return; }
+  if (!url) { alert('Brak danych kontaktowych'); return false; }
 
-  window.open(url, '_blank');
-  showSuccess(name);
+  el.href = url;
+  setTimeout(function(){ showSuccess(name); }, 100);
+  return true;
 }
 
 function showSuccess(name) {
