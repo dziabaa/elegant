@@ -887,7 +887,7 @@ text-transform: uppercase; padding: 4px 10px; border-radius: 20px;
 
 <div id="login-screen">
   <div class="login-box">
-    <div class="login-logo"><svg width="42" height="42" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg"><polyline points="10,46 50,12 90,46" stroke="white" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/><polyline points="18,46 18,62 82,62 82,46" stroke="white" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/><line x1="44" y1="46" x2="44" y2="58" stroke="white" stroke-width="6" stroke-linecap="round"/><line x1="18" y1="70" x2="82" y2="70" stroke="white" stroke-width="6" stroke-linecap="round"/><line x1="18" y1="80" x2="82" y2="80" stroke="white" stroke-width="6" stroke-linecap="round"/><line x1="18" y1="90" x2="82" y2="90" stroke="white" stroke-width="6" stroke-linecap="round"/></svg></div>
+    <div class="login-logo"><svg width="42" height="42" viewBox="0 0 110 118" fill="none" xmlns="http://www.w3.org/2000/svg"><polyline points="8,52 55,8 102,52" stroke="white" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"/><line x1="8" y1="52" x2="8" y2="75" stroke="white" stroke-width="9" stroke-linecap="round"/><line x1="102" y1="52" x2="102" y2="75" stroke="white" stroke-width="9" stroke-linecap="round"/><line x1="8" y1="75" x2="102" y2="75" stroke="white" stroke-width="9" stroke-linecap="round"/><line x1="35" y1="52" x2="35" y2="75" stroke="white" stroke-width="9" stroke-linecap="round"/><polyline points="8,87 102,87 102,97 8,97 8,108 75,108 75,118 8,118" stroke="white" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
     <div class="login-title">Apartamenty Elegant</div>
     <div class="login-sub">Zaloguj się do panelu zarządzania</div>
     <div class="login-error" id="login-error"></div>
@@ -945,11 +945,14 @@ text-transform: uppercase; padding: 4px 10px; border-radius: 20px;
 
 <div id="drawer">
   <div class="drawer-header">
-    <div class="drawer-app-logo"><svg width="28" height="28" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg"><polyline points="10,46 50,12 90,46" stroke="white" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/><polyline points="18,46 18,62 82,62 82,46" stroke="white" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/><line x1="44" y1="46" x2="44" y2="58" stroke="white" stroke-width="6" stroke-linecap="round"/><line x1="18" y1="70" x2="82" y2="70" stroke="white" stroke-width="6" stroke-linecap="round"/><line x1="18" y1="80" x2="82" y2="80" stroke="white" stroke-width="6" stroke-linecap="round"/><line x1="18" y1="90" x2="82" y2="90" stroke="white" stroke-width="6" stroke-linecap="round"/></svg></div>
+    <div class="drawer-app-logo"><svg width="28" height="28" viewBox="0 0 110 118" fill="none" xmlns="http://www.w3.org/2000/svg"><polyline points="8,52 55,8 102,52" stroke="white" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"/><line x1="8" y1="52" x2="8" y2="75" stroke="white" stroke-width="9" stroke-linecap="round"/><line x1="102" y1="52" x2="102" y2="75" stroke="white" stroke-width="9" stroke-linecap="round"/><line x1="8" y1="75" x2="102" y2="75" stroke="white" stroke-width="9" stroke-linecap="round"/><line x1="35" y1="52" x2="35" y2="75" stroke="white" stroke-width="9" stroke-linecap="round"/><polyline points="8,87 102,87 102,97 8,97 8,108 75,108 75,118 8,118" stroke="white" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
     <div class="drawer-app-name">Apartamenty Elegant</div>
     <div class="drawer-app-sub">Panel zarządzania</div>
   </div>
   <div class="drawer-section-label">Nawigacja</div>
+  <button class="drawer-item" id="dmenu-dash" onclick="drawerSwitchTab('dash')">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg> Pulpit
+  </button>
   <button class="drawer-item" id="dmenu-msg"   onclick="drawerSwitchTab('msg')">
     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg> Wiadomości
   </button>
@@ -1002,6 +1005,12 @@ text-transform: uppercase; padding: 4px 10px; border-radius: 20px;
   <!-- TAB STRIP -->
 
   <div class="tabs" id="main-tabs">
+    <button class="tab" id="tab-dash" onclick="switchTab('dash')">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg> Pulpit
+    </button>
+    <button class="tab" id="tab-dash" onclick="switchTab('dash')" style="display:none">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg> Pulpit
+    </button>
     <button class="tab active" id="tab-msg"   onclick="switchTab('msg')">
       <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg> Wiadomości
     </button>
@@ -1020,6 +1029,28 @@ text-transform: uppercase; padding: 4px 10px; border-radius: 20px;
     <button class="tab" id="tab-users" onclick="switchTab('users')" style="display:none">
       <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg> Użytkownicy
     </button>
+  </div>
+
+  <!-- PULPIT -->
+
+  <div class="panel" id="panel-dash">
+    <div class="panel-section-header">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+      <div class="panel-section-title">Pulpit</div>
+    </div>
+    <div class="panel-content" id="dash-content">
+      <div style="text-align:center;padding:40px 0;color:#8a95a8">Ładowanie...</div>
+    </div>
+  </div>
+
+  <!-- PULPIT -->
+
+  <div class="panel" id="panel-dash">
+    <div class="panel-section-header">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+      <div class="panel-section-title">Pulpit</div>
+    </div>
+    <div class="panel-content" id="dash-content"></div>
   </div>
 
   <!-- WIADOMOŚCI -->
@@ -1408,10 +1439,10 @@ let authRole  = sessionStorage.getItem('auth_role')  || null;
 let authName  = sessionStorage.getItem('auth_name')  || null;
 
 const ROLE_TABS = {
-  admin:     ['msg','cal','res','clean','apts','users'],
-  reception: ['msg','cal','res','clean'],
-  cleaner:   ['cal','clean'],
-  viewer:    ['msg','cal','res','clean']
+  admin:     ['dash','msg','cal','res','clean','apts','users'],
+  reception: ['dash','msg','cal','res','clean'],
+  cleaner:   ['dash','cal','clean'],
+  viewer:    ['dash','msg','cal','res','clean']
 };
 const ROLE_LABELS = { admin:'Admin', reception:'Recepcja', cleaner:'Sprzątacz', viewer:'Podgląd' };
 
@@ -1484,7 +1515,7 @@ function startApp() {
   if (dr) dr.textContent = ROLE_LABELS[authRole] || authRole;
   // Show/hide tabs & drawer items based on role
   const allowed = ROLE_TABS[authRole] || [];
-  ['msg','cal','res','clean','apts','users'].forEach(t => {
+  ['dash','msg','cal','res','clean','apts','users'].forEach(t => {
     const btn  = document.getElementById('tab-' + t);
     const dmenu = document.getElementById('dmenu-' + t);
     const show = allowed.includes(t);
@@ -1854,7 +1885,204 @@ function switchMsgTab(tab) {
 }
 
 // ─── TAB SWITCHING ────────────────────────────────────
-const TAB_NAMES = { msg:'Wiadomości', cal:'Kalendarz', res:'Rezerwacje', clean:'Sprzątanie', apts:'Ustawienia', users:'Użytkownicy' };
+// ─── DASHBOARD ───────────────────────────────────────
+let tasks = JSON.parse(localStorage.getItem('dash_tasks') || '[]');
+
+function saveTasks() { localStorage.setItem('dash_tasks', JSON.stringify(tasks)); }
+
+function renderDashboard() {
+  const content = document.getElementById('dash-content');
+  if (!content) return;
+
+  const today = new Date();
+  const todayStr = today.toISOString().slice(0,10);
+  const year = today.getFullYear();
+  const month = today.getMonth();
+  const monthStr = todayStr.slice(0,7);
+
+  // Zbierz wszystkie rezerwacje
+  const allBookings = [];
+  apartments.forEach(apt => {
+    (apt.bookings || []).forEach(b => allBookings.push({ ...b, aptName: apt.name }));
+    (apt.icalEvents || []).forEach(b => allBookings.push({ ...b, aptName: apt.name, isIcal: true }));
+    (apt.icalEventsAirbnb || []).forEach(b => allBookings.push({ ...b, aptName: apt.name, isAirbnb: true }));
+  });
+  const manualBookings = allBookings.filter(b => !b.isIcal && !b.isAirbnb);
+
+  // Dzisiejsze zameldowania / wymeldowania
+  const todayCheckin  = allBookings.filter(b => b.from === todayStr).length;
+  const todayCheckout = allBookings.filter(b => b.to   === todayStr).length;
+
+  // Dzisiejsze sprzątania = wymeldowania dziś
+  const todayClean = todayCheckout;
+
+  // Sprzątania w tym miesiącu
+  const monthClean = allBookings.filter(b => b.to && b.to.startsWith(monthStr)).length;
+
+  // Rezerwacje ręczne
+  const manualCount = manualBookings.length;
+  const manualDays  = manualBookings.reduce((s, b) => {
+    if (!b.from || !b.to) return s;
+    return s + Math.round((new Date(b.to) - new Date(b.from)) / 86400000);
+  }, 0);
+  const manualIncome = manualBookings.reduce((s, b) => s + (parseFloat(b.price) || 0), 0);
+
+  // Wolne dni w tym miesiącu (per apartament)
+  const daysInMonth = new Date(year, month+1, 0).getDate();
+  let totalAptDays = apartments.length * daysInMonth;
+  let occupiedDays = 0;
+  apartments.forEach(apt => {
+    const allAptB = [
+      ...(apt.bookings || []),
+      ...(apt.icalEvents || []),
+      ...(apt.icalEventsAirbnb || [])
+    ];
+    for (let d = 1; d <= daysInMonth; d++) {
+      const ds = `${year}-${String(month+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
+      if (allAptB.some(b => ds >= b.from && ds < b.to)) occupiedDays++;
+    }
+  });
+  const freeDaysMonth = totalAptDays - occupiedDays;
+
+  // Wolne dni per miesiąc (ostatnie 12 miesięcy)
+  const monthlyStats = [];
+  for (let m = 11; m >= 0; m--) {
+    const d = new Date(year, month - m, 1);
+    const y2 = d.getFullYear(), mo = d.getMonth();
+    const dim = new Date(y2, mo+1, 0).getDate();
+    const mStr = `${y2}-${String(mo+1).padStart(2,'0')}`;
+    let occ = 0, total = apartments.length * dim;
+    apartments.forEach(apt => {
+      const all = [...(apt.bookings||[]),...(apt.icalEvents||[]),...(apt.icalEventsAirbnb||[])];
+      for (let dd = 1; dd <= dim; dd++) {
+        const ds = `${mStr}-${String(dd).padStart(2,'0')}`;
+        if (all.some(b => ds >= b.from && ds < b.to)) occ++;
+      }
+    });
+    const monthName = d.toLocaleString('pl', {month:'short'});
+    monthlyStats.push({ label: monthName, occ, free: total - occ, total, pct: total > 0 ? Math.round(occ/total*100) : 0 });
+  }
+
+  // Wolne dni w roku
+  const freeDaysYear = monthlyStats.reduce((s, m) => s + m.free, 0);
+
+  const card = (icon, label, value, color='#1a2744') => `
+    <div style="background:#fff;border:1.5px solid #e4e8f0;border-radius:14px;padding:14px 16px;display:flex;align-items:center;gap:12px">
+      <div style="width:40px;height:40px;border-radius:10px;background:${color}18;display:flex;align-items:center;justify-content:center;flex-shrink:0">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="${color}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">${icon}</svg>
+      </div>
+      <div>
+        <div style="font-size:11px;font-weight:600;color:#8a95a8;text-transform:uppercase;letter-spacing:0.8px">${label}</div>
+        <div style="font-size:20px;font-weight:700;color:#0f1e3d;line-height:1.2">${value}</div>
+      </div>
+    </div>`;
+
+  const iconCalIn  = '<path d="M16 2v4M8 2v4M3 10h18M5 4h14a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2z"/><polyline points="9 14 11 16 15 12"/>';
+  const iconCalOut = '<path d="M16 2v4M8 2v4M3 10h18M5 4h14a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2z"/><line x1="9" y1="14" x2="15" y2="14"/>';
+  const iconBroom  = '<path d="M3 22v-3l9-9"/><path d="m15 6-3 3"/><path d="M18 2l4 4-9.5 9.5-4-4z"/>';
+  const iconMoney  = '<line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/>';
+  const iconFree   = '<rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/><line x1="8" y1="14" x2="8" y2="18"/>';
+  const iconRes    = '<path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/>';
+
+  // Wykres słupkowy obłożenia
+  const maxPct = Math.max(...monthlyStats.map(m => m.pct), 1);
+  const barChart = `
+    <div style="background:#fff;border:1.5px solid #e4e8f0;border-radius:14px;padding:16px;margin-bottom:12px">
+      <div style="font-size:13px;font-weight:700;color:#0f1e3d;margin-bottom:14px">Obłożenie miesięczne (%)</div>
+      <div style="display:flex;align-items:flex-end;gap:4px;height:80px">
+        ${monthlyStats.map(m => `
+          <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:3px">
+            <div style="font-size:8px;color:#8a95a8;font-weight:600">${m.pct}%</div>
+            <div style="width:100%;background:${m.pct > 70 ? '#1a2744' : m.pct > 40 ? '#3b5bdb' : '#e4e8f0'};border-radius:4px 4px 0 0;height:${Math.max(4, m.pct/maxPct*60)}px;transition:height 0.3s"></div>
+            <div style="font-size:8px;color:#8a95a8">${m.label}</div>
+          </div>`).join('')}
+      </div>
+    </div>`;
+
+  // Tabela miesięczna
+  const monthTable = `
+    <div style="background:#fff;border:1.5px solid #e4e8f0;border-radius:14px;padding:16px;margin-bottom:12px">
+      <div style="font-size:13px;font-weight:700;color:#0f1e3d;margin-bottom:12px">Wolne dni per miesiąc</div>
+      ${monthlyStats.map(m => `
+        <div style="display:flex;align-items:center;gap:8px;padding:5px 0;border-bottom:1px solid #f0f2f7">
+          <div style="width:32px;font-size:12px;font-weight:600;color:#5a6480">${m.label}</div>
+          <div style="flex:1;background:#f0f2f7;border-radius:4px;height:8px;overflow:hidden">
+            <div style="background:#1a2744;height:100%;width:${m.pct}%;border-radius:4px;transition:width 0.3s"></div>
+          </div>
+          <div style="font-size:11px;color:#8a95a8;width:50px;text-align:right">${m.free} wolnych</div>
+        </div>`).join('')}
+    </div>`;
+
+  // Lista zadań
+  const taskList = `
+    <div style="background:#fff;border:1.5px solid #e4e8f0;border-radius:14px;padding:16px;margin-bottom:12px">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px">
+        <div style="font-size:13px;font-weight:700;color:#0f1e3d">Do zrobienia</div>
+        <button onclick="addTask()" style="background:#1a2744;color:#fff;border:none;border-radius:8px;padding:6px 12px;font-size:12px;font-weight:600;font-family:'DM Sans',sans-serif;cursor:pointer;display:flex;align-items:center;gap:4px">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg> Dodaj
+        </button>
+      </div>
+      <div id="task-list-inner">
+        ${tasks.length === 0 ? '<div style="font-size:13px;color:#8a95a8;text-align:center;padding:16px 0">Brak zadań</div>' :
+          tasks.map((t, i) => `
+          <div style="display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid #f0f2f7">
+            <input type="checkbox" ${t.done ? 'checked' : ''} onchange="toggleTask(${i})" style="width:16px;height:16px;cursor:pointer;accent-color:#1a2744;flex-shrink:0">
+            <div style="flex:1;font-size:13px;color:${t.done ? '#8a95a8' : '#0f1e3d'};text-decoration:${t.done ? 'line-through' : 'none'};font-weight:${t.done ? '400' : '500'}">${t.text}</div>
+            <div style="font-size:10px;color:#8a95a8">${t.author || ''}</div>
+            <button onclick="deleteTask(${i})" style="background:none;border:none;cursor:pointer;color:#ccc;padding:2px;flex-shrink:0">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+            </button>
+          </div>`).join('')}
+      </div>
+    </div>`;
+
+  content.innerHTML = `
+    <!-- Dziś -->
+    <div style="font-size:12px;font-weight:700;color:#8a95a8;text-transform:uppercase;letter-spacing:1px;margin-bottom:8px">Dziś</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:16px">
+      ${card(iconCalIn,  'Zameldowania', todayCheckin,  '#16a34a')}
+      ${card(iconCalOut, 'Wymeldowania', todayCheckout, '#e8433a')}
+      ${card(iconBroom,  'Sprzątania',   todayClean,    '#f59e0b')}
+    </div>
+    <!-- Ten miesiąc -->
+    <div style="font-size:12px;font-weight:700;color:#8a95a8;text-transform:uppercase;letter-spacing:1px;margin-bottom:8px">Ten miesiąc</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:16px">
+      ${card(iconBroom, 'Sprzątania',      monthClean,   '#f59e0b')}
+      ${card(iconFree,  'Wolne dni',        freeDaysMonth,'#3b5bdb')}
+      ${card(iconRes,   'Rez. ręcznych',    manualCount,  '#1a2744')}
+      ${card(iconRes,   'Dni rez. ręcznych',manualDays,   '#1a2744')}
+      ${card(iconMoney, 'Zarobki (PLN)',    manualIncome.toFixed(0), '#16a34a')}
+      ${card(iconFree,  'Wolne w roku',     freeDaysYear, '#3b5bdb')}
+    </div>
+    <!-- Wykresy -->
+    ${barChart}
+    ${monthTable}
+    <!-- Zadania -->
+    ${taskList}
+  `;
+}
+
+function addTask() {
+  const text = prompt('Treść zadania:');
+  if (!text || !text.trim()) return;
+  tasks.push({ text: text.trim(), done: false, author: authName || authRole, ts: Date.now() });
+  saveTasks();
+  renderDashboard();
+}
+
+function toggleTask(i) {
+  tasks[i].done = !tasks[i].done;
+  saveTasks();
+  renderDashboard();
+}
+
+function deleteTask(i) {
+  tasks.splice(i, 1);
+  saveTasks();
+  renderDashboard();
+}
+
+
 
 function openDrawer() {
   document.getElementById('drawer').classList.add('open');
@@ -1870,7 +2098,7 @@ function drawerSwitchTab(tab) {
 }
 
 function switchTab(tab) {
-  ['msg','cal','res','clean','apts','users'].forEach(t => {
+  ['dash','msg','cal','res','clean','apts','users'].forEach(t => {
     const btn   = document.getElementById('tab-' + t);
     const panel = document.getElementById('panel-' + t);
     const dmenu = document.getElementById('dmenu-' + t);
@@ -1884,6 +2112,7 @@ function switchTab(tab) {
   // Update topbar title — stays fixed
   // (title is always "Apartamenty Elegant")
   // Tab-specific init
+  if (tab === 'dash')  renderDashboard();
   if (tab === 'res')   { populateResAptSelect(); renderResList(); }
   if (tab === 'cal')   {
     if (!getCalAptId() && apartments.length > 0) setCalAptId(apartments[0].id);
