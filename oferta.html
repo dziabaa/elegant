@@ -5,164 +5,290 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="color-scheme" content="light only">
-<title>Apartamenty Elegant — Zapytanie</title>
-<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
+<title>Apartamenty Elegant — Sprawdź dostępność</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
-html, body { color-scheme: light only !important; background: #eef1f7 !important; color: #0f1e3d !important; font-family: 'DM Sans', sans-serif; margin: 0; padding: 0; }
-.topbar { background: #1a2744; padding: 14px 20px; display: flex; align-items: center; gap: 12px; border-radius: 0 0 18px 18px; }
-.topbar-logo { width: 36px; height: 36px; background: rgba(255,255,255,0.15); border-radius: 10px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
-.topbar-title { font-size: 16px; font-weight: 700; color: #fff; }
-.topbar-sub { font-size: 11px; color: rgba(255,255,255,0.6); }
-.wrap { max-width: 480px; margin: 0 auto; padding: 20px 16px 60px; }
-.hero { background: #1a2744; border-radius: 16px; padding: 22px 20px; margin-bottom: 20px; }
-.hero h1 { font-size: 22px; font-weight: 800; color: #fff; margin: 0 0 6px; }
-.hero p { font-size: 13px; color: rgba(255,255,255,0.75); margin: 0; line-height: 1.5; }
-.card { background: #fff; border: 1.5px solid #e4e8f0; border-radius: 16px; padding: 16px; margin-bottom: 14px; }
-.lbl { font-size: 11px; font-weight: 700; color: #8a95a8; text-transform: uppercase; letter-spacing: 1px; margin: 0 0 8px; }
-.tabs { display: flex; background: #e4e8f0; border-radius: 10px; padding: 3px; gap: 6px; margin-bottom: 14px; }
-.tab { flex: 1; padding: 9px 6px; border: none; border-radius: 8px; font-family: 'DM Sans', sans-serif; font-size: 13px; font-weight: 600; cursor: pointer; background: transparent; color: #8a95a8; transition: all 0.2s; }
-.tab.on { background: #fff; color: #1a2744; }
-.cal-hdr { background: #1a2744; display: flex; align-items: center; justify-content: space-between; padding: 12px 14px; border-radius: 12px 12px 0 0; }
-.cal-nav { background: rgba(255,255,255,0.15); border: none; border-radius: 7px; width: 30px; height: 30px; color: #fff; font-size: 16px; cursor: pointer; }
-.cal-title { font-size: 15px; font-weight: 700; color: #fff; }
-.cal-body { background: #fff; border-radius: 0 0 12px 12px; padding: 10px; border: 1.5px solid #e4e8f0; border-top: none; }
-.cal-grid { display: grid; grid-template-columns: repeat(7,1fr); gap: 2px; }
-.cal-dow { text-align: center; font-size: 11px; font-weight: 600; color: #8a95a8; padding: 4px 0 6px; }
-.cal-dow.sun { color: #ef4444; }
-.cal-day { aspect-ratio: 1; display: flex; align-items: center; justify-content: center; font-size: 13px; border-radius: 7px; cursor: pointer; font-weight: 500; color: #0f1e3d; }
-.cal-day.sun { color: #ef4444; }
-.cal-day.past, .cal-day.occ { color: #ccc; cursor: default; text-decoration: line-through; background: #f8f9fb; }
-.cal-day.free:hover { background: #dbe4ff; }
-.cal-day.today { font-weight: 800; }
-.cal-day.sel-s, .cal-day.sel-e { background: #1a2744 !important; color: #fff !important; }
-.cal-day.sel-s { border-radius: 7px 0 0 7px; }
-.cal-day.sel-e { border-radius: 0 7px 7px 0; }
-.cal-day.sel-s.sel-e { border-radius: 7px; }
-.cal-day.sel-r { background: #dbe4ff; border-radius: 0; }
-.legend { display: flex; gap: 12px; padding: 8px 2px 2px; font-size: 11px; color: #8a95a8; }
-.ldot { width: 10px; height: 10px; border-radius: 3px; display: inline-block; margin-right: 4px; }
-.sum { background: #fff; border: 1.5px solid #e4e8f0; border-radius: 12px; padding: 12px 14px; margin-bottom: 14px; display: none; }
-.sum-row { display: flex; gap: 8px; }
-.sum-box { flex: 1; background: #f3f5f9; border-radius: 8px; padding: 8px 10px; }
-.sum-lbl { font-size: 10px; font-weight: 700; color: #8a95a8; text-transform: uppercase; }
-.sum-val { font-size: 15px; font-weight: 700; color: #1a2744; }
-.sum-nights { text-align: center; margin-top: 8px; font-size: 13px; color: #8a95a8; }
-.sum-nights b { color: #1a2744; }
-input, textarea { display: block; width: 100%; box-sizing: border-box; background: #f3f5f9 !important; border: 1.5px solid #e4e8f0 !important; border-radius: 10px; padding: 11px 13px; font-size: 14px; font-family: 'DM Sans', sans-serif; color: #0f1e3d !important; outline: none; margin-bottom: 10px; -webkit-appearance: none; }
-input:focus, textarea:focus { border-color: #3b5bdb !important; }
-textarea { resize: none; min-height: 80px; line-height: 1.5; }
-.field-lbl { font-size: 12px; font-weight: 600; color: #0f1e3d; margin-bottom: 5px; display: block; }
-.ch-wrap { display: flex; flex-wrap: wrap; gap: 7px; margin-bottom: 12px; }
-.ch { padding: 8px 11px; border-radius: 9px; border: 1.5px solid #e4e8f0; background: #f3f5f9; color: #5a6480; font-family: 'DM Sans', sans-serif; font-size: 12px; font-weight: 600; cursor: pointer; display: flex; align-items: center; gap: 5px; }
-.ch.on { background: #1a2744; color: #fff; border-color: #1a2744; }
-.btn-send { display: block; width: 100%; box-sizing: border-box; padding: 15px; background: #1a2744; color: #fff; border: none; border-radius: 13px; font-size: 15px; font-weight: 700; font-family: 'DM Sans', sans-serif; cursor: pointer; text-align: center; margin-top: 4px; }
-.ok { display: none; text-align: center; padding: 32px 16px; background: #fff; border: 1.5px solid #e4e8f0; border-radius: 16px; }
-.ok h2 { font-size: 20px; font-weight: 800; color: #1a2744; margin: 12px 0 6px; }
-.ok p { color: #8a95a8; font-size: 14px; }
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { color-scheme: light only !important; background: #eef1f7 !important; color: #0f1e3d !important; font-family: 'DM Sans', sans-serif; min-height: 100vh; }
+
+/* TOPBAR */
+.topbar { background: #1a2744 !important; padding: 14px 20px; display: flex; align-items: center; gap: 12px; border-radius: 0 0 18px 18px; position: sticky; top: 0; z-index: 100; }
+.topbar-logo { width: 38px; height: 38px; background: rgba(255,255,255,0.13); border-radius: 10px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+.topbar-info { flex: 1; }
+.topbar-title { font-size: 16px; font-weight: 700; color: #fff !important; }
+.topbar-sub { font-size: 11px; color: rgba(255,255,255,0.6) !important; }
+
+/* LANG */
+.lang-btn { background: rgba(255,255,255,0.13) !important; border: none; border-radius: 10px; padding: 6px 10px; cursor: pointer; display: flex; align-items: center; gap: 5px; font-family: ‘DM Sans’, sans-serif; font-size: 13px; font-weight: 600; color: #fff !important; position: relative; }
+.lang-menu { display: none; position: absolute; top: calc(100% + 8px); right: 0; background: #fff !important; border: 1.5px solid #e4e8f0; border-radius: 12px; overflow: hidden; box-shadow: 0 8px 24px rgba(0,0,0,0.12); min-width: 150px; z-index: 200; }
+.lang-opt { display: block; width: 100%; padding: 10px 14px; border: none; background: #fff !important; color: #0f1e3d !important; font-family: ‘DM Sans’, sans-serif; font-size: 13px; font-weight: 500; cursor: pointer; text-align: left; border-bottom: 1px solid #f0f2f7; }
+.lang-opt:last-child { border-bottom: none; }
+.lang-opt:hover { background: #f3f5f9 !important; }
+.lang-opt.active { font-weight: 700; color: #1a2744 !important; background: #eef1f7 !important; }
+
+/* LAYOUT */
+.container { max-width: 480px; margin: 0 auto; padding: 20px 16px 60px; }
+
+/* HERO */
+.hero { background: #1a2744 !important; border-radius: 18px; padding: 24px 20px; color: #fff !important; margin-bottom: 20px; }
+.hero h1 { font-size: 22px; font-weight: 800; color: #fff !important; margin-bottom: 6px; }
+.hero p { font-size: 13px; color: rgba(255,255,255,0.75) !important; line-height: 1.5; }
+
+/* SECTION LABEL */
+.sec-label { font-size: 11px; font-weight: 700; color: #8a95a8 !important; text-transform: uppercase; letter-spacing: 1px; margin: 0 0 10px; }
+
+/* APT TABS */
+.apt-tabs { display: flex; background: #e4e8f0 !important; border-radius: 12px; padding: 4px; gap: 6px; margin-bottom: 16px; }
+.apt-tab { flex: 1; padding: 9px 8px; border: none; border-radius: 9px; font-family: ‘DM Sans’, sans-serif; font-size: 13px; font-weight: 600; cursor: pointer; background: transparent !important; color: #8a95a8 !important; transition: all 0.2s; }
+.apt-tab.on { background: #fff !important; color: #1a2744 !important; box-shadow: 0 1px 4px rgba(0,0,0,0.1); }
+
+/* CALENDAR */
+.cal-card { background: #fff !important; border: 1.5px solid #e4e8f0; border-radius: 16px; overflow: hidden; margin-bottom: 16px; }
+.cal-hdr { background: #1a2744 !important; display: flex; align-items: center; justify-content: space-between; padding: 12px 16px; }
+.cal-nav { background: rgba(255,255,255,0.13) !important; border: none; border-radius: 8px; width: 32px; height: 32px; color: #fff !important; font-size: 18px; cursor: pointer; display: flex; align-items: center; justify-content: center; }
+.cal-title { font-size: 15px; font-weight: 700; color: #fff !important; }
+.cal-grid { display: grid; grid-template-columns: repeat(7,1fr); padding: 12px; background: #fff !important; gap: 2px; }
+.cal-dow { text-align: center; font-size: 11px; font-weight: 600; color: #8a95a8 !important; padding: 4px 0 8px; }
+.cal-dow.sun { color: #ef4444 !important; }
+.cal-day { aspect-ratio: 1; display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 500; border-radius: 8px; cursor: pointer; color: #0f1e3d !important; background: transparent !important; transition: all 0.15s; }
+.cal-day.sun { color: #ef4444 !important; }
+.cal-day.past, .cal-day.occ { color: #c0c8d8 !important; cursor: not-allowed; text-decoration: line-through; background: #f8f9fb !important; }
+.cal-day.free:hover { background: #dbe4ff !important; color: #1a2744 !important; }
+.cal-day.sel-s, .cal-day.sel-e { background: #1a2744 !important; color: #fff !important; font-weight: 700; }
+.cal-day.sel-s { border-radius: 8px 0 0 8px; }
+.cal-day.sel-e { border-radius: 0 8px 8px 0; }
+.cal-day.sel-s.sel-e { border-radius: 8px !important; }
+.cal-day.sel-r { background: #dbe4ff !important; color: #1a2744 !important; border-radius: 0; }
+.legend { display: flex; gap: 14px; padding: 0 12px 12px; font-size: 11px; color: #8a95a8 !important; background: #fff !important; }
+.ldot { width: 10px; height: 10px; border-radius: 3px; display: inline-block; margin-right: 4px; flex-shrink: 0; }
+
+/* DATES SUMMARY */
+.dates-sum { background: #fff !important; border: 1.5px solid #e4e8f0; border-radius: 14px; padding: 14px 16px; margin-bottom: 16px; }
+.dates-row { display: flex; gap: 8px; }
+.dates-box { flex: 1; background: #f3f5f9 !important; border-radius: 10px; padding: 10px 12px; }
+.dates-lbl { font-size: 10px; font-weight: 700; color: #8a95a8 !important; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 3px; }
+.dates-val { font-size: 15px; font-weight: 700; color: #1a2744 !important; }
+.nights { text-align: center; margin-top: 10px; font-size: 13px; color: #8a95a8 !important; }
+.nights b { color: #1a2744 !important; }
+
+/* FORM */
+.form-card { background: #fff !important; border: 1.5px solid #e4e8f0; border-radius: 16px; padding: 20px; margin-bottom: 16px; }
+.form-title { font-size: 15px; font-weight: 700; color: #1a2744 !important; margin-bottom: 16px; }
+.field-lbl { display: block; font-size: 12px; font-weight: 600; color: #0f1e3d !important; margin-bottom: 6px; }
+.field-input { display: block; width: 100%; background: #f3f5f9 !important; border: 1.5px solid #e4e8f0 !important; border-radius: 12px; padding: 12px 14px; font-size: 14px; font-family: ‘DM Sans’, sans-serif; color: #0f1e3d !important; outline: none; margin-bottom: 12px; -webkit-appearance: none; appearance: none; }
+.field-input:focus { border-color: #3b5bdb !important; box-shadow: 0 0 0 3px rgba(59,91,219,0.1); background: #fff !important; }
+.field-input::placeholder { color: #8a95a8 !important; }
+textarea.field-input { resize: none; min-height: 80px; line-height: 1.5; }
+
+/* CONTACT CHANNELS */
+.ch-label { display: block; font-size: 12px; font-weight: 600; color: #0f1e3d !important; margin-bottom: 8px; }
+.ch-row { display: flex; gap: 8px; margin-bottom: 14px; }
+.ch-btn { flex: 1; display: flex; align-items: center; justify-content: center; gap: 7px; padding: 11px 8px; border-radius: 12px; border: 1.5px solid #e4e8f0; background: #f3f5f9 !important; color: #5a6480 !important; font-family: ‘DM Sans’, sans-serif; font-size: 13px; font-weight: 600; cursor: pointer; transition: all 0.2s; }
+.ch-btn.on { background: #1a2744 !important; color: #fff !important; border-color: #1a2744 !important; }
+
+/* SEND BUTTON */
+.btn-send { width: 100%; padding: 16px; background: #1a2744 !important; color: #fff !important; border: none; border-radius: 14px; font-size: 15px; font-weight: 700; font-family: ‘DM Sans’, sans-serif; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; margin-top: 4px; }
+
+/* SUCCESS */
+.success { display: none; background: #fff !important; border: 1.5px solid #e4e8f0; border-radius: 20px; padding: 40px 24px; text-align: center; }
+.success-icon { width: 64px; height: 64px; border-radius: 50%; background: #dcfce7 !important; display: flex; align-items: center; justify-content: center; margin: 0 auto 16px; }
+.success h2 { font-size: 20px; font-weight: 800; color: #1a2744 !important; margin-bottom: 8px; }
+.success p { font-size: 14px; color: #8a95a8 !important; line-height: 1.6; }
+.info-box { background: #eff6ff !important; border: 1.5px solid #bfdbfe; border-radius: 12px; padding: 11px 14px; margin-bottom: 14px; font-size: 12px; color: #1e40af !important; display: flex; gap: 8px; align-items: flex-start; }
 </style>
+
 </head>
 <body>
 
 <div class="topbar">
   <div class="topbar-logo">
-    <svg width="20" height="20" viewBox="0 0 110 118" fill="none"><polyline points="10,46 55,12 100,46" stroke="white" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"/><line x1="18" y1="46" x2="18" y2="64" stroke="white" stroke-width="9" stroke-linecap="round"/><line x1="92" y1="46" x2="92" y2="64" stroke="white" stroke-width="9" stroke-linecap="round"/><line x1="18" y1="64" x2="92" y2="64" stroke="white" stroke-width="9" stroke-linecap="round"/><line x1="38" y1="46" x2="38" y2="62" stroke="white" stroke-width="7" stroke-linecap="round"/><polyline points="18,74 92,74 92,83 18,83 18,93 72,93 72,103 18,103" stroke="white" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    <svg width="22" height="22" viewBox="0 0 110 118" fill="none">
+      <polyline points="10,46 55,12 100,46" stroke="white" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"/>
+      <line x1="18" y1="46" x2="18" y2="64" stroke="white" stroke-width="9" stroke-linecap="round"/>
+      <line x1="92" y1="46" x2="92" y2="64" stroke="white" stroke-width="9" stroke-linecap="round"/>
+      <line x1="18" y1="64" x2="92" y2="64" stroke="white" stroke-width="9" stroke-linecap="round"/>
+      <line x1="38" y1="46" x2="38" y2="62" stroke="white" stroke-width="7" stroke-linecap="round"/>
+      <polyline points="18,74 92,74 92,83 18,83 18,93 72,93 72,103 18,103" stroke="white" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
   </div>
-  <div>
+  <div class="topbar-info">
     <div class="topbar-title">Apartamenty Elegant</div>
     <div class="topbar-sub">Przemyśl</div>
   </div>
+  <div style="position:relative;margin-left:auto">
+    <button class="lang-btn" onclick="toggleLang()">
+      <span id="lf">🇵🇱</span><span id="lc">PL</span>
+      <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+    </button>
+    <div class="lang-menu" id="lang-menu">
+      <button class="lang-opt active" onclick="setL('pl')">🇵🇱 Polski</button>
+      <button class="lang-opt" onclick="setL('en')">🇬🇧 English</button>
+      <button class="lang-opt" onclick="setL('de')">🇩🇪 Deutsch</button>
+      <button class="lang-opt" onclick="setL('uk')">🇺🇦 Українська</button>
+      <button class="lang-opt" onclick="setL('es')">🇪🇸 Español</button>
+      <button class="lang-opt" onclick="setL('cs')">🇨🇿 Čeština</button>
+    </div>
+  </div>
 </div>
 
-<div class="wrap">
+<div class="container">
   <div class="hero">
-    <h1>Sprawdź dostępność</h1>
-    <p>Wybierz apartament i daty, wyślij zapytanie o cenę.</p>
+    <h1 id="t-title">Sprawdź dostępność</h1>
+    <p id="t-sub">Wybierz apartament i daty pobytu, a następnie wyślij zapytanie o cenę.</p>
   </div>
 
-  <div class="lbl">Apartament</div>
-  <div class="tabs" id="apt-tabs"></div>
+  <div class="sec-label" id="t-apt">Wybierz apartament</div>
+  <div class="apt-tabs" id="apt-tabs"></div>
 
-  <div class="lbl">Termin pobytu</div>
-  <div style="border-radius:12px;overflow:hidden;margin-bottom:10px">
+  <div class="sec-label" id="t-dates">Wybierz termin pobytu</div>
+  <div class="info-box">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;margin-top:1px"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+    <span id="t-tip">Kliknij datę przyjazdu, potem datę wyjazdu. Szare dni są już zajęte.</span>
+  </div>
+  <div class="cal-card">
     <div class="cal-hdr">
       <button class="cal-nav" onclick="CM(-1)">‹</button>
       <div class="cal-title" id="cal-title"></div>
       <button class="cal-nav" onclick="CM(1)">›</button>
     </div>
-    <div class="cal-body">
-      <div class="cal-grid" id="cal-grid"></div>
-      <div class="legend">
-        <span><span class="ldot" style="background:#f8f9fb;border:1.5px solid #ccc"></span>Zajęty</span>
-        <span><span class="ldot" style="background:#1a2744"></span>Wybrany</span>
-      </div>
+    <div class="cal-grid" id="cal-grid"></div>
+    <div class="legend">
+      <span><span class="ldot" style="background:#f8f9fb;border:1.5px solid #c0c8d8"></span><span id="t-locc">Zajęty</span></span>
+      <span><span class="ldot" style="background:#fff;border:1.5px solid #e4e8f0"></span><span id="t-lfree">Wolny</span></span>
+      <span><span class="ldot" style="background:#1a2744"></span><span id="t-lsel">Wybrany</span></span>
     </div>
   </div>
 
-  <div class="sum" id="sum">
-    <div class="sum-row">
-      <div class="sum-box"><div class="sum-lbl">Przyjazd</div><div class="sum-val" id="s-from"></div></div>
-      <div class="sum-box"><div class="sum-lbl">Wyjazd</div><div class="sum-val" id="s-to"></div></div>
+  <div class="dates-sum" id="dates-sum" style="display:none">
+    <div class="dates-row">
+      <div class="dates-box"><div class="dates-lbl" id="t-arr">Przyjazd</div><div class="dates-val" id="s-from"></div></div>
+      <div class="dates-box"><div class="dates-lbl" id="t-dep">Wyjazd</div><div class="dates-val" id="s-to"></div></div>
     </div>
-    <div class="sum-nights" id="s-nights"></div>
+    <div class="nights" id="s-nights"></div>
   </div>
 
-  <div class="card" id="form-card">
-    <div style="font-size:15px;font-weight:700;color:#1a2744;margin-bottom:14px">Zapytanie o ofertę</div>
-    <label class="field-lbl">Imię i nazwisko *</label>
-    <input type="text" id="fn" placeholder="np. Jan Kowalski">
-    <label class="field-lbl">Telefon *</label>
-    <input type="tel" id="fp" placeholder="+48 600 000 000">
-    <label class="field-lbl">E-mail</label>
-    <input type="email" id="fe" placeholder="jan@gmail.com">
-    <label class="field-lbl">Liczba gości</label>
-    <input type="number" id="fg" placeholder="np. 2" min="1">
-    <label class="field-lbl">Preferowany kontakt *</label>
-    <div class="ch-wrap">
-      <button class="ch on" data-ch="whatsapp" onclick="SCH(this)">💬 WhatsApp</button>
-      <button class="ch" data-ch="sms" onclick="SCH(this)">✉️ SMS</button>
-      <button class="ch" data-ch="email" onclick="SCH(this)">📧 E-mail</button>
+  <div class="form-card" id="form-card">
+    <div class="form-title" id="t-form">Zapytanie o ofertę</div>
+    <label class="field-lbl" id="t-fn">Imię i nazwisko *</label>
+    <input class="field-input" id="fn" type="text" placeholder="np. Jan Kowalski">
+    <label class="field-lbl" id="t-fp">Telefon *</label>
+    <input class="field-input" id="fp" type="tel" placeholder="+48 600 000 000">
+    <label class="field-lbl" id="t-fe">E-mail</label>
+    <input class="field-input" id="fe" type="email" placeholder="jan@gmail.com">
+    <label class="field-lbl" id="t-fg">Liczba gości</label>
+    <input class="field-input" id="fg" type="number" min="1" placeholder="np. 2">
+    <label class="field-lbl" id="t-fch">Preferowany kontakt *</label>
+    <div class="ch-row">
+      <button class="ch-btn on" data-ch="whatsapp" onclick="SCH(this)">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+        WhatsApp
+      </button>
+      <button class="ch-btn" data-ch="signal" onclick="SCH(this)">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0a12 12 0 1 0 0 24A12 12 0 0 0 12 0zm.87 5.82a6.18 6.18 0 0 1 4.76 9.7l.44 1.56-1.6-.43A6.18 6.18 0 1 1 12.87 5.82zm-4.76 1.5a4.94 4.94 0 1 0 8.26 5.43l.27.96-.99-.27a4.94 4.94 0 0 0-7.54-6.12z"/></svg>
+        Signal
+      </button>
     </div>
-    <label class="field-lbl">Uwagi</label>
-    <textarea id="fnote" placeholder="Pytania, uwagi..."></textarea>
-    <button class="btn-send" onclick="SEND()">Wyślij zapytanie →</button>
+    <div class="ch-row" style="margin-top:-4px">
+      <button class="ch-btn" data-ch="sms" onclick="SCH(this)">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+        SMS
+      </button>
+      <button class="ch-btn" data-ch="email" onclick="SCH(this)">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+        E-mail
+      </button>
+    </div>
+    <label class="field-lbl" id="t-fn2">Uwagi / pytania</label>
+    <textarea class="field-input" id="fnote" placeholder="Czy macie parking? Czy można z psem?"></textarea>
+    <button class="btn-send" onclick="SEND()">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+      <span id="t-send">Wyślij zapytanie</span>
+    </button>
   </div>
 
-  <div class="ok" id="ok-card">
-    <div style="font-size:48px">✅</div>
-    <h2>Wysłano!</h2>
-    <p id="ok-msg">Dziękujemy! Odpowiemy najszybciej jak to możliwe.</p>
-    <button class="btn-send" style="margin-top:20px" onclick="RESET()">Nowe zapytanie</button>
+  <div class="success" id="success">
+    <div class="success-icon">
+      <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#16a34a" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+    </div>
+    <h2 id="t-ok">Zapytanie wysłane!</h2>
+    <p id="t-okm">Dziękujemy! Skontaktujemy się wkrótce.</p>
+    <button class="btn-send" style="margin-top:24px" onclick="RESET()" id="t-new">Nowe zapytanie</button>
   </div>
 </div>
 
 <script>
 var PHONE = '48605207857';
 var EMAIL = 'marcin.bruchal@gmail.com';
-var apts = JSON.parse(localStorage.getItem('apts') || 'null') || [
-  {id:1, name:'Elegant 1', bookings:[], icalEvents:[], icalEventsAirbnb:[]},
-  {id:2, name:'Elegant 2', bookings:[], icalEvents:[], icalEventsAirbnb:[]}
-];
+
+var T = {
+  pl:{ title:'Sprawdź dostępność', sub:'Wybierz apartament i daty pobytu, a następnie wyślij zapytanie o cenę.', apt:'Wybierz apartament', dates:'Wybierz termin pobytu', tip:'Kliknij datę przyjazdu, potem datę wyjazdu. Szare dni są już zajęte.', locc:'Zajęty', lfree:'Wolny', lsel:'Wybrany', arr:'Przyjazd', dep:'Wyjazd', form:'Zapytanie o ofertę', fn:'Imię i nazwisko *', fp:'Telefon *', fe:'E-mail', fg:'Liczba gości', fch:'Preferowany kontakt *', note:'Uwagi / pytania', send:'Wyślij zapytanie', ok:'Zapytanie wysłane!', okm:'Dziękujemy! Skontaktujemy się wkrótce.', nnew:'Nowe zapytanie', months:['Styczeń','Luty','Marzec','Kwiecień','Maj','Czerwiec','Lipiec','Sierpień','Wrzesień','Październik','Listopad','Grudzień'], days:['Pn','Wt','Śr','Cz','Pt','So','Nd'], enm:'Wpisz imię', enp:'Wpisz telefon', end:'Wybierz daty', wa:'ZAPYTANIE O REZERWACJĘ', noc:['noc','noce','nocy'] },
+  en:{ title:'Check availability', sub:'Choose an apartment and stay dates, then send a price inquiry.', apt:'Choose apartment', dates:'Choose stay dates', tip:'Click arrival date, then departure date. Grey days are taken.', locc:'Occupied', lfree:'Free', lsel:'Selected', arr:'Arrival', dep:'Departure', form:'Price inquiry', fn:'Full name *', fp:'Phone *', fe:'E-mail', fg:'Number of guests', fch:'Preferred contact *', note:'Notes / questions', send:'Send inquiry', ok:'Inquiry sent!', okm:'Thank you! We will contact you soon.', nnew:'New inquiry', months:['January','February','March','April','May','June','July','August','September','October','November','December'], days:['Mo','Tu','We','Th','Fr','Sa','Su'], enm:'Enter name', enp:'Enter phone', end:'Select dates', wa:'BOOKING INQUIRY', noc:['night','nights','nights'] },
+  de:{ title:'Verfügbarkeit prüfen', sub:'Wählen Sie Wohnung und Daten, senden Sie eine Preisanfrage.', apt:'Wohnung wählen', dates:'Aufenthaltsdaten wählen', tip:'Anreise klicken, dann Abreise. Graue Tage sind belegt.', locc:'Belegt', lfree:'Frei', lsel:'Gewählt', arr:'Anreise', dep:'Abreise', form:'Preisanfrage', fn:'Vor- und Nachname *', fp:'Telefon *', fe:'E-Mail', fg:'Gästeanzahl', fch:'Bevorzugter Kontakt *', note:'Anmerkungen', send:'Anfrage senden', ok:'Anfrage gesendet!', okm:'Danke! Wir melden uns bald.', nnew:'Neue Anfrage', months:['Januar','Februar','März','April','Mai','Juni','Juli','August','September','Oktober','November','Dezember'], days:['Mo','Di','Mi','Do','Fr','Sa','So'], enm:'Name eingeben', enp:'Telefon eingeben', end:'Daten wählen', wa:'BUCHUNGSANFRAGE', noc:['Nacht','Nächte','Nächte'] },
+  uk:{ title:'Перевірте наявність', sub:'Оберіть апартаменти та дати, надішліть запит на ціну.', apt:'Оберіть апартаменти', dates:'Оберіть дати', tip:'Натисніть дату приїзду, потім від\'їзду. Сірі дні зайняті.', locc:'Зайнято', lfree:'Вільно', lsel:'Вибрано', arr:'Приїзд', dep:'Від\'їзд', form:'Запит на ціну', fn:'Ім\'я та прізвище *', fp:'Телефон *', fe:'E-mail', fg:'Кількість гостей', fch:'Бажаний контакт *', note:'Примітки', send:'Надіслати запит', ok:'Запит надіслано!', okm:'Дякуємо! Ми зв\'яжемося з вами.', nnew:'Новий запит', months:['Січень','Лютий','Березень','Квітень','Травень','Червень','Липень','Серпень','Вересень','Жовтень','Листопад','Грудень'], days:['Пн','Вт','Ср','Чт','Пт','Сб','Нд'], enm:'Введіть ім\'я', enp:'Введіть телефон', end:'Оберіть дати', wa:'ЗАПИТ НА БРОНЮВАННЯ', noc:['ніч','ночі','ночей'] },
+  es:{ title:'Consultar disponibilidad', sub:'Elige apartamento y fechas, envía consulta de precio.', apt:'Elige apartamento', dates:'Elige fechas', tip:'Clic en llegada, luego salida. Días grises ocupados.', locc:'Ocupado', lfree:'Libre', lsel:'Seleccionado', arr:'Llegada', dep:'Salida', form:'Consulta de precio', fn:'Nombre y apellidos *', fp:'Teléfono *', fe:'E-mail', fg:'Nº de huéspedes', fch:'Contacto preferido *', note:'Notas', send:'Enviar consulta', ok:'¡Consulta enviada!', okm:'¡Gracias! Nos pondremos en contacto.', nnew:'Nueva consulta', months:['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'], days:['Lu','Ma','Mi','Ju','Vi','Sá','Do'], enm:'Introduce nombre', enp:'Introduce teléfono', end:'Selecciona fechas', wa:'CONSULTA DE RESERVA', noc:['noche','noches','noches'] },
+  cs:{ title:'Zkontrolujte dostupnost', sub:'Vyberte apartmán a data, odešlete cenovou poptávku.', apt:'Vyberte apartmán', dates:'Vyberte data', tip:'Klikněte na příjezd, pak odjezd. Šedé dny jsou obsazeny.', locc:'Obsazeno', lfree:'Volno', lsel:'Vybráno', arr:'Příjezd', dep:'Odjezd', form:'Cenová poptávka', fn:'Jméno a příjmení *', fp:'Telefon *', fe:'E-mail', fg:'Počet hostů', fch:'Preferovaný kontakt *', note:'Poznámky', send:'Odeslat poptávku', ok:'Poptávka odeslána!', okm:'Děkujeme! Brzy vás kontaktujeme.', nnew:'Nová poptávka', months:['Leden','Únor','Březen','Duben','Květen','Červen','Červenec','Srpen','Září','Říjen','Listopad','Prosinec'], days:['Po','Út','St','Čt','Pá','So','Ne'], enm:'Zadejte jméno', enp:'Zadejte telefon', end:'Vyberte data', wa:'POPTÁVKA UBYTOVÁNÍ', noc:['noc','noci','nocí'] }
+};
+
+var lang = 'pl';
 var aptIdx = 0;
 var selS = null, selE = null;
 var CY = new Date().getFullYear(), CM2 = new Date().getMonth();
 var ch = 'whatsapp';
-var MONTHS = ['Styczeń','Luty','Marzec','Kwiecień','Maj','Czerwiec','Lipiec','Sierpień','Wrzesień','Październik','Listopad','Grudzień'];
+var apts = JSON.parse(localStorage.getItem('apts') || 'null') || [
+  {id:1,name:'Elegant 1',bookings:[],icalEvents:[],icalEventsAirbnb:[]},
+  {id:2,name:'Elegant 2',bookings:[],icalEvents:[],icalEventsAirbnb:[]}
+];
 
-function occ() {
-  var s = new Set();
-  var a = apts[aptIdx];
-  var all = (a.bookings||[]).concat(a.icalEvents||[]).concat(a.icalEventsAirbnb||[]);
-  all.forEach(function(b){
-    if(!b.from||!b.to) return;
-    var d = new Date(b.from), e = new Date(b.to);
-    while(d<e){ s.add(d.toISOString().slice(0,10)); d.setDate(d.getDate()+1); }
-  });
-  return s;
+function t(k){ return T[lang][k] || T['pl'][k]; }
+
+function noc(n){
+  var a = t('noc');
+  if(lang==='pl') return n===1?a[0]:n<5?a[1]:a[2];
+  return n===1?a[0]:a[2];
 }
 
-function buildTabs() {
+function setL(l){
+  lang = l;
+  document.querySelectorAll('.lang-opt').forEach(function(b){ b.classList.toggle('active', b.textContent.indexOf(l.toUpperCase())>-1 || b.onclick.toString().indexOf("'"+l+"'")>-1); });
+  document.getElementById('lf').textContent = ({pl:'🇵🇱',en:'🇬🇧',de:'🇩🇪',uk:'🇺🇦',es:'🇪🇸',cs:'🇨🇿'})[l];
+  document.getElementById('lc').textContent = l.toUpperCase();
+  document.getElementById('lang-menu').style.display='none';
+  document.getElementById('t-title').textContent = t('title');
+  document.getElementById('t-sub').textContent = t('sub');
+  document.getElementById('t-apt').textContent = t('apt');
+  document.getElementById('t-dates').textContent = t('dates');
+  document.getElementById('t-tip').textContent = t('tip');
+  document.getElementById('t-locc').textContent = t('locc');
+  document.getElementById('t-lfree').textContent = t('lfree');
+  document.getElementById('t-lsel').textContent = t('lsel');
+  document.getElementById('t-arr').textContent = t('arr');
+  document.getElementById('t-dep').textContent = t('dep');
+  document.getElementById('t-form').textContent = t('form');
+  document.getElementById('t-fn').textContent = t('fn');
+  document.getElementById('fn').placeholder = t('enm');
+  document.getElementById('t-fp').textContent = t('fp');
+  document.getElementById('t-fe').textContent = t('fe');
+  document.getElementById('t-fg').textContent = t('fg');
+  document.getElementById('t-fch').textContent = t('fch');
+  document.getElementById('t-fn2').textContent = t('note');
+  document.getElementById('t-send').textContent = t('send');
+  document.getElementById('t-ok').textContent = t('ok');
+  RC();
+  US();
+}
+
+function toggleLang(){
+  var m = document.getElementById('lang-menu');
+  m.style.display = m.style.display==='block'?'none':'block';
+}
+document.addEventListener('click', function(e){
+  if(!e.target.closest('.lang-btn') && !e.target.closest('#lang-menu'))
+    document.getElementById('lang-menu').style.display='none';
+});
+
+function buildTabs(){
   document.getElementById('apt-tabs').innerHTML = apts.map(function(a,i){
-    return '<button class="tab'+(i===aptIdx?' on':'')+'" onclick="SA('+i+')">'+a.name+'</button>';
+    return '<button class="apt-tab'+(i===aptIdx?' on':'')+'" onclick="SA('+i+')">'+a.name+'</button>';
   }).join('');
 }
 
@@ -170,23 +296,33 @@ function SA(i){ aptIdx=i; selS=null; selE=null; buildTabs(); RC(); US(); }
 
 function CM(d){ CM2+=d; if(CM2>11){CM2=0;CY++;} if(CM2<0){CM2=11;CY--;} RC(); }
 
-function fmtD(ds){ return ds.split('-').reverse().join('.'); }
+function occ(){
+  var s=new Set(), a=apts[aptIdx];
+  [].concat(a.bookings||[],a.icalEvents||[],a.icalEventsAirbnb||[]).forEach(function(b){
+    if(!b.from||!b.to) return;
+    var d=new Date(b.from),e=new Date(b.to);
+    while(d<e){s.add(d.toISOString().slice(0,10));d.setDate(d.getDate()+1);}
+  });
+  return s;
+}
 
-function RC() {
-  document.getElementById('cal-title').textContent = MONTHS[CM2]+' '+CY;
-  var today = new Date().toISOString().slice(0,10);
-  var occupied = occ();
-  var DAYS = ['Pn','Wt','Śr','Cz','Pt','So','Nd'];
-  var h = DAYS.map(function(d,i){ return '<div class="cal-dow'+(i===6?' sun':'')+'">'+(d)+'</div>'; }).join('');
-  var sd = new Date(CY,CM2,1).getDay(); sd = sd===0?6:sd-1;
-  var dim = new Date(CY,CM2+1,0).getDate();
+function fmt(ds){ return ds.split('-').reverse().join('.'); }
+
+function RC(){
+  var today=new Date().toISOString().slice(0,10);
+  var oc=occ();
+  var mn=t('months'), dy=t('days');
+  document.getElementById('cal-title').textContent=mn[CM2]+' '+CY;
+  var h=dy.map(function(d,i){return '<div class="cal-dow'+(i===6?' sun':'')+'">'+(d)+'</div>';}).join('');
+  var sd=new Date(CY,CM2,1).getDay(); sd=sd===0?6:sd-1;
+  var dim=new Date(CY,CM2+1,0).getDate();
   for(var i=0;i<sd;i++) h+='<div></div>';
   for(var d=1;d<=dim;d++){
-    var ds = CY+'-'+String(CM2+1).padStart(2,'0')+'-'+String(d).padStart(2,'0');
-    var sun = new Date(ds).getDay()===0;
-    var past = ds<today, oc = occupied.has(ds);
-    var cls = 'cal-day';
-    if(past||oc) cls+=' '+(past?'past':'occ');
+    var ds=CY+'-'+String(CM2+1).padStart(2,'0')+'-'+String(d).padStart(2,'0');
+    var sun=new Date(ds).getDay()===0;
+    var past=ds<today, isOcc=oc.has(ds);
+    var cls='cal-day';
+    if(past||isOcc) cls+=' '+(past?'past':'occ');
     else cls+=' free';
     if(sun) cls+=' sun';
     if(selS&&selE){
@@ -196,85 +332,81 @@ function RC() {
       else if(ds===hi) cls+=' sel-e';
       else if(ds>lo&&ds<hi) cls+=' sel-r';
     } else if(selS&&ds===selS) cls+=' sel-s sel-e';
-    var click = (!past&&!oc) ? ' onclick="DC(\''+ds+'\')"' : '';
-    h+='<div class="'+cls+'"'+click+'>'+d+'</div>';
+    var onclick=(!past&&!isOcc)?' onclick="DC(\''+ds+'\')"':'';
+    h+='<div class="'+cls+'"'+onclick+'>'+d+'</div>';
   }
-  document.getElementById('cal-grid').innerHTML = h;
+  document.getElementById('cal-grid').innerHTML=h;
 }
 
 function DC(ds){
-  if(!selS||(selS&&selE)){ selS=ds; selE=null; }
-  else {
-    if(ds===selS){ selS=null; selE=null; }
-    else { var lo=ds>selS?selS:ds, hi=ds>selS?ds:selS; selS=lo; selE=hi; }
-  }
+  if(!selS||(selS&&selE)){selS=ds;selE=null;}
+  else{ if(ds===selS){selS=null;selE=null;} else{var lo=ds>selS?selS:ds,hi=ds>selS?ds:selS;selS=lo;selE=hi;} }
   RC(); US();
 }
 
 function US(){
-  var el = document.getElementById('sum');
+  var el=document.getElementById('dates-sum');
   if(selS&&selE){
     el.style.display='block';
-    document.getElementById('s-from').textContent = fmtD(selS);
-    document.getElementById('s-to').textContent = fmtD(selE);
-    var n = Math.round((new Date(selE)-new Date(selS))/86400000);
-    document.getElementById('s-nights').innerHTML = '<b>'+n+'</b> '+(n===1?'noc':n<5?'noce':'nocy');
+    document.getElementById('s-from').textContent=fmt(selS);
+    document.getElementById('s-to').textContent=fmt(selE);
+    var n=Math.round((new Date(selE)-new Date(selS))/86400000);
+    document.getElementById('s-nights').innerHTML='<b>'+n+'</b> '+noc(n);
   } else { el.style.display='none'; }
 }
 
 function SCH(btn){
-  ch = btn.dataset.ch;
-  document.querySelectorAll('.ch').forEach(function(b){
-    b.classList.toggle('on', b===btn);
-    b.style.background = b===btn ? '#1a2744' : '#f3f5f9';
-    b.style.color = b===btn ? '#fff' : '#5a6480';
-    b.style.borderColor = b===btn ? '#1a2744' : '#e4e8f0';
+  ch=btn.dataset.ch;
+  document.querySelectorAll('.ch-btn').forEach(function(b){
+    var on=b===btn;
+    b.classList.toggle('on',on);
+    b.style.background=on?'#1a2744':'#f3f5f9';
+    b.style.color=on?'#fff':'#5a6480';
+    b.style.borderColor=on?'#1a2744':'#e4e8f0';
   });
 }
 
 function SEND(){
-  var name = document.getElementById('fn').value.trim();
-  var phone = document.getElementById('fp').value.trim();
-  var email = document.getElementById('fe').value.trim();
-  var people = document.getElementById('fg').value.trim();
-  var note = document.getElementById('fnote').value.trim();
-  if(!name){ alert('Wpisz imię i nazwisko'); return; }
-  if(!phone){ alert('Wpisz numer telefonu'); return; }
-  if(!selS||!selE){ alert('Wybierz daty pobytu'); return; }
-
-  var apt = apts[aptIdx];
-  var n = Math.round((new Date(selE)-new Date(selS))/86400000);
-  var msg = '🏠 ZAPYTANIE O REZERWACJĘ\n\n'
+  var name=document.getElementById('fn').value.trim();
+  var phone=document.getElementById('fp').value.trim();
+  var email=document.getElementById('fe').value.trim();
+  var people=document.getElementById('fg').value.trim();
+  var note=document.getElementById('fnote').value.trim();
+  if(!name){alert(t('enm'));return;}
+  if(!phone){alert(t('enp'));return;}
+  if(!selS||!selE){alert(t('end'));return;}
+  var apt=apts[aptIdx];
+  var n=Math.round((new Date(selE)-new Date(selS))/86400000);
+  var msg='🏠 '+t('wa')+'\n\n'
     +'Apartament: '+apt.name+'\n'
-    +'Termin: '+fmtD(selS)+' – '+fmtD(selE)+' ('+n+' '+(n===1?'noc':n<5?'noce':'nocy')+')\n'
-    +'Gość: '+name+'\n'
-    +'Telefon: '+phone
+    +'Termin: '+fmt(selS)+' – '+fmt(selE)+' ('+n+' '+noc(n)+')\n'
+    +'Gość: '+name+'\n'+'Telefon: '+phone
     +(email?'\nE-mail: '+email:'')
     +(people?'\nLiczba osób: '+people:'')
     +(note?'\nUwagi: '+note:'');
-
-  var enc = encodeURIComponent(msg);
-  var url = '';
-  if(ch==='whatsapp')  url='https://wa.me/'+PHONE+'?text='+enc;
-  if(ch==='sms')       url='sms:+'+PHONE+'?body='+enc;
-  if(ch==='email')     url='mailto:'+EMAIL+'?subject='+encodeURIComponent('Zapytanie - '+apt.name)+'&body='+enc;
-
-  document.getElementById('ok-msg').textContent = 'Dziękujemy '+name+'! Skontaktujemy się wkrótce.';
+  var enc=encodeURIComponent(msg);
+  var url='';
+  if(ch==='whatsapp') url='https://wa.me/'+PHONE+'?text='+enc;
+  if(ch==='signal')   url='https://signal.me/#p/+'+PHONE;
+  if(ch==='sms')      url='sms:+'+PHONE+'?body='+enc;
+  if(ch==='email')    url='mailto:'+EMAIL+'?subject='+encodeURIComponent('Zapytanie - '+apt.name)+'&body='+enc;
   document.getElementById('form-card').style.display='none';
-  document.getElementById('ok-card').style.display='block';
-  window.location.href = url;
+  document.getElementById('success').style.display='block';
+  document.getElementById('t-okm').textContent=T[lang].okm.replace('{name}',name);
+  window.location.href=url;
 }
 
 function RESET(){
-  selS=null; selE=null;
-  ['fn','fp','fe','fg','fnote'].forEach(function(id){ document.getElementById(id).value=''; });
+  selS=null;selE=null;
+  ['fn','fp','fe','fg','fnote'].forEach(function(id){document.getElementById(id).value='';});
   document.getElementById('form-card').style.display='block';
-  document.getElementById('ok-card').style.display='none';
-  RC(); US();
+  document.getElementById('success').style.display='none';
+  RC();US();
 }
 
 buildTabs();
 RC();
+SCH(document.querySelector('.ch-btn.on'));
 </script>
 
 </body>
