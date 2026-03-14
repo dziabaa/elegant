@@ -120,9 +120,6 @@ textarea { resize: none; min-height: 80px; line-height: 1.5; }
     <div class="ch-wrap">
       <button class="ch on" data-ch="whatsapp" onclick="SCH(this)">💬 WhatsApp</button>
       <button class="ch" data-ch="sms" onclick="SCH(this)">✉️ SMS</button>
-      <button class="ch" data-ch="viber" onclick="SCH(this)">📱 Viber</button>
-      <button class="ch" data-ch="signal" onclick="SCH(this)">🔒 Signal</button>
-      <button class="ch" data-ch="telegram" onclick="SCH(this)">✈️ Telegram</button>
       <button class="ch" data-ch="email" onclick="SCH(this)">📧 E-mail</button>
     </div>
     <label class="field-lbl">Uwagi</label>
@@ -260,9 +257,6 @@ function SEND(){
   var url = '';
   if(ch==='whatsapp')  url='https://wa.me/'+PHONE+'?text='+enc;
   if(ch==='sms')       url='sms:+'+PHONE+'?body='+enc;
-  if(ch==='viber')     url='viber://forward?text='+enc;
-  if(ch==='signal')    url='https://signal.me/#p/+'+PHONE;
-  if(ch==='telegram')  url='https://t.me/share/url?url=&text='+enc;
   if(ch==='email')     url='mailto:'+EMAIL+'?subject='+encodeURIComponent('Zapytanie - '+apt.name)+'&body='+enc;
 
   document.getElementById('ok-msg').textContent = 'Dziękujemy '+name+'! Skontaktujemy się wkrótce.';
