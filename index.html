@@ -3401,7 +3401,7 @@ function renderGuestsList() {
         </div>
         <div style="text-align:right;flex-shrink:0">
           ${totalSpent > 0 ? `<div style="font-size:13px;font-weight:700;color:#16a34a">${totalSpent.toFixed(0)} zł</div>` : ''}
-          <div style="font-size:11px;color:#8a95a8">${lastB ? lastB.from : ''}</div>
+          <div style="font-size:11px;color:#8a95a8">${lastB ? lastB.from.split('-').reverse().join('.') : ''}</div>
         </div>
       </div>
       <div class="guest-detail" style="display:none;margin-top:12px;padding-top:12px;border-top:1px solid #e4e8f0">
@@ -3410,7 +3410,7 @@ function renderGuestsList() {
           return `<div style="display:flex;justify-content:space-between;align-items:center;padding:6px 0;border-bottom:1px solid #f0f2f7;font-size:13px">
             <div>
               <div style="font-weight:600;color:#0f1e3d">${b.aptName}</div>
-              <div style="color:#8a95a8;font-size:11px">${b.from} → ${b.to} · ${nights} nocy</div>
+              <div style="color:#8a95a8;font-size:11px">${b.from.split('-').reverse().join('.')} → ${b.to.split('-').reverse().join('.')} · ${nights} nocy</div>
             </div>
             <div style="text-align:right">
               ${b.price ? `<div style="font-weight:600;color:#16a34a">${b.price} zł</div>` : ''}
