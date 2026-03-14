@@ -435,6 +435,18 @@ function SEND(){
   if(ch==='signal')   url='https://signal.me/#p/+'+PHONE;
   if(ch==='sms')      url='sms:+'+PHONE+'?body='+enc;
   if(ch==='email')    url='mailto:'+EMAIL+'?subject='+encodeURIComponent('Zapytanie - '+apt.name)+'&body='+enc;
+
+  // Zapisz zapytanie do workera (KV)
+  fetch('https://nameless-base-0f4d.dziabaa.workers.dev/inquiry', {
+    method: 'POST',
+    headers: {'Content-Type': 'application/json'},
+    body: JSON.stringify({
+      apt: apt.name, from: selS, to: selE, nights: n,
+      name: name, phone: phone, email: email, people: people,
+      note: note, lang: lang, channel: ch
+    })
+  }).catch(function(){});
+
   document.getElementById('form-card').style.display='none';
   document.getElementById('success').style.display='block';
   document.getElementById('t-okm').textContent=T[lang].okm.replace('{name}',name);
