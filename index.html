@@ -2553,7 +2553,7 @@ async function syncAllIcal() {
 }
 
 // ─── GANTT ───────────────────────────────────────────
-let ganttOffset = -2;
+let ganttOffset = -1;
 let calView = 'month';
 
 function setCalView(view) {
@@ -2742,11 +2742,17 @@ function renderGantt() {
       </div>`;
     });
 
-    const borderTop = '';
     rowsHTML += `
-      <div style="display:flex;">
+      <div style="display:flex;border-bottom:1px solid #e4e8f0;box-sizing:border-box;">
+        <!-- apt label cell -->
+        <div style="width:120px;min-width:120px;height:${ROW_H}px;flex-shrink:0;display:flex;align-items:center;padding:0 10px;border-right:1.5px solid #e4e8f0;box-sizing:border-box;background:#fff;">
+          <span style="font-size:12px;font-weight:600;color:#1a2744;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;display:flex;align-items:center;gap:5px">
+            <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#1a2744" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+            ${apt.name}
+          </span>
+        </div>
         <!-- grid cells + bars -->
-        <div style="position:relative;display:flex;min-width:${DAYS_SHOWN * DAY_W}px;border-bottom:1px solid #e4e8f0;box-sizing:border-box;">
+        <div style="position:relative;display:flex;min-width:${DAYS_SHOWN * DAY_W}px;flex:1;box-sizing:border-box;">
           ${dayCells}
           ${barsHTML}
         </div>
@@ -2755,28 +2761,21 @@ function renderGantt() {
 
   // Today vertical line offset
   const todayIdx = days.indexOf(todayStr);
-  const todayLineHTML = todayIdx >= 0 ? `<div style="position:absolute;top:0;bottom:0;left:${todayIdx * DAY_W + DAY_W/2}px;width:2px;background:#1a2744;opacity:0.2;pointer-events:none;border-radius:1px"></div>` : '';
+  const todayLineHTML = todayIdx >= 0 ? `<div style="position:absolute;top:0;bottom:0;left:${labelW + todayIdx * DAY_W + DAY_W/2}px;width:2px;background:#1a2744;opacity:0.2;pointer-events:none;border-radius:1px"></div>` : '';
+
+  const labelW = 120;
+  const totalW = labelW + DAYS_SHOWN * DAY_W;
 
   container.innerHTML = `
-    <div style="border-radius:14px;overflow:hidden;border:1px solid #e4e8f0;background:#ffffff;display:flex;">
-      <!-- Sticky left labels column -->
-      <div style="position:sticky;left:0;z-index:4;background:#ffffff;min-width:120px;width:120px;flex-shrink:0;border-right:1.5px solid #e4e8f0;">
-        <!-- empty header cell -->
-        <div style="height:48px;background:#f0f2f7;border-bottom:2px solid #e4e8f0;"></div>
-        <!-- apt labels -->
-        ${apartments.map(apt => `
-          <div style="height:${ROW_H}px;display:flex;align-items:center;padding:0 10px;border-bottom:1px solid #e4e8f0;box-sizing:border-box;">
-            <span style="font-size:12px;font-weight:600;color:#1a2744;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;display:flex;align-items:center;gap:5px"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#1a2744" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>${apt.name}</span>
-          </div>`).join('')}
-      </div>
-      <!-- Scrollable right part -->
-      <div style="overflow-x:auto;-webkit-overflow-scrolling:touch;flex:1;position:relative;">
-        <!-- Header -->
-        <div style="display:flex;background:#f0f2f7;border-bottom:2px solid #e4e8f0;position:sticky;top:0;z-index:3;min-width:${DAYS_SHOWN * DAY_W}px;">
-          ${hdrCells}
+    <div style="border-radius:14px;overflow:hidden;border:1px solid #e4e8f0;background:#ffffff;overflow-x:auto;-webkit-overflow-scrolling:touch;">
+      <div style="min-width:${totalW}px;">
+        <!-- Header row -->
+        <div style="display:flex;background:#f0f2f7;border-bottom:2px solid #e4e8f0;box-sizing:border-box;">
+          <div style="width:${labelW}px;min-width:${labelW}px;height:48px;flex-shrink:0;border-right:1.5px solid #e4e8f0;box-sizing:border-box;"></div>
+          <div style="display:flex;">${hdrCells}</div>
         </div>
-        <!-- Rows -->
-        <div style="position:relative;min-width:${DAYS_SHOWN * DAY_W}px;">
+        <!-- Data rows -->
+        <div style="position:relative;">
           ${rowsHTML}
           ${todayLineHTML}
         </div>
