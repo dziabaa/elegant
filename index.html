@@ -2711,7 +2711,7 @@ function renderGantt() {
       const visTo   = res.to   > endStr   ? endStr   : res.to;
       if (visFrom > endStr || visTo <= startStr || visFrom >= visTo) return;
       const fi = Math.round((new Date(visFrom) - startDate) / 86400000);
-      const ti = Math.round((new Date(visTo)   - startDate) / 86400000);
+      const ti = Math.round((new Date(visTo)   - startDate) / 86400000) + 1;
       const fiC = Math.max(0, fi), tiC = Math.min(DAYS_SHOWN, ti);
       if (fiC >= tiC) return;
 
@@ -2747,7 +2747,7 @@ function renderGantt() {
         <!-- apt label cell -->
         <div style="width:120px;min-width:120px;height:${ROW_H}px;flex-shrink:0;display:flex;align-items:center;padding:0 10px;border-right:1.5px solid #e4e8f0;box-sizing:border-box;background:#fff;">
           <span style="font-size:12px;font-weight:600;color:#1a2744;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;display:flex;align-items:center;gap:5px">
-            <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#1a2744" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+            <svg style="flex-shrink:0;margin-top:1px" width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#1a2744" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
             ${apt.name}
           </span>
         </div>
