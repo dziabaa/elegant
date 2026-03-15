@@ -2711,7 +2711,7 @@ function renderGantt() {
       const visTo   = res.to   > endStr   ? endStr   : res.to;
       if (visFrom > endStr || visTo <= startStr || visFrom >= visTo) return;
       const fi = Math.round((new Date(visFrom) - startDate) / 86400000);
-      const ti = Math.round((new Date(visTo)   - startDate) / 86400000) + 1;
+      const ti = Math.round((new Date(visTo)   - startDate) / 86400000);
       const fiC = Math.max(0, fi), tiC = Math.min(DAYS_SHOWN, ti);
       if (fiC >= tiC) return;
 
@@ -2760,13 +2760,13 @@ function renderGantt() {
   container.innerHTML = `
     <div style="border-radius:14px;overflow:hidden;border:1px solid #e4e8f0;background:#ffffff;display:flex;">
       <!-- Sticky left labels column -->
-      <div style="position:sticky;left:0;z-index:4;background:#ffffff;min-width:110px;width:110px;flex-shrink:0;border-right:1px solid #e4e8f0;">
+      <div style="position:sticky;left:0;z-index:4;background:#ffffff;min-width:120px;width:120px;flex-shrink:0;border-right:1.5px solid #e4e8f0;">
         <!-- empty header cell -->
         <div style="height:48px;background:#f0f2f7;border-bottom:2px solid #e4e8f0;"></div>
         <!-- apt labels -->
         ${apartments.map(apt => `
-          <div style="height:${ROW_H}px;display:flex;align-items:center;padding:0 8px 0 10px;border-bottom:1px solid #e4e8f0;box-sizing:border-box;">
-            <span style="font-size:12px;font-weight:600;color:#1a2744;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;display:flex;align-items:center;gap:4px"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#1a2744" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>${apt.name}</span>
+          <div style="height:${ROW_H}px;display:flex;align-items:center;padding:0 10px;border-bottom:1px solid #e4e8f0;box-sizing:border-box;">
+            <span style="font-size:12px;font-weight:600;color:#1a2744;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;display:flex;align-items:center;gap:5px"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#1a2744" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>${apt.name}</span>
           </div>`).join('')}
       </div>
       <!-- Scrollable right part -->
